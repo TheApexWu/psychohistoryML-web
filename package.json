@@ -1,0 +1,9 @@
+{
+  "name": "psychohistoryml-web",
+  "version": "1.0.0",
+  "description": "I Built Asimov's Psychohistory - Interactive civilizational analysis",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  }
+}
