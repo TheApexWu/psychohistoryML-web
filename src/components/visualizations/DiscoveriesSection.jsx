@@ -8,25 +8,25 @@ const discoveries = [
     id: 1,
     title: "Religion outweighs complexity",
     summary: "Ideology score is the #1 predictor of civilizational stability",
-    detail: "Counter to assumptions that bureaucratic sophistication determines survival, religious/ideological cohesion (12.7% importance) outranks all complexity measures. Societies with shared belief systems weather crises better.",
+    detail: "Counter to assumptions that bureaucratic sophistication determines survival, religious/ideological cohesion (12.7% feature importance) outranks all complexity measures. Societies with shared belief systems weather crises better than those with sophisticated administration alone.",
     stat: "12.7%",
-    statLabel: "importance",
+    statLabel: "feature importance",
     icon: "◉"
   },
   {
     id: 2,
     title: "Era trumps geography",
     summary: "Historical period matters more than where a civilization was located",
-    detail: "Civilizations cluster by time, not space. Ancient polities (β=-159) face dramatically different complexity dynamics than Early Modern ones (β=+6). The 'rules' of civilizational survival changed over millennia.",
-    stat: "β=-159→+6",
+    detail: "Civilizations cluster by time, not space. The relationship between complexity and duration completely reverses across eras: Ancient polities show strong negative effects (B=-159), while Early Modern polities show slight positive effects (B=+6). The 'rules' of survival changed over millennia.",
+    stat: "B=-159 to +6",
     statLabel: "coefficient shift",
     icon: "◈"
   },
   {
     id: 3,
-    title: "Warfare technology transitions",
-    summary: "Adding warfare features improved prediction by 28%",
-    detail: "Military technology moderates complexity effects differently per era. Classical period warfare shows +0.634 moderation—the strongest effect—suggesting military innovation helped manage complex societies.",
+    title: "Warfare technology matters",
+    summary: "Adding military features improved model prediction by 28%",
+    detail: "Military technology doesn't just correlate with outcomes — it moderates how complexity affects survival. The model jumped from coin-flip (0.505 AUC) to meaningful signal (0.648 AUC) when warfare variables were added. Context matters as much as capacity.",
     stat: "+28%",
     statLabel: "AUC improvement",
     icon: "◇"
@@ -34,29 +34,11 @@ const discoveries = [
   {
     id: 4,
     title: "Classical era is special",
-    summary: "500 BCE–500 CE shows unique dynamics in all analyses",
-    detail: "The Classical period consistently emerges as exceptional: warfare moderation peaks here, religion-complexity interactions differ, and the negative complexity effect moderates significantly compared to Ancient times.",
+    summary: "500 BCE - 500 CE shows unique dynamics across all analyses",
+    detail: "The Classical period consistently emerges as exceptional: warfare moderation peaks here (+0.634 effect), the complexity-duration relationship moderates significantly compared to Ancient times, and the era produced history's most durable complex societies. Rome, Han China, Persia — something was different.",
     stat: "+0.634",
     statLabel: "warfare moderation",
     icon: "◆"
-  },
-  {
-    id: 5,
-    title: "Low complexity + low ideology = longest",
-    summary: "The 'simple and secular' sweet spot for longevity",
-    detail: "Surprisingly, polities with minimal bureaucratic complexity AND minimal ideological cohesion show the longest average durations. Perhaps they avoid both administrative overreach and ideological rigidity.",
-    stat: "~650",
-    statLabel: "avg. years",
-    icon: "○"
-  },
-  {
-    id: 6,
-    title: "Complexity is conditionally harmful",
-    summary: "Only dangerous without stabilizing mechanisms",
-    detail: "Raw complexity correlates with shorter duration, but this effect is moderated by warfare technology and religious cohesion. Complex societies can persist—if they have the right institutional supports.",
-    stat: "R²=0.21",
-    statLabel: "ancient only",
-    icon: "●"
   },
 ]
 
@@ -87,7 +69,7 @@ export default function DiscoveriesSection() {
   return (
     <section className="discoveries-section">
       <h2 className="section-title">What the Model Revealed</h2>
-      <p className="section-subtitle">Six key findings from analyzing 10,000 years of civilizational data</p>
+      <p className="section-subtitle">Four key findings from analyzing 10,000 years of civilizational data</p>
 
       <div className="discoveries-grid">
         {discoveries.map((discovery, index) => (
@@ -116,7 +98,7 @@ export default function DiscoveriesSection() {
             </div>
 
             <span className="expand-hint">
-              {expandedId === discovery.id ? '− Less' : '+ More'}
+              {expandedId === discovery.id ? '- Less' : '+ More'}
             </span>
           </div>
         ))}
@@ -140,7 +122,7 @@ export default function DiscoveriesSection() {
         }
         .discoveries-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          grid-template-columns: repeat(2, 1fr);
           gap: 1.5rem;
         }
         .discovery-item {
@@ -231,7 +213,7 @@ export default function DiscoveriesSection() {
           text-align: right;
           margin-top: 0.5rem;
         }
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
           .discoveries-grid {
             grid-template-columns: 1fr;
           }

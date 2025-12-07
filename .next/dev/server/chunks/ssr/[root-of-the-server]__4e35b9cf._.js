@@ -459,25 +459,25 @@ const discoveries = [
         id: 1,
         title: "Religion outweighs complexity",
         summary: "Ideology score is the #1 predictor of civilizational stability",
-        detail: "Counter to assumptions that bureaucratic sophistication determines survival, religious/ideological cohesion (12.7% importance) outranks all complexity measures. Societies with shared belief systems weather crises better.",
+        detail: "Counter to assumptions that bureaucratic sophistication determines survival, religious/ideological cohesion (12.7% feature importance) outranks all complexity measures. Societies with shared belief systems weather crises better than those with sophisticated administration alone.",
         stat: "12.7%",
-        statLabel: "importance",
+        statLabel: "feature importance",
         icon: "◉"
     },
     {
         id: 2,
         title: "Era trumps geography",
         summary: "Historical period matters more than where a civilization was located",
-        detail: "Civilizations cluster by time, not space. Ancient polities (β=-159) face dramatically different complexity dynamics than Early Modern ones (β=+6). The 'rules' of civilizational survival changed over millennia.",
-        stat: "β=-159→+6",
+        detail: "Civilizations cluster by time, not space. The relationship between complexity and duration completely reverses across eras: Ancient polities show strong negative effects (B=-159), while Early Modern polities show slight positive effects (B=+6). The 'rules' of survival changed over millennia.",
+        stat: "B=-159 to +6",
         statLabel: "coefficient shift",
         icon: "◈"
     },
     {
         id: 3,
-        title: "Warfare technology transitions",
-        summary: "Adding warfare features improved prediction by 28%",
-        detail: "Military technology moderates complexity effects differently per era. Classical period warfare shows +0.634 moderation—the strongest effect—suggesting military innovation helped manage complex societies.",
+        title: "Warfare technology matters",
+        summary: "Adding military features improved model prediction by 28%",
+        detail: "Military technology doesn't just correlate with outcomes — it moderates how complexity affects survival. The model jumped from coin-flip (0.505 AUC) to meaningful signal (0.648 AUC) when warfare variables were added. Context matters as much as capacity.",
         stat: "+28%",
         statLabel: "AUC improvement",
         icon: "◇"
@@ -485,29 +485,11 @@ const discoveries = [
     {
         id: 4,
         title: "Classical era is special",
-        summary: "500 BCE–500 CE shows unique dynamics in all analyses",
-        detail: "The Classical period consistently emerges as exceptional: warfare moderation peaks here, religion-complexity interactions differ, and the negative complexity effect moderates significantly compared to Ancient times.",
+        summary: "500 BCE - 500 CE shows unique dynamics across all analyses",
+        detail: "The Classical period consistently emerges as exceptional: warfare moderation peaks here (+0.634 effect), the complexity-duration relationship moderates significantly compared to Ancient times, and the era produced history's most durable complex societies. Rome, Han China, Persia — something was different.",
         stat: "+0.634",
         statLabel: "warfare moderation",
         icon: "◆"
-    },
-    {
-        id: 5,
-        title: "Low complexity + low ideology = longest",
-        summary: "The 'simple and secular' sweet spot for longevity",
-        detail: "Surprisingly, polities with minimal bureaucratic complexity AND minimal ideological cohesion show the longest average durations. Perhaps they avoid both administrative overreach and ideological rigidity.",
-        stat: "~650",
-        statLabel: "avg. years",
-        icon: "○"
-    },
-    {
-        id: 6,
-        title: "Complexity is conditionally harmful",
-        summary: "Only dangerous without stabilizing mechanisms",
-        detail: "Raw complexity correlates with shorter duration, but this effect is moderated by warfare technology and religious cohesion. Complex societies can persist—if they have the right institutional supports.",
-        stat: "R²=0.21",
-        statLabel: "ancient only",
-        icon: "●"
     }
 ];
 function DiscoveriesSection() {
@@ -535,142 +517,142 @@ function DiscoveriesSection() {
         return ()=>observer.disconnect();
     }, []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-        className: "jsx-30d17f52c64f3453" + " " + "discoveries-section",
+        className: "jsx-b69f59105ea442c4" + " " + "discoveries-section",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                className: "jsx-30d17f52c64f3453" + " " + "section-title",
+                className: "jsx-b69f59105ea442c4" + " " + "section-title",
                 children: "What the Model Revealed"
             }, void 0, false, {
                 fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                lineNumber: 89,
+                lineNumber: 71,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "jsx-30d17f52c64f3453" + " " + "section-subtitle",
-                children: "Six key findings from analyzing 10,000 years of civilizational data"
+                className: "jsx-b69f59105ea442c4" + " " + "section-subtitle",
+                children: "Four key findings from analyzing 10,000 years of civilizational data"
             }, void 0, false, {
                 fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                lineNumber: 90,
+                lineNumber: 72,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "jsx-30d17f52c64f3453" + " " + "discoveries-grid",
+                className: "jsx-b69f59105ea442c4" + " " + "discoveries-grid",
                 children: discoveries.map((discovery, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         "data-id": discovery.id,
                         style: {
                             transitionDelay: `${index * 100}ms`
                         },
                         onClick: ()=>setExpandedId(expandedId === discovery.id ? null : discovery.id),
-                        className: "jsx-30d17f52c64f3453" + " " + `discovery-item ${expandedId === discovery.id ? 'expanded' : ''} ${visibleItems.includes(discovery.id) ? 'visible' : ''}`,
+                        className: "jsx-b69f59105ea442c4" + " " + `discovery-item ${expandedId === discovery.id ? 'expanded' : ''} ${visibleItems.includes(discovery.id) ? 'visible' : ''}`,
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "jsx-30d17f52c64f3453" + " " + "discovery-header",
+                                className: "jsx-b69f59105ea442c4" + " " + "discovery-header",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "jsx-30d17f52c64f3453" + " " + "discovery-icon",
+                                        className: "jsx-b69f59105ea442c4" + " " + "discovery-icon",
                                         children: discovery.icon
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                                        lineNumber: 102,
+                                        lineNumber: 84,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "jsx-30d17f52c64f3453" + " " + "discovery-num",
+                                        className: "jsx-b69f59105ea442c4" + " " + "discovery-num",
                                         children: String(discovery.id).padStart(2, '0')
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                                        lineNumber: 103,
+                                        lineNumber: 85,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                                lineNumber: 101,
+                                lineNumber: 83,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                className: "jsx-30d17f52c64f3453" + " " + "discovery-title",
+                                className: "jsx-b69f59105ea442c4" + " " + "discovery-title",
                                 children: discovery.title
                             }, void 0, false, {
                                 fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                                lineNumber: 106,
+                                lineNumber: 88,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "jsx-30d17f52c64f3453" + " " + "discovery-summary",
+                                className: "jsx-b69f59105ea442c4" + " " + "discovery-summary",
                                 children: discovery.summary
                             }, void 0, false, {
                                 fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                                lineNumber: 107,
+                                lineNumber: 89,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "jsx-30d17f52c64f3453" + " " + "discovery-stat",
+                                className: "jsx-b69f59105ea442c4" + " " + "discovery-stat",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "jsx-30d17f52c64f3453" + " " + "stat-value",
+                                        className: "jsx-b69f59105ea442c4" + " " + "stat-value",
                                         children: discovery.stat
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                                        lineNumber: 110,
+                                        lineNumber: 92,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "jsx-30d17f52c64f3453" + " " + "stat-label",
+                                        className: "jsx-b69f59105ea442c4" + " " + "stat-label",
                                         children: discovery.statLabel
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                                        lineNumber: 111,
+                                        lineNumber: 93,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                                lineNumber: 109,
+                                lineNumber: 91,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "jsx-30d17f52c64f3453" + " " + "discovery-detail",
+                                className: "jsx-b69f59105ea442c4" + " " + "discovery-detail",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "jsx-30d17f52c64f3453",
+                                    className: "jsx-b69f59105ea442c4",
                                     children: discovery.detail
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                                    lineNumber: 115,
+                                    lineNumber: 97,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                                lineNumber: 114,
+                                lineNumber: 96,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "jsx-30d17f52c64f3453" + " " + "expand-hint",
-                                children: expandedId === discovery.id ? '− Less' : '+ More'
+                                className: "jsx-b69f59105ea442c4" + " " + "expand-hint",
+                                children: expandedId === discovery.id ? '- Less' : '+ More'
                             }, void 0, false, {
                                 fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                                lineNumber: 118,
+                                lineNumber: 100,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, discovery.id, true, {
                         fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                        lineNumber: 94,
+                        lineNumber: 76,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-                lineNumber: 92,
+                lineNumber: 74,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                id: "30d17f52c64f3453",
-                children: ".discoveries-section.jsx-30d17f52c64f3453{padding:4rem 0}.section-title.jsx-30d17f52c64f3453{letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.5rem;font-size:1.1rem;font-weight:600}.section-subtitle.jsx-30d17f52c64f3453{color:var(--text-muted);margin-bottom:3rem}.discoveries-grid.jsx-30d17f52c64f3453{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;display:grid}.discovery-item.jsx-30d17f52c64f3453{background:var(--bg-secondary);border:1px solid var(--border);cursor:pointer;opacity:0;border-radius:4px;padding:1.5rem;transition:all .3s;transform:translateY(20px)}.discovery-item.visible.jsx-30d17f52c64f3453{opacity:1;transform:translateY(0)}.discovery-item.jsx-30d17f52c64f3453:hover{border-color:var(--accent-dim)}.discovery-item.expanded.jsx-30d17f52c64f3453{border-color:var(--accent)}.discovery-header.jsx-30d17f52c64f3453{justify-content:space-between;align-items:center;margin-bottom:1rem;display:flex}.discovery-icon.jsx-30d17f52c64f3453{color:var(--accent);font-size:1.5rem}.discovery-num.jsx-30d17f52c64f3453{font-family:var(--font-jetbrains),monospace;color:var(--text-muted);font-size:.7rem}.discovery-title.jsx-30d17f52c64f3453{color:var(--text-primary);margin-bottom:.5rem;font-size:1.1rem;font-weight:500}.discovery-summary.jsx-30d17f52c64f3453{color:var(--text-muted);margin-bottom:1rem;font-size:.9rem;line-height:1.5}.discovery-stat.jsx-30d17f52c64f3453{background:var(--bg-primary);border-radius:4px;align-items:baseline;gap:.5rem;margin-bottom:1rem;padding:.75rem;display:flex}.discovery-stat.jsx-30d17f52c64f3453 .stat-value.jsx-30d17f52c64f3453{font-family:var(--font-jetbrains),monospace;color:var(--accent);font-size:1.25rem}.discovery-stat.jsx-30d17f52c64f3453 .stat-label.jsx-30d17f52c64f3453{color:var(--text-muted);font-size:.75rem}.discovery-detail.jsx-30d17f52c64f3453{max-height:0;transition:max-height .3s;overflow:hidden}.discovery-item.expanded.jsx-30d17f52c64f3453 .discovery-detail.jsx-30d17f52c64f3453{max-height:200px}.discovery-detail.jsx-30d17f52c64f3453 p.jsx-30d17f52c64f3453{color:var(--text-muted);border-top:1px solid var(--border);padding-top:1rem;font-size:.85rem;line-height:1.6}.expand-hint.jsx-30d17f52c64f3453{font-family:var(--font-jetbrains),monospace;color:var(--accent-dim);text-align:right;margin-top:.5rem;font-size:.7rem;display:block}@media (width<=600px){.discoveries-grid.jsx-30d17f52c64f3453{grid-template-columns:1fr}}"
+                id: "b69f59105ea442c4",
+                children: ".discoveries-section.jsx-b69f59105ea442c4{padding:4rem 0}.section-title.jsx-b69f59105ea442c4{letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.5rem;font-size:1.1rem;font-weight:600}.section-subtitle.jsx-b69f59105ea442c4{color:var(--text-muted);margin-bottom:3rem}.discoveries-grid.jsx-b69f59105ea442c4{grid-template-columns:repeat(2,1fr);gap:1.5rem;display:grid}.discovery-item.jsx-b69f59105ea442c4{background:var(--bg-secondary);border:1px solid var(--border);cursor:pointer;opacity:0;border-radius:4px;padding:1.5rem;transition:all .3s;transform:translateY(20px)}.discovery-item.visible.jsx-b69f59105ea442c4{opacity:1;transform:translateY(0)}.discovery-item.jsx-b69f59105ea442c4:hover{border-color:var(--accent-dim)}.discovery-item.expanded.jsx-b69f59105ea442c4{border-color:var(--accent)}.discovery-header.jsx-b69f59105ea442c4{justify-content:space-between;align-items:center;margin-bottom:1rem;display:flex}.discovery-icon.jsx-b69f59105ea442c4{color:var(--accent);font-size:1.5rem}.discovery-num.jsx-b69f59105ea442c4{font-family:var(--font-jetbrains),monospace;color:var(--text-muted);font-size:.7rem}.discovery-title.jsx-b69f59105ea442c4{color:var(--text-primary);margin-bottom:.5rem;font-size:1.1rem;font-weight:500}.discovery-summary.jsx-b69f59105ea442c4{color:var(--text-muted);margin-bottom:1rem;font-size:.9rem;line-height:1.5}.discovery-stat.jsx-b69f59105ea442c4{background:var(--bg-primary);border-radius:4px;align-items:baseline;gap:.5rem;margin-bottom:1rem;padding:.75rem;display:flex}.discovery-stat.jsx-b69f59105ea442c4 .stat-value.jsx-b69f59105ea442c4{font-family:var(--font-jetbrains),monospace;color:var(--accent);font-size:1.25rem}.discovery-stat.jsx-b69f59105ea442c4 .stat-label.jsx-b69f59105ea442c4{color:var(--text-muted);font-size:.75rem}.discovery-detail.jsx-b69f59105ea442c4{max-height:0;transition:max-height .3s;overflow:hidden}.discovery-item.expanded.jsx-b69f59105ea442c4 .discovery-detail.jsx-b69f59105ea442c4{max-height:200px}.discovery-detail.jsx-b69f59105ea442c4 p.jsx-b69f59105ea442c4{color:var(--text-muted);border-top:1px solid var(--border);padding-top:1rem;font-size:.85rem;line-height:1.6}.expand-hint.jsx-b69f59105ea442c4{font-family:var(--font-jetbrains),monospace;color:var(--accent-dim);text-align:right;margin-top:.5rem;font-size:.7rem;display:block}@media (width<=700px){.discoveries-grid.jsx-b69f59105ea442c4{grid-template-columns:1fr}}"
             }, void 0, false, void 0, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/visualizations/DiscoveriesSection.jsx",
-        lineNumber: 88,
+        lineNumber: 70,
         columnNumber: 5
     }, this);
 }
