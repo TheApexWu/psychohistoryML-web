@@ -41,7 +41,7 @@ export default function ResearchPage() {
         <p className="caveat">
           <strong>A note on terminology:</strong> "Collapse" is a loaded term among historians, 
           and for good reason. Throughout this research, I use "instability" to describe 
-          polities whose duration falls below the 33rd percentile (approximately 146 years). 
+          polities whose duration falls below the median (184 years). 
           This isn't a value judgment - short-lived polities aren't "failures." They're 
           data points that help us understand civilizational dynamics.
         </p>
@@ -114,29 +114,51 @@ export default function ResearchPage() {
         </p>
       </section>
 
-      {/* Key Finding 1: Religion */}
+      {/* Key Finding 1: Religion - REVISED */}
       <section className="article-section">
-        <h2>Finding #1: Religion Outweighs Complexity</h2>
+        <h2>Finding #1: Religion Shows Complex Effects</h2>
         
         <p>
-          The most surprising result: <strong>ideological cohesion is the single strongest 
-          predictor of civilizational stability</strong> - more than administrative 
-          hierarchy, government sophistication, or infrastructure scale.
+          The most interesting result involves religion - but not in the simple way I 
+          expected. <strong>Religious variables collectively account for 27.2% of model 
+          decisions</strong>, making them the dominant feature category.
         </p>
 
         <FeatureImportance />
 
         <p>
-          This challenges the materialist assumption that bureaucratic capacity determines 
-          civilizational fate. Societies with shared belief systems, state religions, or 
-          unifying ideologies show greater resilience to shocks. The "software" of 
-          shared meaning may matter more than the "hardware" of institutional complexity.
+          However, feature importance doesn't tell us direction. When I analyzed the 
+          actual effects, the picture got more nuanced:
         </p>
 
+        <ul className="findings-list">
+          <li>
+            <strong>Total religious institutionalization</strong> (total_rel) shows 
+            stabilizing effects - more developed religious infrastructure correlates 
+            with longer duration.
+          </li>
+          <li>
+            <strong>Ideology scores</strong> show context-dependent patterns - high 
+            importance for model decisions, but weak directional effect. The model 
+            uses ideology to make fine-grained distinctions, not broad predictions.
+          </li>
+          <li>
+            <strong>Moralizing religion</strong> (moral_score) shows slight destabilizing 
+            effects in some configurations - possibly reflecting rigidity or schism risk.
+          </li>
+        </ul>
+
         <p>
-          Caveat: correlation isn't causation. It's possible that stable societies 
-          develop stronger ideological cohesion (reverse causality), or that some 
-          third factor drives both. But the pattern is striking and consistent.
+          The takeaway: religious factors matter enormously, but the relationship is 
+          nonlinear. It's not "more religion = more stability." It's something more 
+          conditional and context-dependent.
+        </p>
+
+        <p className="caveat">
+          <strong>Important caveat:</strong> Feature importance in Random Forests tells us 
+          "how often is this feature used for splits" not "does high = good or bad." 
+          A feature can be highly important while having weak or inconsistent directional 
+          effects.
         </p>
       </section>
 
@@ -176,9 +198,22 @@ export default function ResearchPage() {
         <h2>Finding #3: Warfare Technology Matters</h2>
         
         <p>
-          Adding military variables (weapons, fortifications, cavalry, naval capacity) 
-          improved model performance by 28%. But the effect isn't simple.
+          Adding military variables (weapons, fortifications, cavalry, armor) 
+          improved model performance by 28%. But the effects are mixed:
         </p>
+
+        <ul className="findings-list">
+          <li>
+            <strong>Cavalry and armor</strong> show slight stabilizing effects
+          </li>
+          <li>
+            <strong>Fortifications</strong> show slight destabilizing effects 
+            (possibly reflecting defensive postures of declining states?)
+          </li>
+          <li>
+            <strong>Total warfare tech</strong> slightly destabilizes on average
+          </li>
+        </ul>
 
         <p>
           In the Ancient era, advanced warfare amplified the complexity curse. In the 
@@ -211,7 +246,7 @@ export default function ResearchPage() {
           </li>
           <li>
             <strong>Causality unknown:</strong> These are correlations. We can't run 
-            experiments on civilizations.
+            experiments on civilizations. Reverse causality is always possible.
           </li>
           <li>
             <strong>Feature definitions:</strong> What counts as "ideological cohesion" 
@@ -220,6 +255,11 @@ export default function ResearchPage() {
           <li>
             <strong>Survivorship issues:</strong> We're analyzing polities that existed 
             long enough to be recorded. The truly unstable ones may be invisible.
+          </li>
+          <li>
+            <strong>Model interpretation:</strong> Feature importance doesn't equal 
+            directional effect. High-importance features may have weak or context-dependent 
+            relationships with outcomes.
           </li>
         </ul>
 
@@ -248,10 +288,11 @@ export default function ResearchPage() {
         </p>
 
         <p>
-          Is this true psychohistory? Sadly no. Asimov's fictional science could predict specific 
+          Is this true psychohistory? No. Asimov's fictional science could predict specific 
           futures. This project can only identify patterns in the past. But maybe that's 
           how real psychohistory would start - not with prophecy, but with pattern 
-          recognition. Not with certainty, but with probability.
+          recognition. Not with certainty, but with probability. Not with claims of 
+          universal laws, but with honest exploration of conditional relationships.
         </p>
       </section>
 
