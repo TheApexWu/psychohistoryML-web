@@ -492,11 +492,11 @@ var _s = __turbopack_context__.k.signature();
 const discoveries = [
     {
         id: 1,
-        title: "Religion outweighs complexity",
-        summary: "Ideology score is the #1 predictor of civilizational stability",
-        detail: "Counter to assumptions that bureaucratic sophistication determines survival, religious/ideological cohesion (12.7% feature importance) outranks all complexity measures. Societies with shared belief systems weather crises better than those with sophisticated administration alone.",
-        stat: "12.7%",
-        statLabel: "feature importance",
+        title: "Religion shows complex effects",
+        summary: "Religious features account for 27% of model decisions, but direction varies",
+        detail: "Religious variables collectively dominate model importance (27.2%), but the relationship is nuanced. Total religious institutionalization shows stabilizing effects, while ideology scores show context-dependent patterns. The 'software' of shared meaning matters - but more isn't always better.",
+        stat: "27.2%",
+        statLabel: "combined importance",
         icon: "◉"
     },
     {
@@ -512,7 +512,7 @@ const discoveries = [
         id: 3,
         title: "Warfare technology matters",
         summary: "Adding military features improved model prediction by 28%",
-        detail: "Military technology doesn't just correlate with outcomes — it moderates how complexity affects survival. The model jumped from coin-flip (0.505 AUC) to meaningful signal (0.648 AUC) when warfare variables were added. Context matters as much as capacity.",
+        detail: "Military technology doesn't just correlate with outcomes - it moderates how complexity affects survival. The model jumped from coin-flip (0.505 AUC) to meaningful signal (0.648 AUC) when warfare variables were added. Context matters as much as capacity.",
         stat: "+28%",
         statLabel: "AUC improvement",
         icon: "◇"
@@ -521,7 +521,7 @@ const discoveries = [
         id: 4,
         title: "Classical era is special",
         summary: "500 BCE - 500 CE shows unique dynamics across all analyses",
-        detail: "The Classical period consistently emerges as exceptional: warfare moderation peaks here (+0.634 effect), the complexity-duration relationship moderates significantly compared to Ancient times, and the era produced history's most durable complex societies. Rome, Han China, Persia — something was different.",
+        detail: "The Classical period consistently emerges as exceptional: warfare moderation peaks here (+0.634 effect), the complexity-duration relationship moderates significantly compared to Ancient times, and the era produced history's most durable complex societies. Rome, Han China, Persia - something was different.",
         stat: "+0.634",
         statLabel: "warfare moderation",
         icon: "◆"

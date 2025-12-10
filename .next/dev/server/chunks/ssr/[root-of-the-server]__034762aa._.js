@@ -452,82 +452,158 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 ;
 ;
 ;
-// Data from your 07_feature_importance.png
+// Actual feature importance from Random Forest classifier (NB07)
+// With human-readable labels
 const features = [
+    // Religion (27.2% total)
     {
-        name: 'Ideology Score',
-        key: 'ideol_score',
-        value: 0.127,
-        category: 'religion'
+        name: 'ideol_score',
+        label: 'Ideology',
+        description: 'Ideological cohesion and shared belief systems',
+        importance: 12.7,
+        category: 'religion',
+        effect: 'context-dependent'
     },
     {
-        name: 'Hierarchy (PC1)',
-        key: 'PC1_hier',
-        value: 0.115,
-        category: 'complexity'
+        name: 'total_rel',
+        label: 'Religious institutions',
+        description: 'Total religious/legitimation infrastructure',
+        importance: 7.2,
+        category: 'religion',
+        effect: 'stabilizing'
     },
     {
-        name: 'Government (PC2)',
-        key: 'PC2_hier',
-        value: 0.087,
-        category: 'complexity'
+        name: 'moral_score',
+        label: 'Moralizing religion',
+        description: 'Presence of moral codes enforced by religion',
+        importance: 5.2,
+        category: 'religion',
+        effect: 'slight destabilizing'
     },
     {
-        name: 'Infrastructure (PC3)',
-        key: 'PC3_hier',
-        value: 0.085,
-        category: 'complexity'
+        name: 'legit_score',
+        label: 'Divine legitimation',
+        description: 'Rulers legitimated by gods or religious authority',
+        importance: 2.2,
+        category: 'religion',
+        effect: 'slight stabilizing'
+    },
+    // Complexity (43.7% total)
+    {
+        name: 'PC1_hier',
+        label: 'Hierarchy depth',
+        description: 'Administrative, military, and religious hierarchy levels',
+        importance: 11.5,
+        category: 'complexity',
+        effect: 'slight stabilizing'
     },
     {
-        name: 'Complexity²',
-        key: 'PC1_squared',
-        value: 0.072,
-        category: 'complexity'
+        name: 'PC2_hier',
+        label: 'Information systems',
+        description: 'Writing, record-keeping, and information infrastructure',
+        importance: 8.8,
+        category: 'complexity',
+        effect: 'stabilizing'
     },
     {
-        name: 'Total Religion',
-        key: 'total_rel',
-        value: 0.071,
-        category: 'religion'
+        name: 'PC3_hier',
+        label: 'Government scale',
+        description: 'Territorial and population scale of governance',
+        importance: 8.8,
+        category: 'complexity',
+        effect: 'destabilizing'
     },
     {
-        name: 'PC1 × PC2',
-        key: 'PC1_x_PC2',
-        value: 0.069,
-        category: 'complexity'
+        name: 'PC1_squared',
+        label: 'Extreme hierarchy',
+        description: 'Nonlinear effect: very high complexity becomes risky',
+        importance: 7.5,
+        category: 'complexity',
+        effect: 'destabilizing'
     },
     {
-        name: 'Warfare Tech',
-        key: 'total_warfare',
-        value: 0.055,
-        category: 'warfare'
+        name: 'PC1_x_PC2',
+        label: 'Hierarchy + information',
+        description: 'Interaction: complex societies with good records',
+        importance: 7.1,
+        category: 'complexity',
+        effect: 'stabilizing'
+    },
+    // Warfare (29.1% total)
+    {
+        name: 'total_warfare',
+        label: 'Military technology',
+        description: 'Overall military technological sophistication',
+        importance: 5.5,
+        category: 'warfare',
+        effect: 'slight destabilizing'
     },
     {
-        name: 'Moral Religion',
-        key: 'moral_score',
-        value: 0.051,
-        category: 'religion'
+        name: 'weapons',
+        label: 'Weapons diversity',
+        description: 'Variety of weapon types available',
+        importance: 4.8,
+        category: 'warfare',
+        effect: 'slight stabilizing'
     },
     {
-        name: 'Weapons',
-        key: 'weapons',
-        value: 0.045,
-        category: 'warfare'
+        name: 'advanced_tech',
+        label: 'Advanced military tech',
+        description: 'Iron weapons, siege equipment, naval capacity',
+        importance: 4.7,
+        category: 'warfare',
+        effect: 'slight stabilizing'
+    },
+    {
+        name: 'material',
+        label: 'Material sophistication',
+        description: 'Quality of materials (bronze, iron, steel)',
+        importance: 4.5,
+        category: 'warfare',
+        effect: 'destabilizing'
+    },
+    {
+        name: 'fortifications',
+        label: 'Fortifications',
+        description: 'Defensive walls, castles, fortified cities',
+        importance: 4.3,
+        category: 'warfare',
+        effect: 'destabilizing'
+    },
+    {
+        name: 'cavalry',
+        label: 'Cavalry',
+        description: 'Mounted military units',
+        importance: 2.7,
+        category: 'warfare',
+        effect: 'stabilizing'
+    },
+    {
+        name: 'armor',
+        label: 'Armor',
+        description: 'Personal protective equipment',
+        importance: 2.6,
+        category: 'warfare',
+        effect: 'slight stabilizing'
     }
 ];
 const categoryColors = {
-    religion: '#c9a55c',
-    complexity: '#6b8cce',
-    warfare: '#ce6b6b'
+    religion: '#d4a574',
+    complexity: '#60a5fa',
+    warfare: '#f87171'
+};
+const categoryLabels = {
+    religion: 'Religion (27%)',
+    complexity: 'Complexity (44%)',
+    warfare: 'Warfare (29%)'
 };
 function FeatureImportance() {
     const [progress, setProgress] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     const [isVisible, setIsVisible] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [hoveredFeature, setHoveredFeature] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const observer = new IntersectionObserver(([entry])=>{
-            if (entry.isIntersecting) {
-                setIsVisible(true);
-            }
+            if (entry.isIntersecting) setIsVisible(true);
         }, {
             threshold: 0.2
         });
@@ -542,230 +618,220 @@ function FeatureImportance() {
         const animate = ()=>{
             const elapsed = Date.now() - start;
             const newProgress = Math.min(elapsed / duration, 1);
-            // Easing function for smooth animation
-            const eased = 1 - Math.pow(1 - newProgress, 3);
-            setProgress(eased);
-            if (newProgress < 1) {
-                requestAnimationFrame(animate);
-            }
+            setProgress(1 - Math.pow(1 - newProgress, 3));
+            if (newProgress < 1) requestAnimationFrame(animate);
         };
         requestAnimationFrame(animate);
     }, [
         isVisible
     ]);
-    const maxValue = Math.max(...features.map((f)=>f.value));
+    // Sort by importance, show top 10
+    const topFeatures = [
+        ...features
+    ].sort((a, b)=>b.importance - a.importance).slice(0, 10);
+    const maxImportance = Math.max(...topFeatures.map((f)=>f.importance));
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         id: "feature-chart",
-        className: "jsx-2693df23583b72b3" + " " + "feature-container",
+        className: "jsx-c12cc9e09094d599" + " " + "feature-container",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                className: "jsx-2693df23583b72b3" + " " + "chart-title",
-                children: "What Predicts Instability?"
+                className: "jsx-c12cc9e09094d599" + " " + "chart-title",
+                children: "Feature Importance"
             }, void 0, false, {
                 fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                lineNumber: 71,
+                lineNumber: 201,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "jsx-2693df23583b72b3" + " " + "chart-subtitle",
-                children: "Feature importance from Random Forest model"
+                className: "jsx-c12cc9e09094d599" + " " + "chart-subtitle",
+                children: "How much each feature contributes to model decisions (not direction)"
             }, void 0, false, {
                 fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                lineNumber: 72,
+                lineNumber: 202,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "jsx-2693df23583b72b3" + " " + "bars",
-                children: features.map((feature, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        style: {
-                            animationDelay: `${index * 80}ms`,
-                            opacity: isVisible ? 1 : 0,
-                            transform: isVisible ? 'translateX(0)' : 'translateX(-20px)',
-                            transition: `opacity 0.5s ease ${index * 80}ms, transform 0.5s ease ${index * 80}ms`
-                        },
-                        className: "jsx-2693df23583b72b3" + " " + "bar-row",
+                className: "jsx-c12cc9e09094d599" + " " + "legend",
+                children: Object.entries(categoryLabels).map(([key, label])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "jsx-c12cc9e09094d599" + " " + "legend-item",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "jsx-2693df23583b72b3" + " " + "bar-label",
-                                children: feature.name
+                                style: {
+                                    backgroundColor: categoryColors[key]
+                                },
+                                className: "jsx-c12cc9e09094d599" + " " + "legend-color"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                                lineNumber: 86,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "jsx-2693df23583b72b3" + " " + "bar-track",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    style: {
-                                        width: `${feature.value / maxValue * 100 * progress}%`,
-                                        backgroundColor: categoryColors[feature.category]
-                                    },
-                                    className: "jsx-2693df23583b72b3" + " " + "bar-fill"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                                    lineNumber: 88,
-                                    columnNumber: 15
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                                lineNumber: 87,
+                                lineNumber: 209,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "jsx-2693df23583b72b3" + " " + "bar-value",
-                                children: [
-                                    (feature.value * 100 * progress).toFixed(1),
-                                    "%"
-                                ]
-                            }, void 0, true, {
+                                className: "jsx-c12cc9e09094d599",
+                                children: label
+                            }, void 0, false, {
                                 fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                                lineNumber: 96,
+                                lineNumber: 213,
                                 columnNumber: 13
                             }, this)
                         ]
-                    }, feature.key, true, {
+                    }, key, true, {
                         fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                        lineNumber: 76,
+                        lineNumber: 208,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                lineNumber: 74,
+                lineNumber: 206,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "jsx-2693df23583b72b3" + " " + "category-legend",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "jsx-2693df23583b72b3" + " " + "legend-item",
+                className: "jsx-c12cc9e09094d599" + " " + "bars",
+                children: topFeatures.map((feature, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        onMouseEnter: ()=>setHoveredFeature(feature.name),
+                        onMouseLeave: ()=>setHoveredFeature(null),
+                        style: {
+                            opacity: isVisible ? 1 : 0,
+                            transform: isVisible ? 'translateX(0)' : 'translateX(-20px)',
+                            transition: `all 0.4s ease ${index * 80}ms`
+                        },
+                        className: "jsx-c12cc9e09094d599" + " " + `bar-row ${hoveredFeature === feature.name ? 'hovered' : ''}`,
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                style: {
-                                    background: categoryColors.religion
-                                },
-                                className: "jsx-2693df23583b72b3" + " " + "legend-dot"
+                                className: "jsx-c12cc9e09094d599" + " " + "feature-name",
+                                children: feature.label
                             }, void 0, false, {
                                 fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                                lineNumber: 106,
-                                columnNumber: 11
+                                lineNumber: 231,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "jsx-c12cc9e09094d599" + " " + "bar-container",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    style: {
+                                        width: `${feature.importance / maxImportance * 100 * progress}%`,
+                                        backgroundColor: categoryColors[feature.category]
+                                    },
+                                    className: "jsx-c12cc9e09094d599" + " " + "bar"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
+                                    lineNumber: 233,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
+                                lineNumber: 232,
+                                columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "jsx-2693df23583b72b3",
-                                children: "Religion"
-                            }, void 0, false, {
+                                className: "jsx-c12cc9e09094d599" + " " + "importance-value",
+                                children: [
+                                    (feature.importance * progress).toFixed(1),
+                                    "%"
+                                ]
+                            }, void 0, true, {
                                 fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                                lineNumber: 107,
-                                columnNumber: 11
+                                lineNumber: 241,
+                                columnNumber: 13
                             }, this)
                         ]
-                    }, void 0, true, {
+                    }, feature.name, true, {
                         fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                        lineNumber: 105,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "jsx-2693df23583b72b3" + " " + "legend-item",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                style: {
-                                    background: categoryColors.complexity
-                                },
-                                className: "jsx-2693df23583b72b3" + " " + "legend-dot"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                                lineNumber: 110,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "jsx-2693df23583b72b3",
-                                children: "Complexity"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                                lineNumber: 111,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                        lineNumber: 109,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "jsx-2693df23583b72b3" + " " + "legend-item",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                style: {
-                                    background: categoryColors.warfare
-                                },
-                                className: "jsx-2693df23583b72b3" + " " + "legend-dot"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                                lineNumber: 114,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                className: "jsx-2693df23583b72b3",
-                                children: "Warfare"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                                lineNumber: 115,
-                                columnNumber: 11
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                        lineNumber: 113,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
+                        lineNumber: 220,
+                        columnNumber: 11
+                    }, this))
+            }, void 0, false, {
                 fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                lineNumber: 104,
+                lineNumber: 218,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "jsx-2693df23583b72b3" + " " + "insight-callout",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "jsx-2693df23583b72b3" + " " + "insight-icon",
-                        children: "→"
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                        lineNumber: 121,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "jsx-2693df23583b72b3" + " " + "insight-text",
+            hoveredFeature && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "jsx-c12cc9e09094d599" + " " + "hover-detail",
+                children: (()=>{
+                    const f = features.find((x)=>x.name === hoveredFeature);
+                    return f ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                className: "jsx-2693df23583b72b3",
-                                children: "Ideology"
+                                className: "jsx-c12cc9e09094d599",
+                                children: f.label
                             }, void 0, false, {
                                 fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                                lineNumber: 123,
-                                columnNumber: 11
+                                lineNumber: 255,
+                                columnNumber: 17
                             }, this),
-                            " (religious cohesion) outweighs all complexity measures as a predictor"
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {
+                                className: "jsx-c12cc9e09094d599"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
+                                lineNumber: 256,
+                                columnNumber: 17
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "jsx-c12cc9e09094d599" + " " + "description",
+                                children: f.description
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
+                                lineNumber: 257,
+                                columnNumber: 17
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {
+                                className: "jsx-c12cc9e09094d599"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
+                                lineNumber: 258,
+                                columnNumber: 17
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "jsx-c12cc9e09094d599" + " " + "effect-label",
+                                children: [
+                                    "Effect on stability: ",
+                                    f.effect
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
+                                lineNumber: 259,
+                                columnNumber: 17
+                            }, this)
                         ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                        lineNumber: 122,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
+                    }, void 0, true) : null;
+                })()
+            }, void 0, false, {
                 fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-                lineNumber: 120,
+                lineNumber: 250,
+                columnNumber: 9
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "jsx-c12cc9e09094d599" + " " + "insight-callout",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                    className: "jsx-c12cc9e09094d599",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                            className: "jsx-c12cc9e09094d599",
+                            children: "Note:"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
+                            lineNumber: 268,
+                            columnNumber: 11
+                        }, this),
+                        " Importance measures how often the model uses a feature for decisions, not whether high values help or hurt stability. Hover over bars for details."
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
+                    lineNumber: 267,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
+                lineNumber: 266,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$styled$2d$jsx$2f$style$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                id: "2693df23583b72b3",
-                children: ".feature-container.jsx-2693df23583b72b3{background:var(--bg-secondary);border:1px solid var(--border);border-radius:4px;margin:2rem 0;padding:2rem}.chart-title.jsx-2693df23583b72b3{font-family:var(--font-jetbrains),monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:.25rem;font-size:.8rem}.chart-subtitle.jsx-2693df23583b72b3{color:var(--text-muted);margin-bottom:1.5rem;font-size:.9rem}.bars.jsx-2693df23583b72b3{flex-direction:column;gap:.75rem;display:flex}.bar-row.jsx-2693df23583b72b3{grid-template-columns:140px 1fr 50px;align-items:center;gap:1rem;display:grid}.bar-label.jsx-2693df23583b72b3{color:var(--text-primary);text-align:right;font-size:.85rem}.bar-track.jsx-2693df23583b72b3{background:var(--bg-primary);border-radius:2px;height:24px;overflow:hidden}.bar-fill.jsx-2693df23583b72b3{border-radius:2px;height:100%;transition:width .1s linear}.bar-value.jsx-2693df23583b72b3{font-family:var(--font-jetbrains),monospace;color:var(--text-muted);font-size:.75rem}.category-legend.jsx-2693df23583b72b3{border-top:1px solid var(--border);justify-content:center;gap:1.5rem;margin-top:1.5rem;padding-top:1rem;display:flex}.legend-item.jsx-2693df23583b72b3{color:var(--text-muted);align-items:center;gap:.5rem;font-size:.8rem;display:flex}.legend-dot.jsx-2693df23583b72b3{border-radius:50%;width:10px;height:10px}.insight-callout.jsx-2693df23583b72b3{border-left:3px solid var(--accent);background:#c9a55c1a;border-radius:0 4px 4px 0;align-items:flex-start;gap:.75rem;margin-top:1.5rem;padding:1rem;display:flex}.insight-icon.jsx-2693df23583b72b3{color:var(--accent);font-weight:700}.insight-text.jsx-2693df23583b72b3{color:var(--text-primary);font-size:.9rem;line-height:1.4}.insight-text.jsx-2693df23583b72b3 strong.jsx-2693df23583b72b3{color:var(--accent)}@media (width<=600px){.bar-row.jsx-2693df23583b72b3{grid-template-columns:100px 1fr 45px;gap:.5rem}.bar-label.jsx-2693df23583b72b3{font-size:.75rem}}"
+                id: "c12cc9e09094d599",
+                children: ".feature-container.jsx-c12cc9e09094d599{background:var(--bg-secondary);border:1px solid var(--border);border-radius:4px;margin:2rem 0;padding:2rem}.chart-title.jsx-c12cc9e09094d599{font-family:var(--font-jetbrains),monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:.25rem;font-size:.8rem}.chart-subtitle.jsx-c12cc9e09094d599{color:var(--text-muted);margin-bottom:1.5rem;font-size:.85rem}.legend.jsx-c12cc9e09094d599{flex-wrap:wrap;gap:1.5rem;margin-bottom:1.5rem;display:flex}.legend-item.jsx-c12cc9e09094d599{color:var(--text-muted);align-items:center;gap:.5rem;font-size:.75rem;display:flex}.legend-color.jsx-c12cc9e09094d599{border-radius:2px;width:12px;height:12px}.bars.jsx-c12cc9e09094d599{flex-direction:column;gap:.5rem;display:flex}.bar-row.jsx-c12cc9e09094d599{cursor:pointer;border-radius:2px;grid-template-columns:140px 1fr 50px;align-items:center;gap:.75rem;padding:.25rem 0;transition:background .2s;display:grid}.bar-row.hovered.jsx-c12cc9e09094d599{background:#ffffff08}.feature-name.jsx-c12cc9e09094d599{color:var(--text-muted);text-align:right;font-size:.8rem}.bar-container.jsx-c12cc9e09094d599{background:var(--bg-primary);border-radius:2px;height:20px;overflow:hidden}.bar.jsx-c12cc9e09094d599{border-radius:2px;height:100%;transition:width .1s linear}.importance-value.jsx-c12cc9e09094d599{font-family:var(--font-jetbrains),monospace;color:var(--text-primary);text-align:right;font-size:.75rem}.hover-detail.jsx-c12cc9e09094d599{background:var(--bg-primary);color:var(--text-muted);border-radius:4px;margin-top:1rem;padding:.75rem;font-size:.8rem;line-height:1.6}.hover-detail.jsx-c12cc9e09094d599 strong.jsx-c12cc9e09094d599{color:var(--text-primary)}.description.jsx-c12cc9e09094d599{color:var(--text-muted)}.effect-label.jsx-c12cc9e09094d599{color:var(--accent)}.insight-callout.jsx-c12cc9e09094d599{background:var(--bg-primary);border-left:3px solid var(--accent-dim);border-radius:0 4px 4px 0;margin-top:1.5rem;padding:1rem}.insight-callout.jsx-c12cc9e09094d599 p.jsx-c12cc9e09094d599{color:var(--text-muted);margin:0;font-size:.8rem;line-height:1.5}.insight-callout.jsx-c12cc9e09094d599 strong.jsx-c12cc9e09094d599{color:var(--accent)}@media (width<=600px){.bar-row.jsx-c12cc9e09094d599{grid-template-columns:110px 1fr 40px}.feature-name.jsx-c12cc9e09094d599{font-size:.7rem}}"
             }, void 0, false, void 0, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/visualizations/FeatureImportance.jsx",
-        lineNumber: 70,
+        lineNumber: 200,
         columnNumber: 5
     }, this);
 }

@@ -114,7 +114,7 @@ export default function ResearchPage() {
         </p>
       </section>
 
-      {/* Key Finding 1: Religion - REVISED */}
+      {/* Key Finding 1: Religion */}
       <section className="article-section">
         <h2>Finding #1: Religion Shows Complex Effects</h2>
         

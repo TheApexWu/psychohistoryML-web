@@ -277,7 +277,7 @@ function ResearchPage() {
                                 lineNumber: 42,
                                 columnNumber: 11
                             }, this),
-                            ' "Collapse" is a loaded term among historians, and for good reason. Throughout this research, I use "instability" to describe polities whose duration falls below the 33rd percentile (approximately 146 years). This isn\'t a value judgment - short-lived polities aren\'t "failures." They\'re data points that help us understand civilizational dynamics.'
+                            ' "Collapse" is a loaded term among historians, and for good reason. Throughout this research, I use "instability" to describe polities whose duration falls below the median (184 years). This isn\'t a value judgment - short-lived polities aren\'t "failures." They\'re data points that help us understand civilizational dynamics.'
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/research/page.js",
@@ -485,7 +485,7 @@ function ResearchPage() {
                 className: "article-section",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                        children: "Finding #1: Religion Outweighs Complexity"
+                        children: "Finding #1: Religion Shows Complex Effects"
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
                         lineNumber: 119,
@@ -493,15 +493,15 @@ function ResearchPage() {
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: [
-                            "The most surprising result: ",
+                            "The most interesting result involves religion - but not in the simple way I expected. ",
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                children: "ideological cohesion is the single strongest predictor of civilizational stability"
+                                children: "Religious variables collectively account for 27.2% of model decisions"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/research/page.js",
-                                lineNumber: 122,
-                                columnNumber: 39
+                                lineNumber: 123,
+                                columnNumber: 21
                             }, this),
-                            " - more than administrative hierarchy, government sophistication, or infrastructure scale."
+                            ", making them the dominant feature category."
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/research/page.js",
@@ -514,17 +514,91 @@ function ResearchPage() {
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        children: 'This challenges the materialist assumption that bureaucratic capacity determines civilizational fate. Societies with shared belief systems, state religions, or unifying ideologies show greater resilience to shocks. The "software" of shared meaning may matter more than the "hardware" of institutional complexity.'
+                        children: "However, feature importance doesn't tell us direction. When I analyzed the actual effects, the picture got more nuanced:"
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
                         lineNumber: 129,
                         columnNumber: 9
                     }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                        className: "findings-list",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                        children: "Total religious institutionalization"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/research/page.js",
+                                        lineNumber: 136,
+                                        columnNumber: 13
+                                    }, this),
+                                    " (total_rel) shows stabilizing effects - more developed religious infrastructure correlates with longer duration."
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/research/page.js",
+                                lineNumber: 135,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                        children: "Ideology scores"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/research/page.js",
+                                        lineNumber: 141,
+                                        columnNumber: 13
+                                    }, this),
+                                    " show context-dependent patterns - high importance for model decisions, but weak directional effect. The model uses ideology to make fine-grained distinctions, not broad predictions."
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/research/page.js",
+                                lineNumber: 140,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                        children: "Moralizing religion"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/research/page.js",
+                                        lineNumber: 146,
+                                        columnNumber: 13
+                                    }, this),
+                                    " (moral_score) shows slight destabilizing effects in some configurations - possibly reflecting rigidity or schism risk."
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/research/page.js",
+                                lineNumber: 145,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/app/research/page.js",
+                        lineNumber: 134,
+                        columnNumber: 9
+                    }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        children: "Caveat: correlation isn't causation. It's possible that stable societies develop stronger ideological cohesion (reverse causality), or that some third factor drives both. But the pattern is striking and consistent."
+                        children: "The takeaway: religious factors matter enormously, but the relationship is nonlinear. It's not \"more religion = more stability.\" It's something more conditional and context-dependent."
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 136,
+                        lineNumber: 151,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "caveat",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                children: "Important caveat:"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/research/page.js",
+                                lineNumber: 158,
+                                columnNumber: 11
+                            }, this),
+                            ' Feature importance in Random Forests tells us "how often is this feature used for splits" not "does high = good or bad." A feature can be highly important while having weak or inconsistent directional effects.'
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/app/research/page.js",
+                        lineNumber: 157,
                         columnNumber: 9
                     }, this)
                 ]
@@ -540,14 +614,14 @@ function ResearchPage() {
                         children: "Finding #2: Era Trumps Geography"
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 145,
+                        lineNumber: 167,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: "I expected civilizations to cluster by region - Mediterranean empires with Mediterranean empires, Chinese dynasties with Chinese dynasties. Instead, they cluster by time."
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 147,
+                        lineNumber: 169,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -557,39 +631,39 @@ function ResearchPage() {
                                 children: "the relationship between complexity and duration completely changes across historical periods"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/research/page.js",
-                                lineNumber: 154,
+                                lineNumber: 176,
                                 columnNumber: 29
                             }, this),
                             ":"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 153,
+                        lineNumber: 175,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$visualizations$2f$EraStratification$2e$jsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 158,
+                        lineNumber: 180,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: "In the Ancient world (pre-500 BCE), each unit of complexity reduced expected duration by ~159 years. By the Early Modern period (1500+ CE), the relationship had reversed - complexity slightly helped."
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 160,
+                        lineNumber: 182,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: "What changed? Possibly writing, institutional memory, military technology, trade networks - the infrastructure that lets complex societies maintain themselves. The \"rules\" of civilizational survival aren't fixed; they evolve with humanity's toolkit."
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 166,
+                        lineNumber: 188,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/research/page.js",
-                lineNumber: 144,
+                lineNumber: 166,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -599,34 +673,91 @@ function ResearchPage() {
                         children: "Finding #3: Warfare Technology Matters"
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 176,
+                        lineNumber: 198,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        children: "Adding military variables (weapons, fortifications, cavalry, naval capacity) improved model performance by 28%. But the effect isn't simple."
+                        children: "Adding military variables (weapons, fortifications, cavalry, armor) improved model performance by 28%. But the effects are mixed:"
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 178,
+                        lineNumber: 200,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                        className: "findings-list",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                        children: "Cavalry and armor"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/research/page.js",
+                                        lineNumber: 207,
+                                        columnNumber: 13
+                                    }, this),
+                                    " show slight stabilizing effects"
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/research/page.js",
+                                lineNumber: 206,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                        children: "Fortifications"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/research/page.js",
+                                        lineNumber: 210,
+                                        columnNumber: 13
+                                    }, this),
+                                    " show slight destabilizing effects (possibly reflecting defensive postures of declining states?)"
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/research/page.js",
+                                lineNumber: 209,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                        children: "Total warfare tech"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/research/page.js",
+                                        lineNumber: 214,
+                                        columnNumber: 13
+                                    }, this),
+                                    " slightly destabilizes on average"
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/research/page.js",
+                                lineNumber: 213,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/app/research/page.js",
+                        lineNumber: 205,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: "In the Ancient era, advanced warfare amplified the complexity curse. In the Classical period (500 BCE - 500 CE), it moderated it dramatically - a +0.634 moderation effect. Complex Classical societies with strong militaries outlasted their simpler neighbors."
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 183,
+                        lineNumber: 218,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: "The Classical era emerges as special across multiple analyses. This was the age of Rome, Han China, Persia - empires that combined bureaucratic sophistication with military innovation. Perhaps that combination, in that historical moment, represented a sweet spot."
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 190,
+                        lineNumber: 225,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/research/page.js",
-                lineNumber: 175,
+                lineNumber: 197,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -636,7 +767,7 @@ function ResearchPage() {
                         children: "Limitations (Honest Assessment)"
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 200,
+                        lineNumber: 235,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -648,14 +779,14 @@ function ResearchPage() {
                                         children: "Sample size:"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/research/page.js",
-                                        lineNumber: 204,
+                                        lineNumber: 239,
                                         columnNumber: 13
                                     }, this),
                                     " 256 polities sounds like a lot until you stratify by era. Some subgroups have fewer than 50 cases."
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/research/page.js",
-                                lineNumber: 203,
+                                lineNumber: 238,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -664,14 +795,14 @@ function ResearchPage() {
                                         children: "Selection bias:"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/research/page.js",
-                                        lineNumber: 208,
+                                        lineNumber: 243,
                                         columnNumber: 13
                                     }, this),
                                     " The Seshat dataset skews toward well-documented societies. We know more about Rome than about countless chiefdoms that left no written records."
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/research/page.js",
-                                lineNumber: 207,
+                                lineNumber: 242,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -680,14 +811,14 @@ function ResearchPage() {
                                         children: "Causality unknown:"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/research/page.js",
-                                        lineNumber: 213,
+                                        lineNumber: 248,
                                         columnNumber: 13
                                     }, this),
-                                    " These are correlations. We can't run experiments on civilizations."
+                                    " These are correlations. We can't run experiments on civilizations. Reverse causality is always possible."
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/research/page.js",
-                                lineNumber: 212,
+                                lineNumber: 247,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -696,14 +827,14 @@ function ResearchPage() {
                                         children: "Feature definitions:"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/research/page.js",
-                                        lineNumber: 217,
+                                        lineNumber: 252,
                                         columnNumber: 13
                                     }, this),
                                     ' What counts as "ideological cohesion" in 2000 BCE Egypt vs 1500 CE Spain? The coding decisions shape the results.'
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/research/page.js",
-                                lineNumber: 216,
+                                lineNumber: 251,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -712,33 +843,49 @@ function ResearchPage() {
                                         children: "Survivorship issues:"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/research/page.js",
-                                        lineNumber: 221,
+                                        lineNumber: 256,
                                         columnNumber: 13
                                     }, this),
                                     " We're analyzing polities that existed long enough to be recorded. The truly unstable ones may be invisible."
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/research/page.js",
-                                lineNumber: 220,
+                                lineNumber: 255,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                        children: "Model interpretation:"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/research/page.js",
+                                        lineNumber: 260,
+                                        columnNumber: 13
+                                    }, this),
+                                    " Feature importance doesn't equal directional effect. High-importance features may have weak or context-dependent relationships with outcomes."
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/research/page.js",
+                                lineNumber: 259,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 202,
+                        lineNumber: 237,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: "This isn't predictive science - it's pattern recognition in historical data. The model reveals correlations worth investigating, not laws of civilizational dynamics."
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 226,
+                        lineNumber: 266,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/research/page.js",
-                lineNumber: 199,
+                lineNumber: 234,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -748,7 +895,7 @@ function ResearchPage() {
                         children: "What's Next"
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 235,
+                        lineNumber: 275,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -759,34 +906,34 @@ function ResearchPage() {
                                 children: "Civilizational Analyzer"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/research/page.js",
-                                lineNumber: 238,
+                                lineNumber: 278,
                                 columnNumber: 27
                             }, this),
                             " (coming soon) will let you configure a hypothetical polity and see how the model evaluates it. Pick an era, adjust complexity, warfare, and religion parameters, and get a risk assessment plus historical comparisons."
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 237,
+                        lineNumber: 277,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: 'I\'m also exploring AI integration - a chatbot that can answer questions about the dataset, explain predictions, and compare civilizations. "What made Rome different from Carthage?" answered by an LLM grounded in quantitative historical data.'
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 244,
+                        lineNumber: 284,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        children: "Is this true psychohistory? Sadly no. Asimov's fictional science could predict specific futures. This project can only identify patterns in the past. But maybe that's how real psychohistory would start - not with prophecy, but with pattern recognition. Not with certainty, but with probability."
+                        children: "Is this true psychohistory? No. Asimov's fictional science could predict specific futures. This project can only identify patterns in the past. But maybe that's how real psychohistory would start - not with prophecy, but with pattern recognition. Not with certainty, but with probability. Not with claims of universal laws, but with honest exploration of conditional relationships."
                     }, void 0, false, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 250,
+                        lineNumber: 290,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/research/page.js",
-                lineNumber: 234,
+                lineNumber: 274,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
@@ -802,7 +949,7 @@ function ResearchPage() {
                                 children: "View on GitHub"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/research/page.js",
-                                lineNumber: 261,
+                                lineNumber: 302,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
@@ -810,13 +957,13 @@ function ResearchPage() {
                                 children: "Try the Analyzer"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/research/page.js",
-                                lineNumber: 264,
+                                lineNumber: 305,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 260,
+                        lineNumber: 301,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -830,20 +977,20 @@ function ResearchPage() {
                                 children: "Seshat Global History Databank"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/research/page.js",
-                                lineNumber: 270,
+                                lineNumber: 311,
                                 columnNumber: 26
                             }, this),
                             ". All analysis code is open source."
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/research/page.js",
-                        lineNumber: 269,
+                        lineNumber: 310,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/research/page.js",
-                lineNumber: 259,
+                lineNumber: 300,
                 columnNumber: 7
             }, this)
         ]
