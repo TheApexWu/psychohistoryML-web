@@ -1,6 +1,5 @@
 {
   "/page": "app/page.js",
-  "/predict/methodology/page": "app/predict/methodology/page.js",
   "/predict/page": "app/predict/page.js",
   "/research/page": "app/research/page.js"
 }
