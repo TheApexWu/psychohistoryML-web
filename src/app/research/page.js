@@ -28,7 +28,7 @@ export default function ResearchPage() {
         <p className="lead">
           In Isaac Asimov's <em>Foundation</em>, mathematician Hari Seldon develops 
           "psychohistory" - a science that predicts the behavior of large populations 
-          over centuries. It's fiction. But what if we tried to build something like it?
+          over centuries. It's fiction. But what if I tried to build something like it?
         </p>
         
         <p>
@@ -275,7 +275,7 @@ export default function ResearchPage() {
         <h2>What's Next</h2>
         
         <p>
-          The interactive <Link href="/predict">Civilizational Analyzer</Link> (coming soon) 
+          My interactive <Link href="/predict">Civilizational Analyzer</Link>{" "} 
           will let you configure a hypothetical polity and see how the model evaluates it. 
           Pick an era, adjust complexity, warfare, and religion parameters, and get a 
           risk assessment plus historical comparisons.

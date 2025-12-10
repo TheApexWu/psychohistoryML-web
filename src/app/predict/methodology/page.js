@@ -1,9 +1,25 @@
+/**
+ * Methodology Page
+ * Explains how the Polity Simulator works.
+ * 
+ * Current system (v1):
+ * - k-NN similarity matching (no ML prediction in frontend)
+ * - 10 raw Seshat features
+ * - 372 polities in database
+ * - Weighted average duration estimate
+ */
+
+export const metadata = {
+  title: 'Methodology - PsychohistoryML',
+  description: 'How the Polity Simulator finds historically similar civilizations',
+};
+
 export default function MethodologyPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-gray-100">
       {/* Header */}
       <header className="border-b border-gray-800 bg-[#0a0a0a]/95 backdrop-blur sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-6 py-4">
+        <div className="max-w-3xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
               <a href="/" className="text-xl font-semibold tracking-tight text-white hover:text-gray-300 transition">
@@ -19,269 +35,203 @@ export default function MethodologyPage() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 py-12">
+      <main className="max-w-3xl mx-auto px-6 py-12">
         {/* Title */}
-        <h1 className="text-4xl font-bold mb-4">Methodology</h1>
-        <p className="text-xl text-gray-400 mb-12">
-          How the Civilizational Analyzer Works
-        </p>
-
-        {/* The Question */}
-        <Section title="The Question">
-          <p>
-            Given a hypothetical civilization's characteristics—its governmental complexity, 
-            military technology, religious institutions—can we estimate how long it might last?
+        <div className="mb-12">
+          <h1 className="text-3xl font-bold mb-3">How It Works</h1>
+          <p className="text-lg text-gray-400">
+            The simulator finds historically similar polities and estimates duration based on their actual outcomes.
           </p>
+        </div>
+
+        {/* Core Approach */}
+        <Section title="The Approach">
           <p>
-            This is an impossible question to answer definitively. History is contingent. 
-            Leadership matters. Geography matters. Luck matters. None of these are in our model.
+            Instead of predicting the future, the simulator asks: <em>"What historical societies 
+            looked like this configuration? How long did they actually last?"</em>
           </p>
           <p>
-            But we can do something more modest: <strong>find patterns in the past and surface 
-            them for exploration</strong>.
+            This is pattern-matching, not prophecy. The estimate is a weighted average of similar 
+            polities' durations—completely transparent and verifiable.
           </p>
-        </Section>
-
-        {/* Two Approaches */}
-        <Section title="Two Complementary Approaches">
-          <p className="mb-6">The analyzer uses two methods that cross-validate each other:</p>
-          
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <div className="bg-gray-900/50 rounded-lg p-5 border border-gray-800">
-              <h4 className="text-lg font-semibold text-blue-400 mb-3">
-                1. Pattern Recognition (ML)
-              </h4>
-              <p className="text-sm text-gray-300 mb-3">
-                A Random Forest classifier trained on 256 historical polities. It learned which 
-                combinations of features correlate with "stability" (lasting longer than 184 years).
-              </p>
-              <div className="text-xs text-gray-500 space-y-1">
-                <p><strong className="text-gray-400">Gives you:</strong> A stability probability (e.g., "47% chance of lasting {'>'} 184 years")</p>
-                <p><strong className="text-gray-400">Strength:</strong> Detects nonlinear patterns and feature interactions</p>
-                <p><strong className="text-gray-400">Limitation:</strong> Black box—you can't see WHY it gave that score</p>
-              </div>
-            </div>
-
-            <div className="bg-gray-900/50 rounded-lg p-5 border border-gray-800">
-              <h4 className="text-lg font-semibold text-green-400 mb-3">
-                2. Historical Similarity (k-NN)
-              </h4>
-              <p className="text-sm text-gray-300 mb-3">
-                Instead of asking a model to predict, we ask: "What real civilizations looked 
-                like this? How long did they last?"
-              </p>
-              <div className="text-xs text-gray-500 space-y-1">
-                <p><strong className="text-gray-400">Gives you:</strong> Names of similar civilizations, their actual durations, weighted estimate</p>
-                <p><strong className="text-gray-400">Strength:</strong> Completely interpretable—verify by looking up the civilizations</p>
-                <p><strong className="text-gray-400">Limitation:</strong> May miss complex patterns</p>
-              </div>
-            </div>
-          </div>
-
-          <p className="text-gray-400 text-sm italic">
-            When they agree, you can be more confident. When they disagree, that's interesting 
-            information—the ML model may have detected a pattern that simple similarity misses.
-          </p>
-        </Section>
-
-        {/* The Features */}
-        <Section title="The Features">
-          <div className="space-y-6">
-            <FeatureGroup 
-              title="Complexity" 
-              color="blue"
-              features={[
-                { name: 'Hierarchy depth', desc: 'Levels of administrative organization (1=chiefdom, 6=empire)' },
-                { name: 'Government sophistication', desc: 'Bureaucratic development' },
-                { name: 'Information systems', desc: 'Writing, record-keeping, institutional memory' },
-                { name: 'Infrastructure', desc: 'Roads, monuments, public works' },
-              ]}
-            />
-            <FeatureGroup 
-              title="Warfare" 
-              color="red"
-              features={[
-                { name: 'Total military technology', desc: 'Composite score of military capability' },
-                { name: 'Weapons & Armor', desc: 'Range of weapon types and protective equipment' },
-                { name: 'Cavalry', desc: 'Mounted military units' },
-                { name: 'Fortifications', desc: 'Defensive structures' },
-                { name: 'Materials', desc: 'Bronze, iron, steel progression' },
-              ]}
-            />
-            <FeatureGroup 
-              title="Religion" 
-              color="amber"
-              features={[
-                { name: 'Moralizing religion', desc: 'Moral codes enforced by divine authority' },
-                { name: 'Divine legitimation', desc: 'Rulers legitimated by gods/religion' },
-                { name: 'Ideological cohesion', desc: 'Shared belief systems' },
-                { name: 'Religious institutions', desc: 'Total religious infrastructure' },
-              ]}
-            />
-          </div>
         </Section>
 
         {/* How Similarity Works */}
-        <Section title="How Similarity Is Calculated">
-          <h4 className="text-lg font-medium mb-2">Cosine Similarity</h4>
-          <p className="mb-4">
-            We measure how much two civilizations "point in the same direction" in feature space, 
-            regardless of magnitude. This captures the <em>profile</em> of a civilization—the 
-            relative balance of complexity, warfare, and religion—rather than absolute levels.
-          </p>
+        <Section title="Finding Similar Polities">
+          <div className="space-y-6">
+            <Step number={1} title="Standardize Features">
+              Raw features have different scales (Hierarchy: 1-9, Government: 0-1). 
+              I standardize each by subtracting the mean and dividing by standard deviation, 
+              so no single feature dominates the comparison.
+            </Step>
+            
+            <Step number={2} title="Compute Cosine Similarity">
+              For each of 372 polities, I measure how much your configuration "points in the 
+              same direction" in feature space. This captures the <em>profile</em>—the relative 
+              balance of complexity, warfare, and religion—rather than absolute levels.
+            </Step>
+            
+            <Step number={3} title="Find Top 5 Matches">
+              The polities with highest similarity scores become your historical comparisons. 
+              You can click each to see exactly which features matched and which differed.
+            </Step>
+            
+            <Step number={4} title="Weighted Average">
+              Duration estimate = Σ(similarity × duration) / Σ(similarity). More similar polities 
+              contribute more to the estimate. A 95% match matters more than a 75% match.
+            </Step>
+          </div>
+        </Section>
 
-          <h4 className="text-lg font-medium mb-2">Standardization</h4>
-          <p className="mb-4">
-            Raw features have different scales (Hierarchy: 1-8, Government: 0-1, Weapons: 0-10). 
-            Without standardization, weapons would dominate simply because it has a larger range. 
-            We standardize by subtracting the mean and dividing by standard deviation.
+        {/* The 10 Features */}
+        <Section title="The 10 Features">
+          <p className="mb-6 text-gray-400">
+            All values come directly from Seshat's coded variables:
           </p>
-
-          <h4 className="text-lg font-medium mb-2">Weighted Estimate</h4>
-          <p>
-            Once we find the k most similar polities, we compute a weighted average—more similar 
-            polities contribute more. A polity with 95% similarity matters more than one with 70%.
-          </p>
+          
+          <div className="space-y-6">
+            <FeatureCategory 
+              title="Complexity" 
+              color="blue"
+              features={[
+                { name: 'Hierarchy', range: '1-9', desc: 'Administrative levels (1=village, 9=multi-tier empire)' },
+                { name: 'Government', range: '0-1', desc: 'Bureaucratic sophistication' },
+                { name: 'Information', range: '0-1', desc: 'Writing, records, institutional memory' },
+                { name: 'Infrastructure', range: '0-1', desc: 'Roads, monuments, public works' },
+              ]}
+            />
+            
+            <FeatureCategory 
+              title="Warfare" 
+              color="red"
+              features={[
+                { name: 'Weapons', range: '0-6', desc: 'Military weapon diversity' },
+                { name: 'Armor', range: '0-8', desc: 'Protective equipment sophistication' },
+                { name: 'Cavalry', range: '0-1', desc: 'Mounted units present' },
+                { name: 'Fortifications', range: '0-11', desc: 'Defensive structures' },
+                { name: 'Iron Working', range: '0-1', desc: 'Iron metallurgy present' },
+              ]}
+            />
+            
+            <FeatureCategory 
+              title="Religion" 
+              color="amber"
+              features={[
+                { name: 'Religious Hierarchy', range: '0-10', desc: 'Institutional religious complexity' },
+              ]}
+            />
+          </div>
         </Section>
 
         {/* Era Stratification */}
-        <Section title="Era Stratification">
-          <p className="mb-4">
-            One of our key findings: <strong>the same configuration means different things in 
-            different eras</strong>.
+        <Section title="Why Era Matters">
+          <p>
+            The same configuration means different things in different eras. A moderately 
+            complex society in 2000 BCE was exceptional; the same profile in 1500 CE was ordinary.
           </p>
-          <p className="mb-4">
-            A moderately complex society in 2000 BCE was exceptional—one of the most sophisticated 
-            polities on Earth. The same configuration in 1500 CE was unremarkable.
-          </p>
-          <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800 my-6">
-            <p className="text-sm text-gray-300 mb-2">
-              The relationship between complexity and duration reversed over time:
-            </p>
-            <ul className="text-sm space-y-1 text-gray-400">
-              <li><strong className="text-red-400">Ancient era:</strong> Complexity strongly correlated with shorter duration</li>
-              <li><strong className="text-green-400">Early Modern era:</strong> Complexity slightly correlated with longer duration</li>
-            </ul>
+          <div className="my-6 p-4 bg-gray-900/50 rounded-lg border border-gray-800">
+            <p className="text-sm text-gray-300 mb-3">Our research found the complexity-duration relationship reversed over time:</p>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center gap-3">
+                <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+                <span className="text-gray-400"><strong className="text-amber-400">Ancient</strong> — Complexity correlated with shorter duration</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="w-2 h-2 rounded-full bg-green-400"></span>
+                <span className="text-gray-400"><strong className="text-green-400">Early Modern</strong> — Complexity correlated with longer duration</span>
+              </div>
+            </div>
           </div>
-          <p className="text-sm text-gray-400">
-            The analyzer shows estimates for each era separately, letting you see how historical 
-            context changes outcomes.
+          <p className="text-gray-400">
+            Use the era filter to restrict matches to a specific period for more meaningful comparisons.
           </p>
         </Section>
 
-        {/* What This Cannot Do */}
+        {/* Confidence & Range */}
+        <Section title="Confidence & Range">
+          <p className="mb-4">
+            The simulator shows three indicators of reliability:
+          </p>
+          <ul className="space-y-3 text-gray-300">
+            <li className="flex gap-3">
+              <span className="text-blue-400 font-semibold">Range</span>
+              <span className="text-gray-400">Min and max duration among your 5 matches. A wide spread means similar polities had very different outcomes.</span>
+            </li>
+            <li className="flex gap-3">
+              <span className="text-blue-400 font-semibold">Confidence</span>
+              <span className="text-gray-400">Based on how tightly your matches cluster. High similarity scores + tight duration spread = higher confidence.</span>
+            </li>
+            <li className="flex gap-3">
+              <span className="text-blue-400 font-semibold">Outlier warnings</span>
+              <span className="text-gray-400">Flags when your config has values outside historical ranges. Results are less reliable for configurations no polity ever had.</span>
+            </li>
+          </ul>
+        </Section>
+
+        {/* Limitations */}
         <Section title="What This Cannot Do">
-          <div className="grid sm:grid-cols-2 gap-4">
-            {[
-              { title: 'Predict the Future', desc: 'History is not physics. There are no laws that determine civilizational fates.' },
-              { title: 'Account for Leadership', desc: 'Augustus and Nero both led "Rome," but their effects were very different.' },
-              { title: 'Account for Geography', desc: 'Defensible borders, fertile land, trade routes—none are modeled.' },
-              { title: 'Account for Luck', desc: 'The Mongols almost didn\'t happen. Contingency is real.' },
-            ].map(item => (
-              <div key={item.title} className="bg-red-950/20 border border-red-900/30 rounded-lg p-4">
-                <h4 className="font-medium text-red-400 mb-1">{item.title}</h4>
-                <p className="text-sm text-gray-400">{item.desc}</p>
-              </div>
-            ))}
+          <div className="grid sm:grid-cols-2 gap-3">
+            <Limitation title="Predict specific fates" desc="History is contingent, not deterministic." />
+            <Limitation title="Account for leadership" desc="Augustus and Nero both led Rome." />
+            <Limitation title="Model geography" desc="Islands vs steppes, trade routes, climate." />
+            <Limitation title="Factor in luck" desc="The arrow that missed vs the one that didn't." />
           </div>
+          <p className="mt-4 text-sm text-gray-500">
+            These factors explain most of the variance in your matches' outcomes. The 87-205 year 
+            spread isn't noise—it's reality.
+          </p>
         </Section>
 
         {/* The Data */}
         <Section title="The Data">
-          <p className="mb-4">
-            All analysis uses the <a href="https://seshatdatabank.info/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">Seshat Global History Databank</a> Equinox 2022 release:
+          <p>
+            All analysis uses the{' '}
+            <a href="https://seshatdatabank.info/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
+              Seshat Global History Databank
+            </a>{' '}
+            Equinox 2022 release.
           </p>
-          <ul className="list-disc list-inside space-y-1 text-gray-300 mb-4">
-            <li>256 polities with complete feature coverage</li>
-            <li>Spanning 10,000 years (Neolithic to Early Modern)</li>
-            <li>Coded by teams of historians, archaeologists, and social scientists</li>
-          </ul>
-          <p className="text-sm text-gray-400">
-            Seshat is the most comprehensive attempt to make civilizational patterns quantitatively 
-            analyzable. It's imperfect—all historical data is—but it represents decades of scholarly effort.
-          </p>
+          <div className="mt-4 grid grid-cols-3 gap-4 text-center">
+            <Stat value="372" label="Polities" />
+            <Stat value="10" label="Features" />
+            <Stat value="10,000" label="Years covered" />
+          </div>
         </Section>
 
-        {/* Technical Details */}
+        {/* Technical Specs (Collapsed) */}
         <Section title="Technical Details">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-gray-900/50 rounded-lg p-5 border border-gray-800">
-              <h4 className="font-medium text-gray-200 mb-3">Machine Learning Model</h4>
-              <ul className="text-sm text-gray-400 space-y-1">
-                <li><strong className="text-gray-300">Algorithm:</strong> Random Forest (100 trees)</li>
-                <li><strong className="text-gray-300">Features:</strong> 16 (5 complexity + 7 warfare + 4 religion)</li>
-                <li><strong className="text-gray-300">Target:</strong> Binary (duration {'<'} 184 years = "unstable")</li>
-                <li><strong className="text-gray-300">Performance:</strong> AUC = 0.744</li>
-              </ul>
-            </div>
-            <div className="bg-gray-900/50 rounded-lg p-5 border border-gray-800">
-              <h4 className="font-medium text-gray-200 mb-3">Similarity Engine</h4>
-              <ul className="text-sm text-gray-400 space-y-1">
-                <li><strong className="text-gray-300">Algorithm:</strong> k-Nearest Neighbors</li>
-                <li><strong className="text-gray-300">Similarity:</strong> Cosine similarity</li>
-                <li><strong className="text-gray-300">Features:</strong> 10 raw Seshat variables</li>
-                <li><strong className="text-gray-300">Default k:</strong> 5 neighbors</li>
-              </ul>
+          <div className="bg-gray-900/50 rounded-lg p-5 border border-gray-800 text-sm">
+            <div className="grid sm:grid-cols-2 gap-x-8 gap-y-2 text-gray-400">
+              <div><span className="text-gray-300">Algorithm:</span> k-Nearest Neighbors</div>
+              <div><span className="text-gray-300">Similarity:</span> Cosine distance</div>
+              <div><span className="text-gray-300">Features:</span> 10 raw Seshat variables</div>
+              <div><span className="text-gray-300">Default k:</span> 5 neighbors</div>
+              <div><span className="text-gray-300">Preprocessing:</span> StandardScaler (z-score)</div>
+              <div><span className="text-gray-300">Runtime:</span> Client-side JavaScript</div>
             </div>
           </div>
         </Section>
 
-        {/* Key Findings */}
-        <Section title="What We Learned">
-          <div className="space-y-4">
-            <Finding 
-              title="The Complexity Curse"
-              desc="Simple societies often score HIGHER on stability than complex empires. This isn't a bug—it's the data. The 'complexity curse' that Joseph Tainter theorized shows up clearly in Seshat."
-            />
-            <Finding 
-              title="Era Matters More Than Geography"
-              desc="Civilizations cluster by time, not region. An ancient Egyptian polity is more similar to ancient Mesopotamia than to medieval Egypt."
-            />
-            <Finding 
-              title="Religion Is Complicated"
-              desc="Religious features have high importance, but the direction varies. Total institutionalization stabilizes; ideological rigidity may destabilize."
-            />
-            <Finding 
-              title="The Classical Era Was Special"
-              desc="500 BCE - 500 CE shows unique patterns. The complexity-duration relationship was most positive, and the era produced history's most durable complex societies."
-            />
-          </div>
-        </Section>
-
-        {/* Source Code */}
+        {/* Source */}
         <Section title="Source Code">
-          <p className="mb-4">
-            All analysis code is open source:{' '}
+          <p>
+            Open source at{' '}
             <a 
-              href="https://github.com/TheApexWu/psychohistoryML" 
+              href="https://github.com/TheApexWu/psychohistoryML-web" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-blue-400 hover:underline"
             >
-              github.com/TheApexWu/psychohistoryML
+              github.com/TheApexWu/psychohistoryML-web
             </a>
           </p>
-          <p className="text-sm text-gray-400">
-            The notebooks document the entire analytical journey, including dead ends and 
-            revised interpretations. Science is a process, not just results.
-          </p>
         </Section>
 
-        {/* Citation */}
-        <Section title="Citation">
-          <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800 font-mono text-sm text-gray-300">
-            <p>Woo, A. (2025). PsychohistoryML: Machine Learning Approaches to Civilizational</p>
-            <p>Dynamics. https://amadeuswoo.com/psychohistory</p>
-            <p className="mt-2">Data source: Seshat Global History Databank, Equinox 2022 Release.</p>
-            <p>https://seshatdatabank.info/</p>
-          </div>
-        </Section>
-
-        {/* Back to Simulator */}
-        <div className="mt-16 text-center">
+        {/* Back */}
+        <div className="mt-12 pt-8 border-t border-gray-800 text-center">
           <a 
             href="/predict"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg text-white font-medium transition"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium transition"
           >
             ← Back to Simulator
           </a>
@@ -291,45 +241,73 @@ export default function MethodologyPage() {
   );
 }
 
-// Helper Components
+/* ============================================================================
+   HELPER COMPONENTS
+   ============================================================================ */
+
 function Section({ title, children }) {
   return (
-    <section className="mb-12">
-      <h2 className="text-2xl font-bold mb-4 text-white">{title}</h2>
-      <div className="text-gray-300 space-y-4">{children}</div>
+    <section className="mb-10">
+      <h2 className="text-xl font-semibold mb-4 text-white">{title}</h2>
+      <div className="text-gray-300 space-y-3 leading-relaxed">{children}</div>
     </section>
   );
 }
 
-function FeatureGroup({ title, color, features }) {
-  const colorClasses = {
-    blue: 'text-blue-400 bg-blue-400',
-    red: 'text-red-400 bg-red-400',
-    amber: 'text-amber-400 bg-amber-400',
-  };
-  
+function Step({ number, title, children }) {
   return (
-    <div>
-      <h4 className={`text-sm uppercase tracking-wider ${colorClasses[color].split(' ')[0]} mb-2 flex items-center gap-2`}>
-        <span className={`w-2 h-2 rounded-full ${colorClasses[color].split(' ')[1]}`}></span>
-        {title}
-      </h4>
-      <ul className="text-sm text-gray-400 space-y-1 ml-4">
-        {features.map(f => (
-          <li key={f.name}>
-            <strong className="text-gray-300">{f.name}:</strong> {f.desc}
-          </li>
-        ))}
-      </ul>
+    <div className="flex gap-4">
+      <div className="flex-shrink-0 w-7 h-7 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm font-semibold">
+        {number}
+      </div>
+      <div>
+        <h4 className="font-medium text-white mb-1">{title}</h4>
+        <p className="text-sm text-gray-400">{children}</p>
+      </div>
     </div>
   );
 }
 
-function Finding({ title, desc }) {
+function FeatureCategory({ title, color, features }) {
+  const colors = {
+    blue: { text: 'text-blue-400', dot: 'bg-blue-400' },
+    red: { text: 'text-red-400', dot: 'bg-red-400' },
+    amber: { text: 'text-amber-400', dot: 'bg-amber-400' },
+  };
+  
   return (
-    <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800">
-      <h4 className="font-medium text-white mb-1">{title}</h4>
-      <p className="text-sm text-gray-400">{desc}</p>
+    <div>
+      <h4 className={`text-xs uppercase tracking-wider ${colors[color].text} mb-2 flex items-center gap-2 font-semibold`}>
+        <span className={`w-2 h-2 rounded-full ${colors[color].dot}`}></span>
+        {title}
+      </h4>
+      <div className="space-y-1.5 ml-4">
+        {features.map(f => (
+          <div key={f.name} className="text-sm flex items-baseline gap-2">
+            <span className="text-gray-200 font-medium">{f.name}</span>
+            <span className="text-gray-600 text-xs">({f.range})</span>
+            <span className="text-gray-500">— {f.desc}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Limitation({ title, desc }) {
+  return (
+    <div className="p-3 bg-gray-900/30 border border-gray-800/50 rounded-lg">
+      <h4 className="text-sm font-medium text-gray-300 mb-0.5">{title}</h4>
+      <p className="text-xs text-gray-500">{desc}</p>
+    </div>
+  );
+}
+
+function Stat({ value, label }) {
+  return (
+    <div className="p-3 bg-gray-900/50 rounded-lg border border-gray-800">
+      <div className="text-2xl font-bold text-white">{value}</div>
+      <div className="text-xs text-gray-500 uppercase tracking-wide">{label}</div>
     </div>
   );
 }

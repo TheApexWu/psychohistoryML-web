@@ -253,7 +253,7 @@ function ResearchPage() {
                                 lineNumber: 29,
                                 columnNumber: 29
                             }, this),
-                            ', mathematician Hari Seldon develops "psychohistory" - a science that predicts the behavior of large populations over centuries. It\'s fiction. But what if we tried to build something like it?'
+                            ', mathematician Hari Seldon develops "psychohistory" - a science that predicts the behavior of large populations over centuries. It\'s fiction. But what if I tried to build something like it?'
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/research/page.js",
@@ -900,16 +900,17 @@ function ResearchPage() {
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: [
-                            "The interactive ",
+                            "My interactive ",
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
                                 href: "/predict",
                                 children: "Civilizational Analyzer"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/research/page.js",
                                 lineNumber: 278,
-                                columnNumber: 27
+                                columnNumber: 26
                             }, this),
-                            " (coming soon) will let you configure a hypothetical polity and see how the model evaluates it. Pick an era, adjust complexity, warfare, and religion parameters, and get a risk assessment plus historical comparisons."
+                            " ",
+                            "will let you configure a hypothetical polity and see how the model evaluates it. Pick an era, adjust complexity, warfare, and religion parameters, and get a risk assessment plus historical comparisons."
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/research/page.js",

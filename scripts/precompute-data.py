@@ -1,7 +1,7 @@
 """
 precompute-data.py
 ==================
-Run locally to generate JSON files for the frontend
+Run locally to generate JSON files for the frontend.
 These JSON files enable client-side similarity calculations without Python backend.
 
 Usage:
@@ -9,7 +9,7 @@ Usage:
     python precompute-data.py
 
 Outputs:
-    ../public/data/polities.json      - Polity data with pre-scaled features
+    ../public/data/polities.json      - Polity data with scaled + raw features
     ../public/data/scaler-params.json - Mean/std for standardization
 """
 
@@ -24,18 +24,33 @@ DATA_PATH = '../data/Equinox_on_GitHub_June9_2022.xlsx'
 OUTPUT_DIR = '../public/data'
 
 # Features for similarity matching (raw Seshat variables)
+# Order must match FEATURE_ORDER in constants.js
 SIMILARITY_FEATURES = [
-    'Hier',      # Hierarchy levels (1-8)
-    'Gov',       # Government sophistication (0-1)
-    'Info',      # Information systems (0-1)
-    'Infra',     # Infrastructure (0-1)
-    'Weapon',    # Weapon types (0-10)
-    'Armor',     # Armor types (0-5)
-    'Cavalry',   # Cavalry presence (0-3)
-    'Defense',   # Fortifications (0-5)
-    'Iron',      # Iron working (0-1)
-    'ReligLev',  # Religious hierarchy (0-3)
+    'Hier',      # hierarchy
+    'Gov',       # government
+    'Info',      # information
+    'Infra',     # infrastructure
+    'Weapon',    # weapons
+    'Armor',     # armor
+    'Cavalry',   # cavalry
+    'Defense',   # fortifications
+    'Iron',      # ironWorking
+    'ReligLev',  # religion
 ]
+
+# Mapping from Seshat column names to frontend keys (for rawFeatures)
+FEATURE_KEY_MAP = {
+    'Hier': 'hierarchy',
+    'Gov': 'government',
+    'Info': 'information',
+    'Infra': 'infrastructure',
+    'Weapon': 'weapons',
+    'Armor': 'armor',
+    'Cavalry': 'cavalry',
+    'Defense': 'fortifications',
+    'Iron': 'ironWorking',
+    'ReligLev': 'religion',
+}
 
 def assign_era(year):
     """Assign historical era based on midpoint year."""
@@ -63,7 +78,7 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     
     # Load data
-    print(f"\n Loading data from {DATA_PATH}...")
+    print(f"\nLoading data from {DATA_PATH}...")
     xlsx = pd.ExcelFile(DATA_PATH)
     
     polities = pd.read_excel(xlsx, 'Polities')
@@ -88,21 +103,27 @@ def main():
     df = polities_clean.merge(latest, on='PolID', how='inner')
     print(f"   After merge: {len(df)} polities")
     
-    # Extract features, fill missing with median (for similarity matching)
-    print(f"\n🔧 Processing features...")
+    # Extract features
+    print(f"\nProcessing features...")
     df_features = df[SIMILARITY_FEATURES].copy()
     
+    # Store raw features before imputation (with NaN handling)
+    df_raw = df[SIMILARITY_FEATURES].copy()
+    
+    # Fill missing with median for similarity calculation
     feature_medians = {}
     for col in SIMILARITY_FEATURES:
         median_val = df_features[col].median()
         feature_medians[col] = float(median_val)
         missing_count = df_features[col].isna().sum()
         df_features[col] = df_features[col].fillna(median_val)
+        # Also fill raw for display (user sees imputed value)
+        df_raw[col] = df_raw[col].fillna(median_val)
         if missing_count > 0:
             print(f"   {col}: filled {missing_count} missing with median {median_val:.2f}")
     
     # Fit scaler
-    print(f"\n Fitting StandardScaler...")
+    print(f"\nFitting StandardScaler...")
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(df_features)
     
@@ -110,10 +131,17 @@ def main():
     print(f"   Feature stds:  {dict(zip(SIMILARITY_FEATURES, scaler.scale_.round(3)))}")
     
     # Build polity data for JSON export
-    print(f"\n Building polity records...")
+    print(f"\nBuilding polity records...")
     polity_data = []
     
-    for i, row in df.iterrows():
+    for idx, (i, row) in enumerate(df.iterrows()):
+        # Build raw features dict with frontend keys
+        raw_features = {}
+        for seshat_col, frontend_key in FEATURE_KEY_MAP.items():
+            val = df_raw.iloc[idx][seshat_col]
+            # Round for cleaner display
+            raw_features[frontend_key] = round(float(val), 2)
+        
         polity_data.append({
             'id': row['PolID'],
             'name': row['PolName'],
@@ -122,7 +150,8 @@ def main():
             'start': int(row['Start']),
             'end': int(row['End']),
             'region': row.get('World Region', 'Unknown') if pd.notna(row.get('World Region')) else 'Unknown',
-            'features': X_scaled[len(polity_data)].tolist()  # Pre-scaled features
+            'features': X_scaled[idx].tolist(),  # Standardized (for similarity calc)
+            'rawFeatures': raw_features          # Raw values (for display)
         })
     
     # Export polities.json
@@ -138,6 +167,7 @@ def main():
         'mean': scaler.mean_.tolist(),
         'std': scaler.scale_.tolist(),
         'features': SIMILARITY_FEATURES,
+        'featureKeys': list(FEATURE_KEY_MAP.values()),  # Frontend keys in order
         'medians': feature_medians
     }
     
@@ -153,6 +183,8 @@ def main():
     print("=" * 60)
     print(f"   Total polities exported: {len(polity_data)}")
     print(f"   Features per polity: {len(SIMILARITY_FEATURES)}")
+    print(f"   Data includes: standardized features + raw features")
+    
     print(f"\n   Era distribution:")
     era_counts = df['era'].value_counts()
     for era, count in era_counts.items():
@@ -164,7 +196,15 @@ def main():
     print(f"      Median: {df['duration'].median():.0f} years")
     print(f"      Mean: {df['duration'].mean():.0f} years")
     
-    print(f"\n Done! Frontend data ready in {OUTPUT_DIR}/")
+    # Sample output for verification
+    print(f"\n   Sample polity (first):")
+    sample = polity_data[0]
+    print(f"      Name: {sample['name']}")
+    print(f"      Era: {sample['era']}")
+    print(f"      Duration: {sample['duration']} years")
+    print(f"      Raw features: {sample['rawFeatures']}")
+    
+    print(f"\nDone! Frontend data ready in {OUTPUT_DIR}/")
 
 if __name__ == '__main__':
     main()

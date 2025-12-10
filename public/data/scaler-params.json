@@ -35,6 +35,18 @@
     "Iron",
     "ReligLev"
   ],
+  "featureKeys": [
+    "hierarchy",
+    "government",
+    "information",
+    "infrastructure",
+    "weapons",
+    "armor",
+    "cavalry",
+    "fortifications",
+    "ironWorking",
+    "religion"
+  ],
   "medians": {
     "Hier": 4.0,
     "Gov": 0.5,
