@@ -198,8 +198,8 @@ export default function AboutPage() {
         <h2>The Menial Stuff</h2>
         <p className="menial-intro">Things that don't fit on a resume but might come up at networking events:</p>
         <ul className="menial-list">
-          <li>Seeking the tech journey to the West (coast)</li>
-          <li>Active francophile — intermediate French, the food, the culture, the history</li>
+          <li>NYC based, open to the Bay Area</li>
+          <li>Intermediate French, active francophile (food, culture, history, architecture)</li>
           <li>Aficionado of 19th century German philosophers</li>
           <li>Currently learning more about Peter Turchin's cliodynamics</li>
         </ul>
