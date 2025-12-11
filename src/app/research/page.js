@@ -275,7 +275,7 @@ export default function ResearchPage() {
         <h2>What's Next</h2>
         
         <p>
-          My interactive <Link href="/predict">Civilizational Analyzer</Link>{" "} 
+          My interactive <Link href="/predict">Polity Simulator</Link>{" "} 
           will let you configure a hypothetical polity and see how the model evaluates it. 
           Pick an era, adjust complexity, warfare, and religion parameters, and get a 
           risk assessment plus historical comparisons.
@@ -303,7 +303,7 @@ export default function ResearchPage() {
             View on GitHub
           </a>
           <Link href="/predict">
-            Try the Analyzer
+            Try the Simulator
           </Link>
         </div>
         
