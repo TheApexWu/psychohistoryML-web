@@ -52,7 +52,7 @@ export default function MethodologyPage() {
           </p>
           <p>
             This is pattern-matching, not prophecy. The estimate is a weighted average of similar 
-            polities' durations—completely transparent and verifiable.
+            polities, durations—completely transparent and verifiable.
           </p>
         </Section>
 

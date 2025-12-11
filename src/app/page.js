@@ -1,4 +1,3 @@
-import EmailSignup from '../components/EmailSignup'
 import { StatsRow } from '../components/visualizations/AnimatedStats'
 import DiscoveriesSection from '../components/visualizations/DiscoveriesSection'
 import Link from 'next/link'
@@ -22,16 +21,27 @@ export default function Home() {
       {/* 6 Expandable Discovery Cards */}
       <DiscoveriesSection />
 
-      {/* CTA to full research */}
+      {/* CTA Section */}
       <section className="research-cta">
         <p>Want the full methodology and analysis?</p>
-        <Link href="/research" className="research-link">
-          Read the Research
-        </Link>
+        <div className="cta-buttons">
+          <Link href="/research" className="research-link">
+            Read the Research
+          </Link>
+          <Link href="/predict" className="research-link secondary">
+            Try the Simulator
+          </Link>
+        </div>
       </section>
 
-      {/* Email Signup with state management */}
-      <EmailSignup />
+      {/* About CTA - Prominent */}
+      <section className="about-cta">
+        <p className="about-cta-text">Curious who's behind this?</p>
+        <Link href="/about" className="about-link">
+          Meet the Builder →
+        </Link>
+      </section>
     </>
   )
 }
+

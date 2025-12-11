@@ -583,3 +583,387 @@ footer {
   z-index: 0;
 }
 
+
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.research-link.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.research-link.secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: transparent;
+}
+
+.about-cta {
+  text-align: center;
+  padding: 4rem 0 2rem;
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+}
+
+.about-cta-text {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.about-link {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 1.1rem;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 1rem 2.5rem;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  display: inline-block;
+  transition: all 0.3s;
+  letter-spacing: 0.05em;
+}
+
+.about-link:hover {
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+/* 
+   ABOUT PAGE
+    */
+
+.about-page {
+  padding-bottom: 4rem;
+}
+
+.about-hero {
+  padding: 6rem 0 4rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4rem;
+}
+
+.about-hero h1 {
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  margin-bottom: 0.75rem;
+}
+
+.about-hero .subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+}
+
+.social-links {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.social-links a {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+}
+
+.social-links a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Email Contact */
+.email-contact {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.email-copy-btn {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+  background: transparent;
+  cursor: pointer;
+}
+
+.email-copy-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Skills Section - PROMINENT */
+.skills-section {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3rem;
+}
+
+.skills-section h2 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+
+.skill-category {
+  margin-bottom: 2rem;
+}
+
+.skill-label {
+  display: block;
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-dim);
+  margin-bottom: 0.75rem;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.skill-tag {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.skill-tag.primary {
+  border-color: var(--accent-dim);
+  color: var(--text-primary);
+}
+
+.skill-tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* About Sections */
+.about-section {
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-section h2 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+/* Experience Cards */
+.experience-card {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.experience-card:last-child {
+  border-bottom: none;
+}
+
+.experience-card.muted {
+  opacity: 0.7;
+}
+
+.experience-card.featured {
+  background: linear-gradient(135deg, rgba(201, 165, 92, 0.05) 0%, transparent 100%);
+  border: 1px solid var(--accent-dim);
+  border-radius: 4px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  gap: 1rem;
+}
+
+.experience-card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.exp-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.exp-date {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 0.75rem;
+  color: var(--accent-dim);
+  white-space: nowrap;
+}
+
+.exp-tag {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  border: 1px solid var(--accent-dim);
+  padding: 0.25rem 0.6rem;
+  border-radius: 3px;
+}
+
+.exp-degree {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.exp-courses {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.exp-description {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.exp-highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.exp-highlights li {
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.exp-highlights li::before {
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: var(--accent-dim);
+}
+
+/* Menial Section */
+.about-section.menial {
+  border-bottom: none;
+}
+
+.menial-intro {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.menial-list {
+  list-style: none;
+  padding: 0;
+}
+
+.menial-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.menial-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent-dim);
+}
+
+/* About CTA Bottom */
+.about-cta-bottom {
+  text-align: center;
+  padding: 4rem 0 2rem;
+  margin-top: 2rem;
+}
+
+.return-link {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 0.9rem;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.return-link:hover {
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+/* 
+   RESPONSIVE - ABOUT PAGE
+    */
+
+@media (max-width: 600px) {
+  .about-hero {
+    padding: 4rem 0 3rem;
+  }
+  
+  .social-links {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .skill-tags {
+    gap: 0.5rem;
+  }
+  
+  .skill-tag {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .exp-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .exp-date, .exp-tag {
+    align-self: flex-start;
+  }
+}
