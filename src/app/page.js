@@ -7,7 +7,7 @@ export default function Home() {
     <>
       {/* Hero Section */}
       <section className="hero">
-        <span className="hero-tag">Coming January 2026</span>
+        {/*span className="hero-tag">Coming January 2026</span>*/}
         <h1>I Am Building Asimov's <em>Psychohistory</em></h1>
         <p className="subtitle">
           What happens when you feed 10,000 years of civilizational data 
