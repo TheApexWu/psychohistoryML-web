@@ -72,7 +72,7 @@ export default function ResearchPage() {
             <span className="data-label">Polities analyzed</span>
           </div>
           <div className="data-item">
-            <span className="data-value">16</span>
+            <span className="data-value">10</span>
             <span className="data-label">Features used</span>
           </div>
           <div className="data-item">
