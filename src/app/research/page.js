@@ -54,7 +54,7 @@ export default function ResearchPage() {
         <p>
           This project uses the <a href="https://seshatdatabank.info/" target="_blank" rel="noopener noreferrer">
           Seshat Equinox 2022 dataset</a> - a systematic compilation of historical and 
-          archaeological data covering 256 polities across 10,000 years. Each civilization 
+          archaeological data that I've filtered/cleaned down to 256 polities across 10,000 years. Each civilization 
           is coded for dozens of variables: administrative hierarchy, military technology, 
           religious practices, infrastructure, and more.
         </p>
