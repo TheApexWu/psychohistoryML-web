@@ -130,7 +130,7 @@ export default function MethodologyPage() {
             complex society in 2000 BCE was exceptional; the same profile in 1500 CE was ordinary.
           </p>
           <div className="my-6 p-4 bg-gray-900/50 rounded-lg border border-gray-800">
-            <p className="text-sm text-gray-300 mb-3">Our research found the complexity-duration relationship reversed over time:</p>
+            <p className="text-sm text-gray-300 mb-3">My research found the complexity-duration relationship reversed over time:</p>
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-3">
                 <span className="w-2 h-2 rounded-full bg-amber-400"></span>
