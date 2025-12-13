@@ -19,31 +19,31 @@ export default function ResearchPage() {
         <span className="article-tag">Research</span>
         <h1>Building Psychohistory: A Data Science Journey</h1>
         <p className="article-meta">
-          Amadeus Woo - December 2025 - 5 min read
+          Amadeus Woo · December 2025 · 5 min read
         </p>
       </header>
 
-      {/* Lead / Hook */}
+      {/* Lead */}
       <section className="article-section">
         <p className="lead">
-          In Isaac Asimov's <em>Foundation</em>, mathematician Hari Seldon develops 
-          "psychohistory" - a science that predicts the behavior of large populations 
-          over centuries. It's fiction. But what if I tried to build something like it?
+          In Isaac Asimov&apos;s <em>Foundation</em>, mathematician Hari Seldon develops 
+          &quot;psychohistory&quot;  a science that predicts the behavior of large civilizations 
+          over centuries. It&apos;s fiction. But what if I tried to build something like it?
         </p>
         
         <p>
           I spent the past few months feeding 10,000 years of civilizational data into 
-          machine learning models. The goal wasn't to predict the future - it was to 
+          machine learning models. The goal wasn&apos;t to predict the future — it was to 
           understand patterns in the past. What makes some civilizations last centuries 
           while others collapse within decades?
         </p>
 
         <p className="caveat">
-          <strong>A note on terminology:</strong> "Collapse" is a loaded term among historians, 
-          and for good reason. Throughout this research, I use "instability" to describe 
-          polities whose duration falls below the median (184 years). 
-          This isn't a value judgment - short-lived polities aren't "failures." They're 
-          data points that help us understand civilizational dynamics.
+          <strong>A note on terminology:</strong> &quot;Collapse&quot; is a loaded term among historians. 
+          Throughout this research, I use &quot;instability&quot; to describe polities whose duration 
+          falls below the median (184 years). This isn&apos;t a value judgment: short-lived 
+          polities aren&apos;t &quot;failures.&quot; They&apos;re data points that help us understand 
+          civilizational dynamics.
         </p>
       </section>
 
@@ -53,16 +53,16 @@ export default function ResearchPage() {
         
         <p>
           This project uses the <a href="https://seshatdatabank.info/" target="_blank" rel="noopener noreferrer">
-          Seshat Equinox 2022 dataset</a> - a systematic compilation of historical and 
-          archaeological data that I've filtered/cleaned down to 256 polities across 10,000 years. Each civilization 
-          is coded for dozens of variables: administrative hierarchy, military technology, 
-          religious practices, infrastructure, and more.
+          Seshat Equinox 2022 dataset</a> — a systematic compilation of historical and 
+          archaeological data that I&apos;ve filtered down to 256 polities across 10,000 years. 
+          Each civilization is coded for dozens of variables: administrative hierarchy, 
+          military technology, religious practices, infrastructure, and more.
         </p>
 
         <p>
           The dataset represents a monumental effort by historians, archaeologists, and 
-          data scientists to quantify the qualitative. It's imperfect - all historical 
-          data is - but it's the most comprehensive attempt to make civilizational 
+          data scientists to quantify the qualitative. It&apos;s imperfect, all historical 
+          data is, but it&apos;s the most comprehensive attempt to make civilizational 
           patterns analyzable.
         </p>
 
@@ -73,7 +73,7 @@ export default function ResearchPage() {
           </div>
           <div className="data-item">
             <span className="data-value">10</span>
-            <span className="data-label">Key Features used</span>
+            <span className="data-label">Key Model Features</span>
           </div>
           <div className="data-item">
             <span className="data-value">4</span>
@@ -89,11 +89,11 @@ export default function ResearchPage() {
         <p>
           I started with a simple hypothesis: more complex societies should be more 
           fragile. Bureaucracies calcify, elites extract, coordination costs balloon. 
-          This is Joseph Tainter's classic argument from <em>The Collapse of Complex Societies</em>.
+          This is Joseph Tainter&apos;s classic argument from <em>The Collapse of Complex Societies</em>.
         </p>
 
         <p>
-          The first model - using only complexity features - performed barely better 
+          The first model, using only complexity features, performed barely better 
           than random chance. An AUC of 0.505 is essentially a coin flip.
         </p>
 
@@ -108,9 +108,15 @@ export default function ResearchPage() {
         <AnimatedROC />
 
         <p>
-          A 0.744 AUC won't predict specific civilizational fates. But it's strong 
+          A 0.744 AUC won&apos;t predict specific civilizational fates. But it&apos;s strong 
           enough to suggest these features capture genuine patterns in historical 
-          dynamics - patterns that generalize across cultures and millennia.
+          dynamics — patterns that generalize across cultures and millennia.
+        </p>
+        
+        <p className="caveat">
+          <strong>On model variance:</strong> Cross-validation shows AUC ranging from 0.51 to 0.76 
+          depending on the data split (mean: 0.675 ± 0.09). With 256 samples, high variance 
+          is expected. The signal is real, but the precision isn&apos;t.
         </p>
       </section>
 
@@ -119,46 +125,38 @@ export default function ResearchPage() {
         <h2>Finding #1: Religion Shows Complex Effects</h2>
         
         <p>
-          The most interesting result involves religion - but not in the simple way I 
-          expected. <strong>Religious variables collectively account for 27.2% of model 
+          The most interesting result involves religion — but not in the simple way I 
+          expected. <strong>Religious variables collectively account for 27% of model 
           decisions</strong>, making them the dominant feature category.
         </p>
 
         <FeatureImportance />
 
         <p>
-          However, feature importance doesn't tell us direction. When I analyzed the 
-          actual effects, the picture got more nuanced:
+          However, feature importance doesn&apos;t tell us direction. When I analyzed the 
+          actual coefficients, the picture got more nuanced:
         </p>
 
         <ul className="findings-list">
           <li>
-            <strong>Total religious institutionalization</strong> (total_rel) shows 
-            stabilizing effects - more developed religious infrastructure correlates 
-            with longer duration.
+            <strong>Total religious institutionalization</strong> shows stabilizing 
+            effects — more developed religious infrastructure correlates with longer duration.
           </li>
           <li>
-            <strong>Ideology scores</strong> show context-dependent patterns - high 
-            importance for model decisions, but weak directional effect. The model 
-            uses ideology to make fine-grained distinctions, not broad predictions.
+            <strong>Ideology scores</strong> show context-dependent patterns — high 
+            importance for model decisions, but weak directional effect. The model uses 
+            ideology to make fine-grained distinctions, not broad predictions.
           </li>
           <li>
-            <strong>Moralizing religion</strong> (moral_score) shows slight destabilizing 
-            effects in some configurations - possibly reflecting rigidity or schism risk.
+            <strong>Moralizing religion</strong> shows slight destabilizing effects in 
+            some configurations, possibly reflecting rigidity or schism risk.
           </li>
         </ul>
 
         <p>
           The takeaway: religious factors matter enormously, but the relationship is 
-          nonlinear. It's not "more religion = more stability." It's something more 
-          conditional and context-dependent.
-        </p>
-
-        <p className="caveat">
-          <strong>Important caveat:</strong> Feature importance in Random Forests tells us 
-          "how often is this feature used for splits" not "does high = good or bad." 
-          A feature can be highly important while having weak or inconsistent directional 
-          effects.
+          nonlinear. It&apos;s not &quot;more religion = more stability.&quot; It&apos;s conditional 
+          and context-dependent.
         </p>
       </section>
 
@@ -167,7 +165,7 @@ export default function ResearchPage() {
         <h2>Finding #2: Era Trumps Geography</h2>
         
         <p>
-          I expected civilizations to cluster by region - Mediterranean empires with 
+          I expected civilizations to cluster by region — Mediterranean empires with 
           Mediterranean empires, Chinese dynasties with Chinese dynasties. Instead, 
           they cluster by time.
         </p>
@@ -182,14 +180,14 @@ export default function ResearchPage() {
         <p>
           In the Ancient world (pre-500 BCE), each unit of complexity reduced expected 
           duration by ~159 years. By the Early Modern period (1500+ CE), the relationship 
-          had reversed - complexity slightly helped.
+          had reversed — complexity slightly helped.
         </p>
 
         <p>
           What changed? Possibly writing, institutional memory, military technology, 
-          trade networks - the infrastructure that lets complex societies maintain 
-          themselves. The "rules" of civilizational survival aren't fixed; they evolve 
-          with humanity's toolkit.
+          trade networks — the infrastructure that lets complex societies maintain 
+          themselves. The &quot;rules&quot; of civilizational survival aren&apos;t fixed; they evolve 
+          with humanity&apos;s toolkit.
         </p>
       </section>
 
@@ -198,8 +196,8 @@ export default function ResearchPage() {
         <h2>Finding #3: Warfare Technology Matters</h2>
         
         <p>
-          Adding military variables (weapons, fortifications, cavalry, armor) 
-          improved model performance by 28%. But the effects are mixed:
+          Adding military variables (weapons, fortifications, cavalry, armor) improved 
+          model performance by 28%. But the effects are mixed:
         </p>
 
         <ul className="findings-list">
@@ -208,7 +206,7 @@ export default function ResearchPage() {
           </li>
           <li>
             <strong>Fortifications</strong> show slight destabilizing effects 
-            (possibly reflecting defensive postures of declining states?)
+            (possibly reflecting defensive postures of declining states)
           </li>
           <li>
             <strong>Total warfare tech</strong> slightly destabilizes on average
@@ -217,14 +215,14 @@ export default function ResearchPage() {
 
         <p>
           In the Ancient era, advanced warfare amplified the complexity curse. In the 
-          Classical period (500 BCE - 500 CE), it moderated it dramatically - a +0.634 
+          Classical period (500 BCE – 500 CE), it moderated it dramatically — a +0.634 
           moderation effect. Complex Classical societies with strong militaries 
           outlasted their simpler neighbors.
         </p>
 
         <p>
           The Classical era emerges as special across multiple analyses. This was the 
-          age of Rome, Han China, Persia - empires that combined bureaucratic 
+          age of Rome, Han China, Persia — empires that combined bureaucratic 
           sophistication with military innovation. Perhaps that combination, in that 
           historical moment, represented a sweet spot.
         </p>
@@ -240,31 +238,30 @@ export default function ResearchPage() {
             stratify by era. Some subgroups have fewer than 50 cases.
           </li>
           <li>
-            <strong>Selection bias:</strong> The Seshat dataset skews toward well-documented 
-            societies. We know more about Rome than about countless chiefdoms that left 
-            no written records.
+            <strong>Selection bias:</strong> Seshat skews toward well-documented 
+            societies. We know more about Rome than about countless chiefdoms that 
+            left no written records.
           </li>
           <li>
-            <strong>Causality unknown:</strong> These are correlations. We can't run 
+            <strong>Causality unknown:</strong> These are correlations. We can&apos;t run 
             experiments on civilizations. Reverse causality is always possible.
           </li>
           <li>
-            <strong>Feature definitions:</strong> What counts as "ideological cohesion" 
-            in 2000 BCE Egypt vs 1500 CE Spain? The coding decisions shape the results.
+            <strong>Feature definitions:</strong> What counts as &quot;ideological cohesion&quot; 
+            in 2000 BCE Egypt vs 1500 CE Spain? Coding decisions shape results.
           </li>
           <li>
-            <strong>Survivorship issues:</strong> We're analyzing polities that existed 
-            long enough to be recorded. The truly unstable ones may be invisible.
+            <strong>Survivorship issues:</strong> We analyze polities that existed long 
+            enough to be recorded. The truly unstable ones may be invisible.
           </li>
           <li>
-            <strong>Model interpretation:</strong> Feature importance doesn't equal 
-            directional effect. High-importance features may have weak or context-dependent 
-            relationships with outcomes.
+            <strong>Model variance:</strong> Cross-validation shows high variance 
+            (0.51–0.76 AUC). The 0.744 test result landed on a favorable split.
           </li>
         </ul>
 
         <p>
-          This isn't predictive science - it's pattern recognition in historical data. 
+          This isn&apos;t predictive science, it&apos;s pattern recognition in historical data. 
           The model reveals correlations worth investigating, not laws of civilizational 
           dynamics.
         </p>
@@ -272,25 +269,19 @@ export default function ResearchPage() {
 
       {/* What's Next */}
       <section className="article-section">
-        <h2>What's Next</h2>
+        <h2>Try It Yourself</h2>
         
         <p>
-          My interactive <Link href="/predict">Polity Simulator</Link>{" "} 
-          will let you configure a hypothetical polity and see how the model evaluates it. 
-          Pick an era, adjust complexity, warfare, and religion parameters, and get a 
-          risk assessment plus historical comparisons.
+          The <Link href="/predict">Polity Simulator</Link> lets you configure a 
+          hypothetical civilization and find historically similar societies. Pick an era, 
+          adjust complexity, warfare, and religion parameters, and see which polities 
+          from the database most closely match your configuration.
         </p>
 
         <p>
-          I'm also exploring AI integration - a chatbot that can answer questions about 
-          the dataset, explain predictions, and compare civilizations. "What made Rome 
-          different from Carthage?" answered by an LLM grounded in quantitative historical data.
-        </p>
-
-        <p>
-          Is this true psychohistory? No. Asimov's fictional science could predict specific 
-          futures. This project can only identify patterns in the past. But maybe that's 
-          how real psychohistory would start - not with prophecy, but with pattern 
+          Is this true psychohistory? No. Asimov&apos;s fictional science could predict specific 
+          futures. This project can only identify patterns in the past. But maybe that&apos;s 
+          how real psychohistory would start, not with prophecy, but with pattern 
           recognition. Not with certainty, but with probability. Not with claims of 
           universal laws, but with honest exploration of conditional relationships.
         </p>

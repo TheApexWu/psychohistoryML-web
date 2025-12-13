@@ -6,39 +6,48 @@ import { useState, useEffect } from 'react'
 const discoveries = [
   {
     id: 1,
-    title: "Religion shows complex effects",
-    summary: "Religious features account for 27% of model decisions, but direction varies",
-    detail: "Religious variables collectively dominate model importance (27.2%), but the relationship is nuanced. Total religious institutionalization shows stabilizing effects, while ideology scores show context-dependent patterns. The 'software' of shared meaning matters - but more isn't always better.",
-    stat: "27.2%",
-    statLabel: "combined importance",
-    icon: "◉"
+    title: "Complexity alone predicts nothing",
+    summary: "The Tainter hypothesis failed — until I added context",
+    detail: "I started with Joseph Tainter's classic argument: complex societies should be more fragile. The first model using only complexity features hit 0.505 AUC — literally a coin flip. Complexity matters, but only in combination with other factors.",
+    stat: "0.505",
+    statLabel: "AUC (random chance)",
+    icon: "◇"
   },
   {
     id: 2,
-    title: "Era trumps geography",
-    summary: "Historical period matters more than where a civilization was located",
-    detail: "Civilizations cluster by time, not space. The relationship between complexity and duration completely reverses across eras: Ancient polities show strong negative effects (B=-159), while Early Modern polities show slight positive effects (B=+6). The 'rules' of survival changed over millennia.",
-    stat: "B=-159 to +6",
+    title: "The complexity curse reversed over time",
+    summary: "What killed Ancient polities helped Early Modern ones survive",
+    detail: "In the Ancient world (pre-500 BCE), each unit of hierarchy reduced expected duration by ~159 years. By the Early Modern period, the relationship flipped — complexity slightly helped. Writing, institutions, trade networks changed the rules.",
+    stat: "-159 → +6",
     statLabel: "coefficient shift",
     icon: "◈"
   },
   {
     id: 3,
-    title: "Warfare technology matters",
-    summary: "Adding military features improved model prediction by 28%",
-    detail: "Military technology doesn't just correlate with outcomes - it moderates how complexity affects survival. The model jumped from coin-flip (0.505 AUC) to meaningful signal (0.648 AUC) when warfare variables were added. Context matters as much as capacity.",
-    stat: "+28%",
-    statLabel: "AUC improvement",
-    icon: "◇"
+    title: "Religion outweighs military",
+    summary: "Religious variables account for 27% of model decisions",
+    detail: "Religious institutionalization shows stabilizing effects. Ideology scores matter for fine-grained distinctions. Moralizing religion shows mixed effects — possibly reflecting rigidity or schism risk. The relationship is nonlinear: more isn't always better.",
+    stat: "27%",
+    statLabel: "feature importance",
+    icon: "◉"
   },
   {
     id: 4,
-    title: "Classical era is special",
-    summary: "500 BCE - 500 CE shows unique dynamics across all analyses",
-    detail: "The Classical period consistently emerges as exceptional: warfare moderation peaks here (+0.634 effect), the complexity-duration relationship moderates significantly compared to Ancient times, and the era produced history's most durable complex societies. Rome, Han China, Persia - something was different.",
-    stat: "+0.634",
-    statLabel: "warfare moderation",
+    title: "Warfare unlocked the signal",
+    summary: "Adding military features jumped prediction accuracy by 28%",
+    detail: "The model went from coin-flip (0.505) to meaningful signal (0.648 AUC) when warfare variables were added. Cavalry, armor, and fortifications don't just correlate — they moderate how complexity affects survival.",
+    stat: "+28%",
+    statLabel: "AUC improvement",
     icon: "◆"
+  },
+  {
+    id: 5,
+    title: "The Classical sweet spot",
+    summary: "500 BCE – 500 CE shows unique dynamics across all analyses",
+    detail: "Rome, Han China, Persia — the Classical era consistently emerges as exceptional. Warfare moderation peaks here (+0.634 effect). Complex societies with strong militaries outlasted their simpler neighbors. Something about that combination, in that moment, worked.",
+    stat: "+0.634",
+    statLabel: "moderation effect",
+    icon: "◎"
   },
 ]
 
@@ -68,8 +77,10 @@ export default function DiscoveriesSection() {
 
   return (
     <section className="discoveries-section">
-      <h2 className="section-title">What the Model Revealed</h2>
-      <p className="section-subtitle">Four key findings from analyzing 10,000 years of civilizational data</p>
+      <h2 className="section-title">What the Model Learned</h2>
+      <p className="section-subtitle">
+        Five findings from training a Random Forest on 256 polities across 10,000 years
+      </p>
 
       <div className="discoveries-grid">
         {discoveries.map((discovery, index) => (
@@ -98,7 +109,7 @@ export default function DiscoveriesSection() {
             </div>
 
             <span className="expand-hint">
-              {expandedId === discovery.id ? '- Less' : '+ More'}
+              {expandedId === discovery.id ? '− Less' : '+ More'}
             </span>
           </div>
         ))}
@@ -119,11 +130,18 @@ export default function DiscoveriesSection() {
         .section-subtitle {
           color: var(--text-muted);
           margin-bottom: 3rem;
+          font-size: 1rem;
         }
         .discoveries-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           gap: 1.5rem;
+        }
+        /* Make the 5th card span full width or center it */
+        .discoveries-grid .discovery-item:nth-child(5) {
+          grid-column: 1 / -1;
+          max-width: calc(50% - 0.75rem);
+          justify-self: center;
         }
         .discovery-item {
           background: var(--bg-secondary);
@@ -216,6 +234,9 @@ export default function DiscoveriesSection() {
         @media (max-width: 700px) {
           .discoveries-grid {
             grid-template-columns: 1fr;
+          }
+          .discoveries-grid .discovery-item:nth-child(5) {
+            max-width: 100%;
           }
         }
       `}</style>

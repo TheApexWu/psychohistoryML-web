@@ -47,12 +47,12 @@ export default function MethodologyPage() {
         {/* Core Approach */}
         <Section title="The Approach">
           <p>
-            Instead of predicting the future, the simulator asks: <em>"What historical societies 
-            looked like this configuration? How long did they actually last?"</em>
+            Instead of predicting the future, the simulator asks: <em>&quot;What historical societies 
+            looked like this configuration? How long did they actually last?&quot;</em>
           </p>
           <p>
             This is pattern-matching, not prophecy. The estimate is a weighted average of similar 
-            polities, durations—completely transparent and verifiable.
+            polities&apos; durations, completely transparent and verifiable.
           </p>
         </Section>
 
@@ -60,25 +60,25 @@ export default function MethodologyPage() {
         <Section title="Finding Similar Polities">
           <div className="space-y-6">
             <Step number={1} title="Standardize Features">
-              Raw features have different scales (Hierarchy: 1-9, Government: 0-1). 
+              Raw features have different scales (Hierarchy: 1–9, Government: 0–1). 
               I standardize each by subtracting the mean and dividing by standard deviation, 
               so no single feature dominates the comparison.
             </Step>
             
             <Step number={2} title="Compute Cosine Similarity">
-              For each of 372 polities, I measure how much your configuration "points in the 
-              same direction" in feature space. This captures the <em>profile</em>—the relative 
-              balance of complexity, warfare, and religion—rather than absolute levels.
+              For each of 372 polities, I measure how much your configuration &quot;points in the 
+              same direction&quot; in feature space. This captures the <em>profile</em> — the relative 
+              balance of complexity, warfare, and religion — rather than absolute levels.
             </Step>
             
             <Step number={3} title="Find Top 5 Matches">
               The polities with highest similarity scores become your historical comparisons. 
-              You can click each to see exactly which features matched and which differed.
+              Click each to see exactly which features matched and which differed.
             </Step>
             
             <Step number={4} title="Weighted Average">
               Duration estimate = Σ(similarity × duration) / Σ(similarity). More similar polities 
-              contribute more to the estimate. A 95% match matters more than a 75% match.
+              contribute more to the estimate. A 90% match matters more than a 75% match.
             </Step>
           </div>
         </Section>
@@ -86,7 +86,7 @@ export default function MethodologyPage() {
         {/* The 10 Features */}
         <Section title="The 10 Features">
           <p className="mb-6 text-gray-400">
-            All values come directly from Seshat's coded variables:
+            All values come directly from Seshat&apos;s coded variables:
           </p>
           
           <div className="space-y-6">
@@ -94,10 +94,10 @@ export default function MethodologyPage() {
               title="Complexity" 
               color="blue"
               features={[
-                { name: 'Hierarchy', range: '1-9', desc: 'Administrative levels (1=village, 9=multi-tier empire)' },
-                { name: 'Government', range: '0-1', desc: 'Bureaucratic sophistication' },
-                { name: 'Information', range: '0-1', desc: 'Writing, records, institutional memory' },
-                { name: 'Infrastructure', range: '0-1', desc: 'Roads, monuments, public works' },
+                { name: 'Hierarchy', range: '1–9', desc: 'Administrative levels (1=village, 9=multi-tier empire)' },
+                { name: 'Government', range: '0–1', desc: 'Bureaucratic sophistication' },
+                { name: 'Information', range: '0–1', desc: 'Writing, records, institutional memory' },
+                { name: 'Infrastructure', range: '0–1', desc: 'Roads, monuments, public works' },
               ]}
             />
             
@@ -105,11 +105,11 @@ export default function MethodologyPage() {
               title="Warfare" 
               color="red"
               features={[
-                { name: 'Weapons', range: '0-6', desc: 'Military weapon diversity' },
-                { name: 'Armor', range: '0-8', desc: 'Protective equipment sophistication' },
-                { name: 'Cavalry', range: '0-1', desc: 'Mounted units present' },
-                { name: 'Fortifications', range: '0-11', desc: 'Defensive structures' },
-                { name: 'Iron Working', range: '0-1', desc: 'Iron metallurgy present' },
+                { name: 'Weapons', range: '0–6', desc: 'Military weapon diversity' },
+                { name: 'Armor', range: '0–8', desc: 'Protective equipment sophistication' },
+                { name: 'Cavalry', range: '0–1', desc: 'Mounted units present' },
+                { name: 'Fortifications', range: '0–11', desc: 'Defensive structures' },
+                { name: 'Iron Working', range: '0–1', desc: 'Iron metallurgy present' },
               ]}
             />
             
@@ -117,7 +117,7 @@ export default function MethodologyPage() {
               title="Religion" 
               color="amber"
               features={[
-                { name: 'Religious Hierarchy', range: '0-10', desc: 'Institutional religious complexity' },
+                { name: 'Religious Hierarchy', range: '0–10', desc: 'Institutional religious complexity' },
               ]}
             />
           </div>
@@ -177,8 +177,8 @@ export default function MethodologyPage() {
             <Limitation title="Factor in luck" desc="The arrow that missed vs the one that didn't." />
           </div>
           <p className="mt-4 text-sm text-gray-500">
-            These factors explain most of the variance in your matches' outcomes. The 87-205 year 
-            spread isn't noise—it's reality.
+            These factors explain most of the variance in your matches&apos; outcomes. The wide duration 
+            spread isn&apos;t noise — it&apos;s reality.
           </p>
         </Section>
 
@@ -198,7 +198,7 @@ export default function MethodologyPage() {
           </div>
         </Section>
 
-        {/* Technical Specs (Collapsed) */}
+        {/* Technical Specs */}
         <Section title="Technical Details">
           <div className="bg-gray-900/50 rounded-lg p-5 border border-gray-800 text-sm">
             <div className="grid sm:grid-cols-2 gap-x-8 gap-y-2 text-gray-400">
@@ -241,9 +241,7 @@ export default function MethodologyPage() {
   );
 }
 
-/* 
-   HELPER COMPONENTS
-    */
+/* Helper Components */
 
 function Section({ title, children }) {
   return (

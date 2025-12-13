@@ -164,7 +164,7 @@ function MethodologyPage() {
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                children: "This is pattern-matching, not prophecy. The estimate is a weighted average of similar polities, durations—completely transparent and verifiable."
+                                children: "This is pattern-matching, not prophecy. The estimate is a weighted average of similar polities' durations, completely transparent and verifiable."
                             }, void 0, false, {
                                 fileName: "[project]/src/app/predict/methodology/page.js",
                                 lineNumber: 53,
@@ -184,7 +184,7 @@ function MethodologyPage() {
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(Step, {
                                     number: 1,
                                     title: "Standardize Features",
-                                    children: "Raw features have different scales (Hierarchy: 1-9, Government: 0-1). I standardize each by subtracting the mean and dividing by standard deviation, so no single feature dominates the comparison."
+                                    children: "Raw features have different scales (Hierarchy: 1–9, Government: 0–1). I standardize each by subtracting the mean and dividing by standard deviation, so no single feature dominates the comparison."
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/predict/methodology/page.js",
                                     lineNumber: 62,
@@ -200,9 +200,9 @@ function MethodologyPage() {
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/predict/methodology/page.js",
                                             lineNumber: 70,
-                                            columnNumber: 67
+                                            columnNumber: 72
                                         }, this),
-                                        "—the relative balance of complexity, warfare, and religion—rather than absolute levels."
+                                        " — the relative balance of complexity, warfare, and religion — rather than absolute levels."
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/predict/methodology/page.js",
@@ -212,7 +212,7 @@ function MethodologyPage() {
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(Step, {
                                     number: 3,
                                     title: "Find Top 5 Matches",
-                                    children: "The polities with highest similarity scores become your historical comparisons. You can click each to see exactly which features matched and which differed."
+                                    children: "The polities with highest similarity scores become your historical comparisons. Click each to see exactly which features matched and which differed."
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/predict/methodology/page.js",
                                     lineNumber: 74,
@@ -221,7 +221,7 @@ function MethodologyPage() {
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(Step, {
                                     number: 4,
                                     title: "Weighted Average",
-                                    children: "Duration estimate = Σ(similarity × duration) / Σ(similarity). More similar polities contribute more to the estimate. A 95% match matters more than a 75% match."
+                                    children: "Duration estimate = Σ(similarity × duration) / Σ(similarity). More similar polities contribute more to the estimate. A 90% match matters more than a 75% match."
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/predict/methodology/page.js",
                                     lineNumber: 79,
@@ -258,22 +258,22 @@ function MethodologyPage() {
                                         features: [
                                             {
                                                 name: 'Hierarchy',
-                                                range: '1-9',
+                                                range: '1–9',
                                                 desc: 'Administrative levels (1=village, 9=multi-tier empire)'
                                             },
                                             {
                                                 name: 'Government',
-                                                range: '0-1',
+                                                range: '0–1',
                                                 desc: 'Bureaucratic sophistication'
                                             },
                                             {
                                                 name: 'Information',
-                                                range: '0-1',
+                                                range: '0–1',
                                                 desc: 'Writing, records, institutional memory'
                                             },
                                             {
                                                 name: 'Infrastructure',
-                                                range: '0-1',
+                                                range: '0–1',
                                                 desc: 'Roads, monuments, public works'
                                             }
                                         ]
@@ -288,27 +288,27 @@ function MethodologyPage() {
                                         features: [
                                             {
                                                 name: 'Weapons',
-                                                range: '0-6',
+                                                range: '0–6',
                                                 desc: 'Military weapon diversity'
                                             },
                                             {
                                                 name: 'Armor',
-                                                range: '0-8',
+                                                range: '0–8',
                                                 desc: 'Protective equipment sophistication'
                                             },
                                             {
                                                 name: 'Cavalry',
-                                                range: '0-1',
+                                                range: '0–1',
                                                 desc: 'Mounted units present'
                                             },
                                             {
                                                 name: 'Fortifications',
-                                                range: '0-11',
+                                                range: '0–11',
                                                 desc: 'Defensive structures'
                                             },
                                             {
                                                 name: 'Iron Working',
-                                                range: '0-1',
+                                                range: '0–1',
                                                 desc: 'Iron metallurgy present'
                                             }
                                         ]
@@ -323,7 +323,7 @@ function MethodologyPage() {
                                         features: [
                                             {
                                                 name: 'Religious Hierarchy',
-                                                range: '0-10',
+                                                range: '0–10',
                                                 desc: 'Institutional religious complexity'
                                             }
                                         ]
@@ -609,7 +609,7 @@ function MethodologyPage() {
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 className: "mt-4 text-sm text-gray-500",
-                                children: "These factors explain most of the variance in your matches' outcomes. The 87-205 year spread isn't noise—it's reality."
+                                children: "These factors explain most of the variance in your matches' outcomes. The wide duration spread isn't noise — it's reality."
                             }, void 0, false, {
                                 fileName: "[project]/src/app/predict/methodology/page.js",
                                 lineNumber: 179,
@@ -868,9 +868,7 @@ function MethodologyPage() {
         columnNumber: 5
     }, this);
 }
-/* ============================================================================
-   HELPER COMPONENTS
-   ============================================================================ */ function Section({ title, children }) {
+/* Helper Components */ function Section({ title, children }) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
         className: "mb-10",
         children: [
@@ -879,7 +877,7 @@ function MethodologyPage() {
                 children: title
             }, void 0, false, {
                 fileName: "[project]/src/app/predict/methodology/page.js",
-                lineNumber: 251,
+                lineNumber: 249,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -887,13 +885,13 @@ function MethodologyPage() {
                 children: children
             }, void 0, false, {
                 fileName: "[project]/src/app/predict/methodology/page.js",
-                lineNumber: 252,
+                lineNumber: 250,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/predict/methodology/page.js",
-        lineNumber: 250,
+        lineNumber: 248,
         columnNumber: 5
     }, this);
 }
@@ -906,7 +904,7 @@ function Step({ number, title, children }) {
                 children: number
             }, void 0, false, {
                 fileName: "[project]/src/app/predict/methodology/page.js",
-                lineNumber: 260,
+                lineNumber: 258,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -916,7 +914,7 @@ function Step({ number, title, children }) {
                         children: title
                     }, void 0, false, {
                         fileName: "[project]/src/app/predict/methodology/page.js",
-                        lineNumber: 264,
+                        lineNumber: 262,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -924,19 +922,19 @@ function Step({ number, title, children }) {
                         children: children
                     }, void 0, false, {
                         fileName: "[project]/src/app/predict/methodology/page.js",
-                        lineNumber: 265,
+                        lineNumber: 263,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/predict/methodology/page.js",
-                lineNumber: 263,
+                lineNumber: 261,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/predict/methodology/page.js",
-        lineNumber: 259,
+        lineNumber: 257,
         columnNumber: 5
     }, this);
 }
@@ -964,14 +962,14 @@ function FeatureCategory({ title, color, features }) {
                         className: `w-2 h-2 rounded-full ${colors[color].dot}`
                     }, void 0, false, {
                         fileName: "[project]/src/app/predict/methodology/page.js",
-                        lineNumber: 281,
+                        lineNumber: 279,
                         columnNumber: 9
                     }, this),
                     title
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/predict/methodology/page.js",
-                lineNumber: 280,
+                lineNumber: 278,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -984,7 +982,7 @@ function FeatureCategory({ title, color, features }) {
                                 children: f.name
                             }, void 0, false, {
                                 fileName: "[project]/src/app/predict/methodology/page.js",
-                                lineNumber: 287,
+                                lineNumber: 285,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -996,7 +994,7 @@ function FeatureCategory({ title, color, features }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/predict/methodology/page.js",
-                                lineNumber: 288,
+                                lineNumber: 286,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1007,24 +1005,24 @@ function FeatureCategory({ title, color, features }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/predict/methodology/page.js",
-                                lineNumber: 289,
+                                lineNumber: 287,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, f.name, true, {
                         fileName: "[project]/src/app/predict/methodology/page.js",
-                        lineNumber: 286,
+                        lineNumber: 284,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/app/predict/methodology/page.js",
-                lineNumber: 284,
+                lineNumber: 282,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/predict/methodology/page.js",
-        lineNumber: 279,
+        lineNumber: 277,
         columnNumber: 5
     }, this);
 }
@@ -1037,7 +1035,7 @@ function Limitation({ title, desc }) {
                 children: title
             }, void 0, false, {
                 fileName: "[project]/src/app/predict/methodology/page.js",
-                lineNumber: 300,
+                lineNumber: 298,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1045,13 +1043,13 @@ function Limitation({ title, desc }) {
                 children: desc
             }, void 0, false, {
                 fileName: "[project]/src/app/predict/methodology/page.js",
-                lineNumber: 301,
+                lineNumber: 299,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/predict/methodology/page.js",
-        lineNumber: 299,
+        lineNumber: 297,
         columnNumber: 5
     }, this);
 }
@@ -1064,7 +1062,7 @@ function Stat({ value, label }) {
                 children: value
             }, void 0, false, {
                 fileName: "[project]/src/app/predict/methodology/page.js",
-                lineNumber: 309,
+                lineNumber: 307,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1072,13 +1070,13 @@ function Stat({ value, label }) {
                 children: label
             }, void 0, false, {
                 fileName: "[project]/src/app/predict/methodology/page.js",
-                lineNumber: 310,
+                lineNumber: 308,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/predict/methodology/page.js",
-        lineNumber: 308,
+        lineNumber: 306,
         columnNumber: 5
     }, this);
 }

@@ -7,18 +7,17 @@ export default function Home() {
     <>
       {/* Hero Section */}
       <section className="hero">
-        {/*span className="hero-tag">Coming January 2026</span>*/}
-        <h1>I Am Building Asimov's <em>Psychohistory</em></h1>
+        <h1>I Am Building Asimov&apos;s <em>Psychohistory</em></h1>
         <p className="subtitle">
           What happens when you feed 10,000 years of civilizational data 
           to a machine learning model? It learns why empires fall.
         </p>
       </section>
 
-      {/* Animated Stats - counts up on scroll */}
+      {/* Animated Stats */}
       <StatsRow />
 
-      {/* 6 Expandable Discovery Cards */}
+      {/* Expandable Discovery Cards */}
       <DiscoveriesSection />
 
       {/* CTA Section */}
@@ -34,9 +33,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About CTA - Prominent */}
+      {/* About CTA */}
       <section className="about-cta">
-        <p className="about-cta-text">Curious who's behind this?</p>
+        <p className="about-cta-text">Curious who&apos;s behind this?</p>
         <Link href="/about" className="about-link">
           Meet the Builder →
         </Link>
@@ -44,4 +43,3 @@ export default function Home() {
     </>
   )
 }
-
