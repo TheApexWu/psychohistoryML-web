@@ -542,49 +542,45 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/constants.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$similarity$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/similarity.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.js [app-ssr] (ecmascript)");
 'use client';
 ;
 ;
 ;
 ;
-// Era color mapping for badges
+;
+// Era colors
 const ERA_COLORS = {
     'Ancient': {
         bg: 'bg-amber-500/20',
         text: 'text-amber-400',
-        border: 'border-amber-500/30'
+        border: 'border-amber-500/30',
+        dot: 'bg-amber-400'
     },
     'Classical': {
         bg: 'bg-blue-500/20',
         text: 'text-blue-400',
-        border: 'border-blue-500/30'
+        border: 'border-blue-500/30',
+        dot: 'bg-blue-400'
     },
     'Medieval': {
         bg: 'bg-purple-500/20',
         text: 'text-purple-400',
-        border: 'border-purple-500/30'
+        border: 'border-purple-500/30',
+        dot: 'bg-purple-400'
     },
     'Early Modern': {
         bg: 'bg-green-500/20',
         text: 'text-green-400',
-        border: 'border-green-500/30'
+        border: 'border-green-500/30',
+        dot: 'bg-green-400'
     }
 };
-/**
- * OUTLIER DETECTION
- * -----------------
- * How it works:
- * 1. For each feature, compute the distribution (mean, std) across the polity pool
- * 2. Flag if user's value is OUTSIDE the historical range (below min or above max)
- * 3. Also flag if >2.5 std deviations from mean (very unusual but still in range)
- * 
- * Key insight: Values AT the min/max are valid historical configurations.
- * Only flag values that NO historical polity ever had.
- */ function detectOutliers(config, matchedPolities, allPolities, selectedEra) {
+// Detect outliers
+function detectOutliers(config, allPolities, selectedEra) {
     const outliers = [];
-    // Get the relevant polity pool (era-filtered or all)
     const pool = selectedEra ? allPolities.filter((p)=>p.era === selectedEra) : allPolities;
-    if (pool.length < 10) return outliers; // Not enough data to detect outliers
+    if (pool.length < 10) return outliers;
     const featureKeys = [
         'hierarchy',
         'government',
@@ -598,41 +594,20 @@ const ERA_COLORS = {
         'religion'
     ];
     featureKeys.forEach((key)=>{
-        // Get distribution of this feature across the pool
         const values = pool.filter((p)=>p.rawFeatures && p.rawFeatures[key] !== undefined).map((p)=>p.rawFeatures[key]);
         if (values.length < 10) return;
-        const mean = values.reduce((a, b)=>a + b, 0) / values.length;
-        const std = Math.sqrt(values.reduce((sum, v)=>sum + Math.pow(v - mean, 2), 0) / values.length);
         const min = Math.min(...values);
         const max = Math.max(...values);
         const userVal = config[key];
-        const zScore = std > 0 ? Math.abs(userVal - mean) / std : 0;
-        // FIXED: Only flag if OUTSIDE the range, not at boundaries
-        // Values at min/max are valid - some historical polity had that value
-        const isOutsideRange = userVal < min - 0.01 || userVal > max + 0.01; // Small tolerance for floating point
-        // Also flag extreme z-scores even if in range (very unusual combinations)
-        const isExtremeZScore = zScore > 2.5 && !isOutsideRange;
-        if (isOutsideRange) {
-            const eraLabel = selectedEra || 'all';
+        // Only flag if OUTSIDE the historical range
+        if (userVal < min - 0.01 || userVal > max + 0.01) {
             outliers.push({
                 feature: key,
                 label: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PARAMETERS"][key]?.label || key,
                 userVal,
-                mean: mean.toFixed(2),
-                severity: 'high',
-                message: userVal > max ? `Your ${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PARAMETERS"][key]?.label || key} (${userVal}) exceeds any ${eraLabel} polity (max: ${max.toFixed(1)})` : `Your ${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PARAMETERS"][key]?.label || key} (${userVal}) is below any ${eraLabel} polity (min: ${min.toFixed(1)})`
-            });
-        } else if (isExtremeZScore) {
-            // In range but statistically unusual
-            const percentile = Math.round(values.filter((v)=>v < userVal).length / values.length * 100);
-            const direction = userVal > mean ? 'higher' : 'lower';
-            outliers.push({
-                feature: key,
-                label: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PARAMETERS"][key]?.label || key,
-                userVal,
-                mean: mean.toFixed(2),
-                severity: 'moderate',
-                message: `Your ${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PARAMETERS"][key]?.label || key} (${userVal}) is ${direction} than ${Math.max(percentile, 100 - percentile)}% of polities (unusual but valid)`
+                min,
+                max,
+                message: userVal > max ? `Exceeds historical maximum (${max.toFixed(1)})` : `Below historical minimum (${min.toFixed(1)})`
             });
         }
     });
@@ -644,13 +619,11 @@ function PredictPage() {
     const [polities, setPolities] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [scalerParams, setScalerParams] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [results, setResults] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [eraComparison, setEraComparison] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
     const [activePreset, setActivePreset] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [showCalculation, setShowCalculation] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
-    const [expandedPolity, setExpandedPolity] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [showOutlierDetails, setShowOutlierDetails] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    // Load data on mount
+    const [showAdvanced, setShowAdvanced] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [expandedMatch, setExpandedMatch] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    // Load data
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         async function loadData() {
             try {
@@ -658,10 +631,8 @@ function PredictPage() {
                     fetch('/data/polities.json'),
                     fetch('/data/scaler-params.json')
                 ]);
-                const politiesData = await politiesRes.json();
-                const scalerData = await scalerRes.json();
-                setPolities(politiesData);
-                setScalerParams(scalerData);
+                setPolities(await politiesRes.json());
+                setScalerParams(await scalerRes.json());
                 setIsLoading(false);
             } catch (error) {
                 console.error('Failed to load data:', error);
@@ -670,7 +641,7 @@ function PredictPage() {
         }
         loadData();
     }, []);
-    // Compute results when config or era changes
+    // Compute results
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         if (!polities.length || !scalerParams) return;
         const similarityResults = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$similarity$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["findSimilarPolities"])(config, polities, scalerParams, {
@@ -678,32 +649,30 @@ function PredictPage() {
             era: selectedEra,
             maxDuration: 1000
         });
-        const eraResults = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$similarity$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["compareEras"])(config, polities, scalerParams, {
-            k: 5,
-            maxDuration: 1000
-        });
         setResults(similarityResults);
-        setEraComparison(eraResults);
-        setExpandedPolity(null);
+        setExpandedMatch(null);
     }, [
         config,
         selectedEra,
         polities,
         scalerParams
     ]);
-    // Detect outliers (memoized for performance)
+    // Detect outliers
     const outliers = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMemo"])(()=>{
-        if (!polities.length || !results?.similar) return [];
-        return detectOutliers(config, results.similar, polities, selectedEra);
+        if (!polities.length) return [];
+        return detectOutliers(config, polities, selectedEra);
     }, [
         config,
         polities,
-        results,
         selectedEra
+    ]);
+    const outlierKeys = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMemo"])(()=>new Set(outliers.map((o)=>o.feature)), [
+        outliers
     ]);
     const handleParamChange = (key, value)=>{
         const param = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PARAMETERS"][key];
         const numValue = parseFloat(value);
+        if (isNaN(numValue)) return;
         const clampedValue = Math.min(Math.max(numValue, param.min), param.max);
         setConfig((prev)=>({
                 ...prev,
@@ -716,191 +685,181 @@ function PredictPage() {
         setActivePreset(presetName);
     };
     const risk = results ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$similarity$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getRiskAssessment"])(results.durationEstimate) : null;
-    const getRangePosition = (value, min, max)=>{
-        if (min === max) return 50; // Center if no range
-        const normalized = (value - min) / (max - min); // 0 to 1
-        return 10 + normalized * 80; // Map to 10%-90% of bar width
-    };
-    // Check if matches span multiple eras
-    const getEraSpan = ()=>{
-        if (!results?.similar?.length) return null;
-        const eras = [
-            ...new Set(results.similar.map((p)=>p.era))
-        ];
-        return eras.length > 1 ? eras : null;
-    };
-    const eraSpan = getEraSpan();
     if (isLoading) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "min-h-screen bg-[#0a0a0a] flex items-center justify-center",
+            className: "min-h-screen flex items-center justify-center",
             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "text-gray-400 text-lg",
+                className: "text-gray-400",
                 children: "Loading historical data..."
             }, void 0, false, {
                 fileName: "[project]/src/app/predict/page.js",
-                lineNumber: 202,
+                lineNumber: 137,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/predict/page.js",
-            lineNumber: 201,
+            lineNumber: 136,
             columnNumber: 7
         }, this);
     }
+    // Group parameters
+    const complexityParams = Object.entries(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PARAMETERS"]).filter(([_, p])=>p.category === 'complexity');
+    const warfareParams = Object.entries(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PARAMETERS"]).filter(([_, p])=>p.category === 'warfare');
+    const religionParams = Object.entries(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PARAMETERS"]).filter(([_, p])=>p.category === 'religion');
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "min-h-screen bg-[#0a0a0a] text-gray-100",
+        className: "predict-page",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
-                className: "border-b border-gray-800 bg-[#0a0a0a]/95 backdrop-blur sticky top-0 z-10",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "max-w-7xl mx-auto px-8 py-5",
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex items-center justify-between",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                        href: "/",
-                                        className: "text-2xl font-semibold tracking-tight text-white hover:text-gray-300 transition",
-                                        children: "PsychohistoryML"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/predict/page.js",
-                                        lineNumber: 214,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "ml-3 text-base text-gray-500",
-                                        children: "/ Simulator"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/predict/page.js",
-                                        lineNumber: 217,
-                                        columnNumber: 15
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/src/app/predict/page.js",
-                                lineNumber: 213,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
-                                className: "flex gap-8 text-base",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                        href: "/research",
-                                        className: "text-gray-400 hover:text-white transition",
-                                        children: "Research"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/predict/page.js",
-                                        lineNumber: 220,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                        href: "/predict/methodology",
-                                        className: "text-gray-400 hover:text-white transition",
-                                        children: "Methodology"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/predict/page.js",
-                                        lineNumber: 221,
-                                        columnNumber: 15
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/src/app/predict/page.js",
-                                lineNumber: 219,
-                                columnNumber: 13
-                            }, this)
-                        ]
-                    }, void 0, true, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                className: "hero",
+                style: {
+                    paddingBottom: '2rem'
+                },
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                        children: "Polity Simulator"
+                    }, void 0, false, {
                         fileName: "[project]/src/app/predict/page.js",
-                        lineNumber: 212,
-                        columnNumber: 11
+                        lineNumber: 151,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "subtitle",
+                        children: "Configure a hypothetical civilization and discover which historical societies shared similar characteristics. Based on 372 polities from the Seshat database."
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/predict/page.js",
+                        lineNumber: 152,
+                        columnNumber: 9
                     }, this)
-                }, void 0, false, {
-                    fileName: "[project]/src/app/predict/page.js",
-                    lineNumber: 211,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
+                ]
+            }, void 0, true, {
                 fileName: "[project]/src/app/predict/page.js",
-                lineNumber: 210,
+                lineNumber: 150,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
-                className: "max-w-7xl mx-auto px-8 py-10",
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "max-w-6xl mx-auto px-6 pb-16",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "mb-10",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                        className: "mb-8",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                className: "text-4xl font-bold mb-3",
-                                children: "Polity Simulator"
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                className: "text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4",
+                                children: "Quick Presets"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/predict/page.js",
-                                lineNumber: 230,
+                                lineNumber: 162,
                                 columnNumber: 11
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "text-lg text-gray-400",
-                                children: "Configure a hypothetical society and find historically similar polities from 372 in the Seshat database."
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex flex-wrap gap-3",
+                                children: Object.keys(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PRESETS"]).map((preset)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        onClick: ()=>handlePresetSelect(preset),
+                                        className: `px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${activePreset === preset ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' : 'bg-[#161616] text-gray-300 hover:bg-[#1a1a1a] border border-gray-800'}`,
+                                        children: preset
+                                    }, preset, false, {
+                                        fileName: "[project]/src/app/predict/page.js",
+                                        lineNumber: 167,
+                                        columnNumber: 15
+                                    }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/predict/page.js",
-                                lineNumber: 231,
+                                lineNumber: 165,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/predict/page.js",
-                        lineNumber: 229,
+                        lineNumber: 161,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "grid grid-cols-1 lg:grid-cols-5 gap-10",
+                        className: "grid lg:grid-cols-5 gap-8",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "lg:col-span-3 space-y-8",
+                                className: "lg:col-span-3 space-y-6",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-[#111] rounded-xl p-5 border border-gray-800/50",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                className: "text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4",
-                                                children: "Quick Presets"
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 242,
-                                                columnNumber: 15
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex flex-wrap gap-3",
-                                                children: Object.keys(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PRESETS"]).map((preset)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                        onClick: ()=>handlePresetSelect(preset),
-                                                        className: `px-4 py-2 rounded-lg text-sm font-medium transition ${activePreset === preset ? 'bg-blue-600 text-white' : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50'}`,
-                                                        children: preset
-                                                    }, preset, false, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 245,
-                                                        columnNumber: 19
-                                                    }, this))
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 243,
-                                                columnNumber: 15
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
+                                    outliers.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "bg-amber-500/10 border border-amber-500/30 rounded-xl p-4",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex items-start gap-3",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-amber-400 text-lg",
+                                                    children: "⚠️"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/predict/page.js",
+                                                    lineNumber: 192,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                            className: "text-sm font-medium text-amber-400",
+                                                            children: [
+                                                                outliers.length,
+                                                                " value",
+                                                                outliers.length > 1 ? 's' : '',
+                                                                " outside historical range"
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/src/app/predict/page.js",
+                                                            lineNumber: 194,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                            className: "text-xs text-amber-400/70 mt-1",
+                                                            children: "Your configuration includes values no historical polity had. Results may be less reliable."
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/predict/page.js",
+                                                            lineNumber: 197,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "mt-2 space-y-1",
+                                                            children: outliers.map((o, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "text-xs text-amber-400/80",
+                                                                    children: [
+                                                                        "• ",
+                                                                        o.label,
+                                                                        ": ",
+                                                                        o.message
+                                                                    ]
+                                                                }, o.feature, true, {
+                                                                    fileName: "[project]/src/app/predict/page.js",
+                                                                    lineNumber: 203,
+                                                                    columnNumber: 25
+                                                                }, this))
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/predict/page.js",
+                                                            lineNumber: 201,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/app/predict/page.js",
+                                                    lineNumber: 193,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/app/predict/page.js",
+                                            lineNumber: 191,
+                                            columnNumber: 17
+                                        }, this)
+                                    }, void 0, false, {
                                         fileName: "[project]/src/app/predict/page.js",
-                                        lineNumber: 241,
-                                        columnNumber: 13
+                                        lineNumber: 190,
+                                        columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-[#111] rounded-xl p-6 border border-gray-800/50",
+                                        className: "card",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                className: "text-xs font-semibold text-gray-500 uppercase tracking-wider mb-6",
+                                                className: "text-lg font-semibold text-white mb-6",
                                                 children: "Configure Your Polity"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 262,
+                                                lineNumber: 215,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -913,38 +872,38 @@ function PredictPage() {
                                                                 className: "w-2.5 h-2.5 rounded-full bg-blue-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 267,
+                                                                lineNumber: 220,
                                                                 columnNumber: 19
                                                             }, this),
                                                             "Complexity"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 266,
+                                                        lineNumber: 219,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "space-y-5",
-                                                        children: Object.entries(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PARAMETERS"]).filter(([_, p])=>p.category === 'complexity').map(([key, param])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ParameterControl, {
+                                                        children: complexityParams.map(([key, param])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ParameterControl, {
                                                                 paramKey: key,
                                                                 param: param,
                                                                 value: config[key],
                                                                 onChange: handleParamChange,
-                                                                isOutlier: outliers.some((o)=>o.feature === key)
+                                                                isOutlier: outlierKeys.has(key)
                                                             }, key, false, {
                                                                 fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 274,
-                                                                columnNumber: 23
+                                                                lineNumber: 225,
+                                                                columnNumber: 21
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 270,
+                                                        lineNumber: 223,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 265,
+                                                lineNumber: 218,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -957,38 +916,69 @@ function PredictPage() {
                                                                 className: "w-2.5 h-2.5 rounded-full bg-red-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 289,
+                                                                lineNumber: 240,
                                                                 columnNumber: 19
                                                             }, this),
                                                             "Warfare"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 288,
+                                                        lineNumber: 239,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "space-y-5",
-                                                        children: Object.entries(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PARAMETERS"]).filter(([_, p])=>p.category === 'warfare').map(([key, param])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ParameterControl, {
+                                                        children: warfareParams.slice(0, 2).map(([key, param])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ParameterControl, {
                                                                 paramKey: key,
                                                                 param: param,
                                                                 value: config[key],
                                                                 onChange: handleParamChange,
-                                                                isOutlier: outliers.some((o)=>o.feature === key)
+                                                                isOutlier: outlierKeys.has(key)
                                                             }, key, false, {
                                                                 fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 296,
+                                                                lineNumber: 247,
+                                                                columnNumber: 21
+                                                            }, this))
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/predict/page.js",
+                                                        lineNumber: 245,
+                                                        columnNumber: 17
+                                                    }, this),
+                                                    !showAdvanced && warfareParams.length > 2 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                        onClick: ()=>setShowAdvanced(true),
+                                                        className: "mt-4 text-sm text-gray-500 hover:text-gray-300 transition",
+                                                        children: [
+                                                            "+ Show ",
+                                                            warfareParams.length - 2,
+                                                            " more warfare parameters"
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/src/app/predict/page.js",
+                                                        lineNumber: 259,
+                                                        columnNumber: 19
+                                                    }, this),
+                                                    showAdvanced && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "mt-5 space-y-5",
+                                                        children: warfareParams.slice(2).map(([key, param])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ParameterControl, {
+                                                                paramKey: key,
+                                                                param: param,
+                                                                value: config[key],
+                                                                onChange: handleParamChange,
+                                                                isOutlier: outlierKeys.has(key)
+                                                            }, key, false, {
+                                                                fileName: "[project]/src/app/predict/page.js",
+                                                                lineNumber: 270,
                                                                 columnNumber: 23
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 292,
-                                                        columnNumber: 17
+                                                        lineNumber: 268,
+                                                        columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 287,
+                                                lineNumber: 238,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1000,82 +990,94 @@ function PredictPage() {
                                                                 className: "w-2.5 h-2.5 rounded-full bg-amber-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 311,
+                                                                lineNumber: 286,
                                                                 columnNumber: 19
                                                             }, this),
                                                             "Religion"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 310,
+                                                        lineNumber: 285,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "space-y-5",
-                                                        children: Object.entries(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PARAMETERS"]).filter(([_, p])=>p.category === 'religion').map(([key, param])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ParameterControl, {
+                                                        children: religionParams.map(([key, param])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ParameterControl, {
                                                                 paramKey: key,
                                                                 param: param,
                                                                 value: config[key],
                                                                 onChange: handleParamChange,
-                                                                isOutlier: outliers.some((o)=>o.feature === key)
+                                                                isOutlier: outlierKeys.has(key)
                                                             }, key, false, {
                                                                 fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 318,
-                                                                columnNumber: 23
+                                                                lineNumber: 291,
+                                                                columnNumber: 21
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 314,
+                                                        lineNumber: 289,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 309,
+                                                lineNumber: 284,
                                                 columnNumber: 15
+                                            }, this),
+                                            showAdvanced && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>setShowAdvanced(false),
+                                                className: "mt-6 text-sm text-gray-500 hover:text-gray-300 transition",
+                                                children: "− Hide advanced parameters"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/predict/page.js",
+                                                lineNumber: 304,
+                                                columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/predict/page.js",
-                                        lineNumber: 261,
+                                        lineNumber: 214,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-[#111] rounded-xl p-5 border border-gray-800/50",
+                                        className: "card",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                className: "text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4",
+                                                className: "text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4",
                                                 children: "Filter by Era"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 333,
+                                                lineNumber: 315,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex flex-wrap gap-3",
+                                                className: "flex flex-wrap gap-2",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                         onClick: ()=>setSelectedEra(null),
-                                                        className: `px-4 py-2 rounded-lg text-sm font-medium transition ${selectedEra === null ? 'bg-gray-600 text-white' : 'bg-gray-800/50 text-gray-400 hover:bg-gray-700/50'}`,
+                                                        className: `px-4 py-2 rounded-lg text-sm font-medium transition ${selectedEra === null ? 'bg-gray-700 text-white' : 'bg-[#161616] text-gray-400 hover:bg-[#1a1a1a] border border-gray-800'}`,
                                                         children: "All Eras"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 335,
+                                                        lineNumber: 319,
                                                         columnNumber: 17
                                                     }, this),
-                                                    __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ERAS"].map((era)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                    __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ERAS"].map((era)=>{
+                                                        const colors = ERA_COLORS[era];
+                                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                             onClick: ()=>setSelectedEra(era),
-                                                            className: `px-4 py-2 rounded-lg text-sm font-medium transition ${selectedEra === era ? `${ERA_COLORS[era].bg} ${ERA_COLORS[era].text} border ${ERA_COLORS[era].border}` : 'bg-gray-800/50 text-gray-400 hover:bg-gray-700/50'}`,
+                                                            className: `px-4 py-2 rounded-lg text-sm font-medium transition ${selectedEra === era ? `${colors.bg} ${colors.text} border ${colors.border}` : 'bg-[#161616] text-gray-400 hover:bg-[#1a1a1a] border border-gray-800'}`,
                                                             children: era
                                                         }, era, false, {
                                                             fileName: "[project]/src/app/predict/page.js",
-                                                            lineNumber: 346,
-                                                            columnNumber: 19
-                                                        }, this))
+                                                            lineNumber: 332,
+                                                            columnNumber: 21
+                                                        }, this);
+                                                    })
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 334,
+                                                lineNumber: 318,
                                                 columnNumber: 15
                                             }, this),
                                             selectedEra && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1083,173 +1085,73 @@ function PredictPage() {
                                                 children: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$constants$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ERA_DESCRIPTIONS"][selectedEra]
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 360,
+                                                lineNumber: 347,
                                                 columnNumber: 17
                                             }, this),
                                             !selectedEra && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 className: "mt-3 text-xs text-gray-600",
-                                                children: "Matches polities by feature similarity across all time periods. Use era filters for period-specific comparisons."
+                                                children: "Tip: The same configuration meant different things in different periods. Filter by era for more meaningful comparisons."
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 363,
+                                                lineNumber: 350,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/predict/page.js",
-                                        lineNumber: 332,
+                                        lineNumber: 314,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/predict/page.js",
-                                lineNumber: 238,
+                                lineNumber: 186,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "lg:col-span-2 space-y-6",
                                 children: [
-                                    outliers.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-amber-500/10 border border-amber-500/30 rounded-xl p-4",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                onClick: ()=>setShowOutlierDetails(!showOutlierDetails),
-                                                className: "w-full flex items-start justify-between",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "flex items-start gap-3",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-amber-400 text-lg",
-                                                                children: "⚠️"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 381,
-                                                                columnNumber: 21
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "text-left",
-                                                                children: [
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                        className: "text-sm font-medium text-amber-400",
-                                                                        children: [
-                                                                            outliers.length,
-                                                                            " unusual configuration",
-                                                                            outliers.length > 1 ? 's' : '',
-                                                                            " detected"
-                                                                        ]
-                                                                    }, void 0, true, {
-                                                                        fileName: "[project]/src/app/predict/page.js",
-                                                                        lineNumber: 383,
-                                                                        columnNumber: 23
-                                                                    }, this),
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                        className: "text-xs text-amber-400/70 mt-1",
-                                                                        children: "Your config has values outside typical historical ranges. Results may be less reliable."
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/src/app/predict/page.js",
-                                                                        lineNumber: 386,
-                                                                        columnNumber: 23
-                                                                    }, this)
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 382,
-                                                                columnNumber: 21
-                                                            }, this)
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 380,
-                                                        columnNumber: 19
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                        className: "text-amber-400/50 text-sm",
-                                                        children: showOutlierDetails ? '▼' : '▶'
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 391,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 376,
-                                                columnNumber: 17
-                                            }, this),
-                                            showOutlierDetails && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "mt-4 space-y-2 pl-8",
-                                                children: [
-                                                    outliers.map((outlier, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "text-xs text-amber-400/80 py-1 border-b border-amber-500/20 last:border-0",
-                                                            children: outlier.message
-                                                        }, i, false, {
-                                                            fileName: "[project]/src/app/predict/page.js",
-                                                            lineNumber: 397,
-                                                            columnNumber: 23
-                                                        }, this)),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-xs text-gray-500 mt-2 pt-2",
-                                                        children: "ML models extrapolate poorly outside training data. Consider adjusting these values or interpreting results with extra caution."
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 401,
-                                                        columnNumber: 21
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 395,
-                                                columnNumber: 19
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/src/app/predict/page.js",
-                                        lineNumber: 375,
-                                        columnNumber: 15
-                                    }, this),
                                     results && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-[#111] rounded-xl p-6 border border-gray-800/50",
+                                        className: "card text-center",
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "text-center mb-6",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "text-6xl font-bold tracking-tight",
-                                                        style: {
-                                                            color: risk?.color || '#f97316'
-                                                        },
-                                                        children: [
-                                                            "~",
-                                                            results.durationEstimate || '—'
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 414,
-                                                        columnNumber: 19
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "text-base text-gray-500 mt-1",
-                                                        children: "estimated years"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 417,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-sm text-gray-500 mb-2",
+                                                children: "Estimated Duration"
+                                            }, void 0, false, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 413,
+                                                lineNumber: 364,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex justify-center gap-8 mb-6",
+                                                className: "text-5xl font-bold mb-1",
+                                                style: {
+                                                    color: risk?.color || '#f97316'
+                                                },
+                                                children: [
+                                                    "~",
+                                                    results.durationEstimate
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/app/predict/page.js",
+                                                lineNumber: 365,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-gray-500 mb-4",
+                                                children: "years"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/predict/page.js",
+                                                lineNumber: 371,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex justify-center gap-6 mb-4 text-sm",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "text-center",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "text-xl font-semibold text-white",
+                                                                className: "text-white font-semibold",
                                                                 children: [
                                                                     results.durationRange[0],
                                                                     "–",
@@ -1257,184 +1159,59 @@ function PredictPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 423,
+                                                                lineNumber: 376,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "text-xs text-gray-500 uppercase tracking-wide",
+                                                                className: "text-xs text-gray-500 uppercase",
                                                                 children: "Range"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 426,
+                                                                lineNumber: 377,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 422,
+                                                        lineNumber: 375,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "text-center",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "text-xl font-semibold text-white",
+                                                                className: "text-white font-semibold",
                                                                 children: [
                                                                     Math.round(results.confidence * 100),
                                                                     "%"
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 429,
+                                                                lineNumber: 380,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "text-xs text-gray-500 uppercase tracking-wide",
+                                                                className: "text-xs text-gray-500 uppercase",
                                                                 children: "Confidence"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 432,
+                                                                lineNumber: 381,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 428,
-                                                        columnNumber: 19
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "text-center",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "text-xl font-semibold text-white",
-                                                                children: results.similar.length
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 435,
-                                                                columnNumber: 21
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "text-xs text-gray-500 uppercase tracking-wide",
-                                                                children: "Matches"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 438,
-                                                                columnNumber: 21
-                                                            }, this)
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 434,
+                                                        lineNumber: 379,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 421,
+                                                lineNumber: 374,
                                                 columnNumber: 17
                                             }, this),
-                                            results.durationRange[0] !== null && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "mb-6",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "relative h-10 bg-[#1a1a1a] rounded-lg overflow-visible",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "absolute top-1/2 -translate-y-1/2 h-2 rounded-full",
-                                                                style: {
-                                                                    left: '10%',
-                                                                    right: '10%',
-                                                                    background: 'linear-gradient(90deg, #333, #60a5fa, #333)'
-                                                                }
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 447,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "absolute top-1/2 w-4 h-4 rounded-full border-2 border-[#0a0a0a]",
-                                                                style: {
-                                                                    left: `${getRangePosition(results.durationEstimate, results.durationRange[0], results.durationRange[1])}%`,
-                                                                    transform: 'translate(-50%, -50%)',
-                                                                    backgroundColor: risk?.color || '#f97316'
-                                                                }
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 456,
-                                                                columnNumber: 23
-                                                            }, this)
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 445,
-                                                        columnNumber: 21
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "flex justify-between text-xs text-gray-600 mt-2 px-1",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                children: [
-                                                                    results.durationRange[0],
-                                                                    " yrs"
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 466,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                children: [
-                                                                    results.durationEstimate,
-                                                                    " yrs"
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 467,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                children: [
-                                                                    results.durationRange[1],
-                                                                    " yrs"
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 468,
-                                                                columnNumber: 23
-                                                            }, this)
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 465,
-                                                        columnNumber: 21
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 444,
-                                                columnNumber: 19
-                                            }, this),
-                                            eraSpan && !selectedEra && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "mb-4 px-3 py-2 bg-blue-500/10 border border-blue-500/20 rounded-lg",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-xs text-blue-400",
-                                                    children: [
-                                                        "Matches span ",
-                                                        eraSpan.join(', '),
-                                                        " eras. Use era filter for period-specific results."
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/src/app/predict/page.js",
-                                                    lineNumber: 476,
-                                                    columnNumber: 21
-                                                }, this)
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 475,
-                                                columnNumber: 19
-                                            }, this),
                                             risk && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "text-center text-sm font-medium px-4 py-2 rounded-lg",
+                                                className: "inline-block px-4 py-2 rounded-lg text-sm font-medium",
                                                 style: {
                                                     backgroundColor: `${risk.color}15`,
                                                     color: risk.color
@@ -1442,109 +1219,89 @@ function PredictPage() {
                                                 children: risk.description
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 484,
+                                                lineNumber: 387,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/predict/page.js",
-                                        lineNumber: 411,
+                                        lineNumber: 363,
                                         columnNumber: 15
                                     }, this),
-                                    results && results.similar.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-[#111] rounded-xl border border-gray-800/50 overflow-hidden",
+                                    results?.similar?.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "card",
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                onClick: ()=>setShowCalculation(!showCalculation),
-                                                className: "w-full px-6 py-4 flex justify-between items-center hover:bg-gray-800/30 transition",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                        className: "text-xs font-semibold text-gray-500 uppercase tracking-wider",
-                                                        children: "Calculation Breakdown"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 504,
-                                                        columnNumber: 19
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                        className: "text-gray-500",
-                                                        children: showCalculation ? '−' : '+'
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 507,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                className: "text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4",
+                                                children: "Most Similar Polities"
+                                            }, void 0, false, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 500,
+                                                lineNumber: 400,
                                                 columnNumber: 17
                                             }, this),
-                                            showCalculation && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "px-6 pb-4",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "space-y-2",
-                                                        children: results.similar.map((polity, i)=>{
-                                                            const contribution = polity.similarity / 100 * polity.duration;
-                                                            const isExpanded = expandedPolity === i;
-                                                            const fullPolity = polities.find((p)=>p.name === polity.name);
-                                                            const eraColor = ERA_COLORS[polity.era] || ERA_COLORS['Ancient'];
-                                                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                children: [
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                        onClick: ()=>setExpandedPolity(isExpanded ? null : i),
-                                                                        className: "flex items-center gap-3 p-3 bg-[#0d0d0d] rounded-lg hover:bg-[#151515] transition cursor-pointer",
-                                                                        children: [
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                className: "flex-1 min-w-0",
-                                                                                children: [
-                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                        className: "flex items-center gap-2",
-                                                                                        children: [
-                                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                                                className: "font-medium text-white text-sm truncate",
-                                                                                                children: polity.name
-                                                                                            }, void 0, false, {
-                                                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                                                lineNumber: 528,
-                                                                                                columnNumber: 35
-                                                                                            }, this),
-                                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                                                className: `text-[10px] px-1.5 py-0.5 rounded ${eraColor.bg} ${eraColor.text}`,
-                                                                                                children: polity.era
-                                                                                            }, void 0, false, {
-                                                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                                                lineNumber: 529,
-                                                                                                columnNumber: 35
-                                                                                            }, this)
-                                                                                        ]
-                                                                                    }, void 0, true, {
-                                                                                        fileName: "[project]/src/app/predict/page.js",
-                                                                                        lineNumber: 527,
-                                                                                        columnNumber: 33
-                                                                                    }, this),
-                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                        className: "text-xs text-gray-600",
-                                                                                        children: [
-                                                                                            (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$similarity$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["formatYear"])(polity.start),
-                                                                                            "–",
-                                                                                            (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$similarity$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["formatYear"])(polity.end)
-                                                                                        ]
-                                                                                    }, void 0, true, {
-                                                                                        fileName: "[project]/src/app/predict/page.js",
-                                                                                        lineNumber: 533,
-                                                                                        columnNumber: 33
-                                                                                    }, this)
-                                                                                ]
-                                                                            }, void 0, true, {
-                                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                                lineNumber: 526,
-                                                                                columnNumber: 31
-                                                                            }, this),
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                className: "text-right flex-shrink-0",
-                                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "space-y-2",
+                                                children: results.similar.map((polity, i)=>{
+                                                    const colors = ERA_COLORS[polity.era] || ERA_COLORS['Ancient'];
+                                                    const isExpanded = expandedMatch === i;
+                                                    const fullPolity = polities.find((p)=>p.name === polity.name);
+                                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                                onClick: ()=>setExpandedMatch(isExpanded ? null : i),
+                                                                className: "w-full text-left p-3 rounded-lg bg-[#0d0d0d] hover:bg-[#111] transition",
+                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "flex items-center justify-between",
+                                                                    children: [
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                            className: "flex-1 min-w-0",
+                                                                            children: [
+                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                    className: "flex items-center gap-2",
+                                                                                    children: [
+                                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                            className: `w-2 h-2 rounded-full ${colors.dot}`
+                                                                                        }, void 0, false, {
+                                                                                            fileName: "[project]/src/app/predict/page.js",
+                                                                                            lineNumber: 418,
+                                                                                            columnNumber: 33
+                                                                                        }, this),
+                                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                            className: "font-medium text-white text-sm truncate",
+                                                                                            children: polity.name
+                                                                                        }, void 0, false, {
+                                                                                            fileName: "[project]/src/app/predict/page.js",
+                                                                                            lineNumber: 419,
+                                                                                            columnNumber: 33
+                                                                                        }, this)
+                                                                                    ]
+                                                                                }, void 0, true, {
+                                                                                    fileName: "[project]/src/app/predict/page.js",
+                                                                                    lineNumber: 417,
+                                                                                    columnNumber: 31
+                                                                                }, this),
+                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                    className: "text-xs text-gray-600 mt-0.5 ml-4",
+                                                                                    children: [
+                                                                                        polity.duration,
+                                                                                        " years · ",
+                                                                                        polity.era
+                                                                                    ]
+                                                                                }, void 0, true, {
+                                                                                    fileName: "[project]/src/app/predict/page.js",
+                                                                                    lineNumber: 423,
+                                                                                    columnNumber: 31
+                                                                                }, this)
+                                                                            ]
+                                                                        }, void 0, true, {
+                                                                            fileName: "[project]/src/app/predict/page.js",
+                                                                            lineNumber: 416,
+                                                                            columnNumber: 29
+                                                                        }, this),
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                            className: "flex items-center gap-3",
+                                                                            children: [
+                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                                     className: "text-sm font-semibold text-blue-400",
                                                                                     children: [
                                                                                         polity.similarity,
@@ -1552,235 +1309,71 @@ function PredictPage() {
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/src/app/predict/page.js",
-                                                                                    lineNumber: 538,
-                                                                                    columnNumber: 33
-                                                                                }, this)
-                                                                            }, void 0, false, {
-                                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                                lineNumber: 537,
-                                                                                columnNumber: 31
-                                                                            }, this),
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                className: "text-right flex-shrink-0 w-16",
-                                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                    className: "text-sm text-gray-400",
-                                                                                    children: [
-                                                                                        polity.duration,
-                                                                                        " yrs"
-                                                                                    ]
-                                                                                }, void 0, true, {
+                                                                                    lineNumber: 428,
+                                                                                    columnNumber: 31
+                                                                                }, this),
+                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                    className: "text-gray-600 text-xs",
+                                                                                    children: isExpanded ? '▼' : '▶'
+                                                                                }, void 0, false, {
                                                                                     fileName: "[project]/src/app/predict/page.js",
-                                                                                    lineNumber: 541,
-                                                                                    columnNumber: 33
+                                                                                    lineNumber: 431,
+                                                                                    columnNumber: 31
                                                                                 }, this)
-                                                                            }, void 0, false, {
-                                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                                lineNumber: 540,
-                                                                                columnNumber: 31
-                                                                            }, this),
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                className: "text-right flex-shrink-0 w-12",
-                                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                    className: "text-xs text-gray-600 font-mono",
-                                                                                    children: [
-                                                                                        "→ ",
-                                                                                        Math.round(contribution)
-                                                                                    ]
-                                                                                }, void 0, true, {
-                                                                                    fileName: "[project]/src/app/predict/page.js",
-                                                                                    lineNumber: 544,
-                                                                                    columnNumber: 33
-                                                                                }, this)
-                                                                            }, void 0, false, {
-                                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                                lineNumber: 543,
-                                                                                columnNumber: 31
-                                                                            }, this),
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                className: "text-gray-600 text-sm",
-                                                                                children: isExpanded ? '▼' : '▶'
-                                                                            }, void 0, false, {
-                                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                                lineNumber: 548,
-                                                                                columnNumber: 31
-                                                                            }, this)
-                                                                        ]
-                                                                    }, void 0, true, {
-                                                                        fileName: "[project]/src/app/predict/page.js",
-                                                                        lineNumber: 522,
-                                                                        columnNumber: 29
-                                                                    }, this),
-                                                                    isExpanded && fullPolity && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ComparisonTable, {
-                                                                        config: config,
-                                                                        polity: polity,
-                                                                        fullPolity: fullPolity
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/src/app/predict/page.js",
-                                                                        lineNumber: 555,
-                                                                        columnNumber: 31
-                                                                    }, this)
-                                                                ]
-                                                            }, i, true, {
-                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 520,
-                                                                columnNumber: 27
-                                                            }, this);
-                                                        })
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 512,
-                                                        columnNumber: 21
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "flex justify-between items-center mt-4 pt-4 border-t border-gray-800",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-sm font-semibold text-white",
-                                                                children: "Weighted Average"
+                                                                            ]
+                                                                        }, void 0, true, {
+                                                                            fileName: "[project]/src/app/predict/page.js",
+                                                                            lineNumber: 427,
+                                                                            columnNumber: 29
+                                                                        }, this)
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/src/app/predict/page.js",
+                                                                    lineNumber: 415,
+                                                                    columnNumber: 27
+                                                                }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 568,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-sm font-semibold text-white",
-                                                                children: [
-                                                                    results.durationEstimate,
-                                                                    " years"
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 569,
-                                                                columnNumber: 23
-                                                            }, this)
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 567,
-                                                        columnNumber: 21
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-xs text-gray-600 mt-4",
-                                                        children: [
-                                                            "Based on ",
-                                                            results.candidateCount,
-                                                            " polities in database. Click any row to compare features."
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 572,
-                                                        columnNumber: 21
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 511,
-                                                columnNumber: 19
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/src/app/predict/page.js",
-                                        lineNumber: 499,
-                                        columnNumber: 15
-                                    }, this),
-                                    eraComparison.length > 0 && !selectedEra && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-[#111] rounded-xl p-6 border border-gray-800/50",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                className: "text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4",
-                                                children: "Same Config, Different Eras"
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 584,
-                                                columnNumber: 17
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "space-y-3",
-                                                children: eraComparison.map((era)=>{
-                                                    const eraColor = ERA_COLORS[era.era] || ERA_COLORS['Ancient'];
-                                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "flex justify-between items-center py-3 border-b border-gray-800/50 last:border-0",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "flex items-center gap-2",
-                                                                children: [
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                        className: `w-2 h-2 rounded-full ${eraColor.bg.replace('/20', '')}`
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/src/app/predict/page.js",
-                                                                        lineNumber: 596,
-                                                                        columnNumber: 27
-                                                                    }, this),
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                        className: "text-base text-gray-300",
-                                                                        children: era.era
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/src/app/predict/page.js",
-                                                                        lineNumber: 597,
-                                                                        columnNumber: 27
-                                                                    }, this)
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 595,
+                                                                lineNumber: 411,
                                                                 columnNumber: 25
                                                             }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "text-right",
-                                                                children: [
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                        className: "font-semibold text-white text-base",
-                                                                        children: era.durationEstimate ? `${era.durationEstimate} yrs` : '—'
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/src/app/predict/page.js",
-                                                                        lineNumber: 600,
-                                                                        columnNumber: 27
-                                                                    }, this),
-                                                                    era.topMatch && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                        className: "text-xs text-gray-500 truncate max-w-[140px]",
-                                                                        children: [
-                                                                            "e.g. ",
-                                                                            era.topMatch.name
-                                                                        ]
-                                                                    }, void 0, true, {
-                                                                        fileName: "[project]/src/app/predict/page.js",
-                                                                        lineNumber: 604,
-                                                                        columnNumber: 29
-                                                                    }, this)
-                                                                ]
-                                                            }, void 0, true, {
+                                                            isExpanded && fullPolity && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ExpandedPolityDetails, {
+                                                                config: config,
+                                                                polity: polity,
+                                                                fullPolity: fullPolity
+                                                            }, void 0, false, {
                                                                 fileName: "[project]/src/app/predict/page.js",
-                                                                lineNumber: 599,
-                                                                columnNumber: 25
+                                                                lineNumber: 440,
+                                                                columnNumber: 27
                                                             }, this)
                                                         ]
-                                                    }, era.era, true, {
+                                                    }, `${polity.name}-${i}`, true, {
                                                         fileName: "[project]/src/app/predict/page.js",
-                                                        lineNumber: 591,
+                                                        lineNumber: 410,
                                                         columnNumber: 23
                                                     }, this);
                                                 })
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 587,
+                                                lineNumber: 403,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                className: "mt-4 text-xs text-gray-600",
-                                                children: "Historical context changes outcomes. The same configuration could mean different things in different eras."
+                                                className: "text-xs text-gray-600 mt-4",
+                                                children: "Estimate is a similarity-weighted average of these polities' durations."
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/predict/page.js",
-                                                lineNumber: 613,
+                                                lineNumber: 451,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/predict/page.js",
-                                        lineNumber: 583,
+                                        lineNumber: 399,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-[#0d0d0d] rounded-xl p-5 border-l-4 border-amber-600/50",
+                                        className: "p-4 border-l-2 border-amber-600/50 bg-[#0d0d0d] rounded-r-lg",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             className: "text-sm text-gray-500",
                                             children: [
@@ -1789,63 +1382,63 @@ function PredictPage() {
                                                     children: "Note:"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/predict/page.js",
-                                                    lineNumber: 622,
+                                                    lineNumber: 460,
                                                     columnNumber: 17
                                                 }, this),
                                                 " This is pattern-matching, not prediction. Similar configurations produced different outcomes depending on leadership, geography, and luck — none of which are in our model."
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/predict/page.js",
-                                            lineNumber: 621,
+                                            lineNumber: 459,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/predict/page.js",
-                                        lineNumber: 620,
+                                        lineNumber: 458,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/predict/page.js",
-                                lineNumber: 371,
+                                lineNumber: 359,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/predict/page.js",
-                        lineNumber: 236,
+                        lineNumber: 183,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "mt-16 text-center",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                             href: "/predict/methodology",
-                            className: "text-gray-500 hover:text-gray-300 text-base transition",
+                            className: "text-gray-500 hover:text-gray-300 transition",
                             children: "How does this work? Read the methodology →"
                         }, void 0, false, {
                             fileName: "[project]/src/app/predict/page.js",
-                            lineNumber: 632,
+                            lineNumber: 470,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/predict/page.js",
-                        lineNumber: 631,
+                        lineNumber: 469,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/predict/page.js",
-                lineNumber: 227,
+                lineNumber: 158,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/predict/page.js",
-        lineNumber: 208,
+        lineNumber: 148,
         columnNumber: 5
     }, this);
 }
-// Parameter Control Component with Slider + Number Input
+// Parameter Control with Slider + Number Input
 function ParameterControl({ paramKey, param, value, onChange, isOutlier }) {
     const [inputValue, setInputValue] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(value.toString());
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
@@ -1874,11 +1467,11 @@ function ParameterControl({ paramKey, param, value, onChange, isOutlier }) {
         children: [
             isOutlier && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                 className: "absolute -left-4 top-1 text-amber-400 text-sm",
-                title: "Unusual value",
+                title: "Value outside historical range",
                 children: "⚠️"
             }, void 0, false, {
                 fileName: "[project]/src/app/predict/page.js",
-                lineNumber: 674,
+                lineNumber: 512,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1889,7 +1482,7 @@ function ParameterControl({ paramKey, param, value, onChange, isOutlier }) {
                         children: param.label
                     }, void 0, false, {
                         fileName: "[project]/src/app/predict/page.js",
-                        lineNumber: 677,
+                        lineNumber: 515,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1901,13 +1494,13 @@ function ParameterControl({ paramKey, param, value, onChange, isOutlier }) {
                         className: `w-16 px-2 py-1 text-right text-base font-medium border rounded focus:outline-none focus:border-blue-500 transition ${isOutlier ? 'bg-amber-500/10 border-amber-500/30 text-amber-300' : 'bg-gray-800/50 border-gray-700/50 text-white'}`
                     }, void 0, false, {
                         fileName: "[project]/src/app/predict/page.js",
-                        lineNumber: 680,
+                        lineNumber: 518,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/predict/page.js",
-                lineNumber: 676,
+                lineNumber: 514,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1920,7 +1513,7 @@ function ParameterControl({ paramKey, param, value, onChange, isOutlier }) {
                 className: "w-full h-2 bg-gray-700/50 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:transition [&::-webkit-slider-thumb]:hover:bg-gray-200 [&::-webkit-slider-thumb]:shadow-md"
             }, void 0, false, {
                 fileName: "[project]/src/app/predict/page.js",
-                lineNumber: 693,
+                lineNumber: 531,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1928,23 +1521,18 @@ function ParameterControl({ paramKey, param, value, onChange, isOutlier }) {
                 children: param.description
             }, void 0, false, {
                 fileName: "[project]/src/app/predict/page.js",
-                lineNumber: 711,
+                lineNumber: 549,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/predict/page.js",
-        lineNumber: 672,
+        lineNumber: 510,
         columnNumber: 5
     }, this);
 }
-/**
- * COMPARISON TABLE - COLOR FIX
- * Color logic:
- * - Green: Close match (diff < 0.5)
- * - Blue: Polity value is higher
- * - Orange: Polity value is lower
- */ function ComparisonTable({ config, polity, fullPolity }) {
+// Expanded Polity Details
+function ExpandedPolityDetails({ config, polity, fullPolity }) {
     const featureMapping = [
         {
             key: 'hierarchy',
@@ -1989,215 +1577,234 @@ function ParameterControl({ paramKey, param, value, onChange, isOutlier }) {
     ];
     const hasRawFeatures = fullPolity?.rawFeatures;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "mt-2 mb-3 bg-[#080808] rounded-lg border border-gray-800/50 overflow-hidden",
+        className: "mt-2 p-4 bg-[#080808] rounded-lg border border-gray-800/50 text-sm",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "px-4 py-3 bg-[#0a0a0a] border-b border-gray-800/50 flex justify-between items-center",
+                className: "grid grid-cols-2 gap-2 text-xs mb-4",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "text-xs text-gray-500 uppercase tracking-wider",
-                        children: "Feature Comparison"
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "text-gray-500",
+                        children: "Period"
                     }, void 0, false, {
                         fileName: "[project]/src/app/predict/page.js",
-                        lineNumber: 742,
+                        lineNumber: 575,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                        className: "text-xs text-gray-600",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "text-gray-300",
                         children: [
-                            polity.similarity,
-                            "% similar"
+                            (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$similarity$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["formatYear"])(polity.start),
+                            " – ",
+                            (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$similarity$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["formatYear"])(polity.end)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/predict/page.js",
-                        lineNumber: 745,
+                        lineNumber: 576,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "text-gray-500",
+                        children: "Duration"
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/predict/page.js",
+                        lineNumber: 579,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "text-gray-300",
+                        children: [
+                            polity.duration,
+                            " years"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/app/predict/page.js",
+                        lineNumber: 580,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "text-gray-500",
+                        children: "Similarity"
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/predict/page.js",
+                        lineNumber: 581,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "text-gray-300",
+                        children: [
+                            polity.similarity,
+                            "% match"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/app/predict/page.js",
+                        lineNumber: 582,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/predict/page.js",
-                lineNumber: 741,
+                lineNumber: 574,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center px-4 py-2 bg-[#0a0a0a] border-b border-gray-800/50 text-xs text-gray-500 uppercase tracking-wider",
+            hasRawFeatures && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "border-t border-gray-800 pt-3",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "w-1/3",
-                        children: "Feature"
+                        className: "text-xs text-gray-500 mb-2 uppercase tracking-wider",
+                        children: "Feature Comparison"
                     }, void 0, false, {
                         fileName: "[project]/src/app/predict/page.js",
-                        lineNumber: 752,
-                        columnNumber: 9
+                        lineNumber: 588,
+                        columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "w-1/4 text-center",
-                        children: "You"
-                    }, void 0, false, {
+                        className: "grid grid-cols-4 gap-1 text-xs mb-1",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "text-gray-600",
+                                children: "Feature"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/predict/page.js",
+                                lineNumber: 592,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "text-gray-600 text-center",
+                                children: "You"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/predict/page.js",
+                                lineNumber: 593,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "text-gray-600 text-center",
+                                children: "Them"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/predict/page.js",
+                                lineNumber: 594,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "text-gray-600 text-right",
+                                children: "Diff"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/predict/page.js",
+                                lineNumber: 595,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/src/app/predict/page.js",
-                        lineNumber: 753,
-                        columnNumber: 9
+                        lineNumber: 591,
+                        columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "w-1/4 text-center",
-                        children: polity.name.split(' ').slice(0, 2).join(' ')
+                        className: "space-y-1",
+                        children: featureMapping.map(({ key, label })=>{
+                            const yourVal = config[key];
+                            const theirVal = fullPolity.rawFeatures[key];
+                            const diff = theirVal !== undefined ? theirVal - yourVal : null;
+                            const isClose = diff !== null && Math.abs(diff) < 0.5;
+                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "grid grid-cols-4 gap-1 text-xs py-1",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "text-gray-400",
+                                        children: label
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/predict/page.js",
+                                        lineNumber: 608,
+                                        columnNumber: 19
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "text-center text-white",
+                                        children: yourVal
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/predict/page.js",
+                                        lineNumber: 609,
+                                        columnNumber: 19
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "text-center text-gray-300",
+                                        children: theirVal !== undefined ? theirVal.toFixed(1) : '—'
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/predict/page.js",
+                                        lineNumber: 610,
+                                        columnNumber: 19
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "text-right",
+                                        children: diff !== null && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: `px-1.5 py-0.5 rounded ${isClose ? 'bg-green-500/20 text-green-400' : diff > 0 ? 'bg-blue-500/20 text-blue-400' : 'bg-orange-500/20 text-orange-400'}`,
+                                            children: isClose ? '≈' : diff > 0 ? `+${diff.toFixed(1)}` : diff.toFixed(1)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/predict/page.js",
+                                            lineNumber: 615,
+                                            columnNumber: 23
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/predict/page.js",
+                                        lineNumber: 613,
+                                        columnNumber: 19
+                                    }, this)
+                                ]
+                            }, key, true, {
+                                fileName: "[project]/src/app/predict/page.js",
+                                lineNumber: 607,
+                                columnNumber: 17
+                            }, this);
+                        })
                     }, void 0, false, {
                         fileName: "[project]/src/app/predict/page.js",
-                        lineNumber: 754,
-                        columnNumber: 9
+                        lineNumber: 599,
+                        columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "w-1/6 text-right",
-                        children: "Diff"
-                    }, void 0, false, {
+                        className: "mt-3 pt-2 border-t border-gray-800/50 text-xs text-gray-600",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "text-green-400",
+                                children: "≈"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/predict/page.js",
+                                lineNumber: 633,
+                                columnNumber: 13
+                            }, this),
+                            " close ·",
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "text-blue-400 ml-2",
+                                children: "+"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/predict/page.js",
+                                lineNumber: 634,
+                                columnNumber: 13
+                            }, this),
+                            " higher ·",
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "text-orange-400 ml-2",
+                                children: "−"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/predict/page.js",
+                                lineNumber: 635,
+                                columnNumber: 13
+                            }, this),
+                            " lower"
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/src/app/predict/page.js",
-                        lineNumber: 755,
-                        columnNumber: 9
+                        lineNumber: 632,
+                        columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/predict/page.js",
-                lineNumber: 751,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "divide-y divide-gray-800/30",
-                children: featureMapping.map(({ key, label })=>{
-                    const yourVal = config[key];
-                    const polityVal = hasRawFeatures ? fullPolity.rawFeatures[key] : null;
-                    const diff = polityVal !== null ? polityVal - yourVal : null;
-                    const isExact = diff !== null && Math.abs(diff) < 0.05;
-                    const isClose = diff !== null && Math.abs(diff) < 0.5;
-                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex items-center px-4 py-2.5 text-sm hover:bg-[#0d0d0d] transition",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "w-1/3 text-gray-400",
-                                children: label
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/predict/page.js",
-                                lineNumber: 770,
-                                columnNumber: 15
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "w-1/4 text-center text-white font-medium",
-                                children: yourVal
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/predict/page.js",
-                                lineNumber: 771,
-                                columnNumber: 15
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "w-1/4 text-center text-gray-300",
-                                children: polityVal !== null ? polityVal : '—'
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/predict/page.js",
-                                lineNumber: 773,
-                                columnNumber: 15
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "w-1/6 text-right",
-                                children: diff !== null ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: `text-xs px-2 py-0.5 rounded ${isExact ? 'bg-green-500/20 text-green-400' : isClose ? 'bg-green-500/10 text-green-400/70' : diff > 0 ? 'bg-blue-500/20 text-blue-400' : 'bg-orange-500/20 text-orange-400'}`,
-                                    children: isExact ? '=' : diff > 0 ? `+${diff.toFixed(1)}` : diff.toFixed(1)
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/predict/page.js",
-                                    lineNumber: 779,
-                                    columnNumber: 19
-                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "text-gray-600 text-xs",
-                                    children: "—"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/predict/page.js",
-                                    lineNumber: 791,
-                                    columnNumber: 19
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/predict/page.js",
-                                lineNumber: 777,
-                                columnNumber: 15
-                            }, this)
-                        ]
-                    }, key, true, {
-                        fileName: "[project]/src/app/predict/page.js",
-                        lineNumber: 769,
-                        columnNumber: 13
-                    }, this);
-                })
-            }, void 0, false, {
-                fileName: "[project]/src/app/predict/page.js",
-                lineNumber: 759,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "px-4 py-3 bg-[#0a0a0a] border-t border-gray-800/50",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "flex justify-between items-center",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-xs text-gray-600",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "text-green-400",
-                                    children: "Green"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/predict/page.js",
-                                    lineNumber: 803,
-                                    columnNumber: 13
-                                }, this),
-                                " = close ·",
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "text-blue-400 ml-1",
-                                    children: "Blue"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/predict/page.js",
-                                    lineNumber: 804,
-                                    columnNumber: 13
-                                }, this),
-                                " = higher ·",
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "text-orange-400 ml-1",
-                                    children: "Orange"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/predict/page.js",
-                                    lineNumber: 805,
-                                    columnNumber: 13
-                                }, this),
-                                " = lower"
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/src/app/predict/page.js",
-                            lineNumber: 802,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-xs text-gray-500",
-                            children: [
-                                fullPolity.era,
-                                " · ",
-                                fullPolity.duration,
-                                " years"
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/src/app/predict/page.js",
-                            lineNumber: 807,
-                            columnNumber: 11
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/src/app/predict/page.js",
-                    lineNumber: 801,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/src/app/predict/page.js",
-                lineNumber: 800,
-                columnNumber: 7
+                lineNumber: 587,
+                columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/predict/page.js",
-        lineNumber: 740,
+        lineNumber: 572,
         columnNumber: 5
     }, this);
 }

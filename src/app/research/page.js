@@ -73,7 +73,7 @@ export default function ResearchPage() {
           </div>
           <div className="data-item">
             <span className="data-value">10</span>
-            <span className="data-label">Features used</span>
+            <span className="data-label">Key Features used</span>
           </div>
           <div className="data-item">
             <span className="data-value">4</span>

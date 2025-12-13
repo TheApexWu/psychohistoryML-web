@@ -241,9 +241,9 @@ export default function MethodologyPage() {
   );
 }
 
-/* ============================================================================
+/* 
    HELPER COMPONENTS
-   ============================================================================ */
+    */
 
 function Section({ title, children }) {
   return (
