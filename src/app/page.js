@@ -17,6 +17,17 @@ export default function Home() {
       {/* Animated Stats */}
       <StatsRow />
 
+      {/* Dataset Context */}
+      <section className="dataset-context">
+        <p>
+          The <a href="https://seshatdatabank.info/" target="_blank" rel="noopener noreferrer">Seshat Global History Databank</a> is 
+          an international research project that systematically codes historical and archaeological 
+          data, everything from administrative hierarchy to military technology to religious practices, 
+          across hundreds of societies spanning 10,000 years. I trained a Random Forest classifier on 
+          this data to find patterns in civilizational stability.
+        </p>
+      </section>
+
       {/* Expandable Discovery Cards */}
       <DiscoveriesSection />
 

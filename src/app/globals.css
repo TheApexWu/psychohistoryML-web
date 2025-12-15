@@ -1016,3 +1016,26 @@ footer {
     padding: 0 1rem;
   }
 }
+
+/* Dataset Context */
+.dataset-context {
+  max-width: 640px;
+  margin: 0 auto 3rem;
+  text-align: center;
+}
+
+.dataset-context p {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.dataset-context a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.dataset-context a:hover {
+  color: var(--text-primary);
+}

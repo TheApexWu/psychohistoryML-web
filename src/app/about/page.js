@@ -8,7 +8,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="about-hero">
         <span className="hero-tag">The Human Behind the Model</span>
-        <h1>Sadly, my real name is <em>Alex Wu</em></h1>
+        <h1>My real name is <em>Alex Wu</em></h1>
         <p className="subtitle">
           "Amadeus Woo" just a cooler name.
         </p>
