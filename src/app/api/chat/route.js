@@ -1,5 +1,4 @@
-import { readFile } from 'fs/promises';
-import path from 'path';
+import polities from '../../../public/data/polities.json';
 
 const SYSTEM_PROMPT = `You are a research interface for PsychohistoryML, analyzing 10,000 years of civilizational data from Seshat.
 
@@ -148,18 +147,6 @@ ${similarStr}
 User question: ${originalMessage}`;
 }
 
-// Cache polities data to avoid re-reading on every request
-let polities = null;
-
-async function loadPolities() {
-  if (polities) return polities;
-
-  const filePath = path.join(process.cwd(), 'public', 'data', 'polities.json');
-  const data = await readFile(filePath, 'utf-8');
-  polities = JSON.parse(data);
-  return polities;
-}
-
 export async function POST(request) {
   // Check for API key
   if (!process.env.ANTHROPIC_API_KEY) {
@@ -189,22 +176,11 @@ export async function POST(request) {
     );
   }
 
-  // Load polities data
-  let politiesData;
-  try {
-    politiesData = await loadPolities();
-  } catch (err) {
-    return Response.json(
-      { error: 'Failed to load polities data: ' + err.message },
-      { status: 500 }
-    );
-  }
-
   // Detect polity mentions (may return multiple matches)
-  const { searchTerm, matches } = findMentionedPolities(message, politiesData);
+  const { searchTerm, matches } = findMentionedPolities(message, polities);
 
   // Build enriched message with context or disambiguation
-  const enrichedMessage = buildEnrichedMessage(message, searchTerm, matches, politiesData);
+  const enrichedMessage = buildEnrichedMessage(message, searchTerm, matches, polities);
 
   // Build messages array for Claude API
   const messages = [

@@ -88,16 +88,21 @@ Complexity alone predicts nothing (AUC 0.505). Ancient complexity correlates wit
     return `${year} CE`;
 }
 /**
- * Find all polities mentioned in message (case-insensitive substring match)
+ * Find all polities mentioned in message (case-insensitive word boundary match)
  * Returns { searchTerm, matches[] }
  */ function findMentionedPolities(message, polities) {
     const lowerMessage = message.toLowerCase();
-    // Common search terms to check (sorted by length descending for greedy matching)
-    const potentialTerms = [];
+    // Helper: check if term matches with word boundaries
+    function matchesWithBoundary(text, term) {
+        if (term.length < 4) return false; // Minimum 4 characters
+        const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`(?:^|[\\s.,!?;:'"()\\[\\]{}])${escaped}(?:[\\s.,!?;:'"()\\[\\]{}]|$)`, 'i');
+        return regex.test(text);
+    }
     // Extract potential polity name fragments from the message
+    const potentialTerms = [];
     for (const polity of polities){
-        const lowerName = polity.name.toLowerCase();
-        if (lowerMessage.includes(lowerName)) {
+        if (matchesWithBoundary(lowerMessage, polity.name.toLowerCase())) {
             potentialTerms.push({
                 term: polity.name,
                 polity
@@ -105,13 +110,12 @@ Complexity alone predicts nothing (AUC 0.505). Ancient complexity correlates wit
         }
     }
     if (potentialTerms.length === 0) {
-        // Try to find partial matches - look for key civilization words
+        // Try to find partial matches - look for key civilization words (min 4 chars)
         const keywords = [
             'roman',
             'byzantine',
             'ottoman',
             'mongol',
-            'han',
             'aztec',
             'persian',
             'spanish',
@@ -122,10 +126,15 @@ Complexity alone predicts nothing (AUC 0.505). Ancient complexity correlates wit
             'papal',
             'venice',
             'carolingian',
-            'merovingian'
+            'merovingian',
+            'shang',
+            'ming',
+            'tang',
+            'song',
+            'qing'
         ];
         for (const keyword of keywords){
-            if (lowerMessage.includes(keyword)) {
+            if (matchesWithBoundary(lowerMessage, keyword)) {
                 const matches = polities.filter((p)=>p.name.toLowerCase().includes(keyword));
                 if (matches.length > 0) {
                     return {
