@@ -1,4 +1,4 @@
-import polities from '../../../public/data/polities.json';
+import polities from '../../../../public/data/polities.json';
 
 const SYSTEM_PROMPT = `You are a research interface for PsychohistoryML, analyzing 10,000 years of civilizational data from Seshat.
 
