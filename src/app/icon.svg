@@ -10,6 +10,10 @@
     <line x1="50" y1="50" x2="6" y2="58"/>
     <line x1="50" y1="50" x2="12" y2="22"/>
   </g>
-  <!-- Psi symbol - gold -->
-  <text x="50" y="68" text-anchor="middle" font-family="Times New Roman, Georgia, serif" font-size="52" fill="#d4a574">Ψ</text>
+  <!-- Psi symbol as path - gold -->
+  <path d="M50 20 L50 80 M50 35 C35 35 28 28 28 22 M50 35 C65 35 72 28 72 22"
+        stroke="#d4a574"
+        stroke-width="5"
+        stroke-linecap="round"
+        fill="none"/>
 </svg>
