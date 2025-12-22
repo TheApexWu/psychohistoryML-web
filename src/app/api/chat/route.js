@@ -18,10 +18,37 @@ FINDINGS TO REFERENCE:
 Complexity alone predicts nothing (AUC 0.505). Ancient complexity correlates with SHORTER duration (B=-159). Early Modern complexity correlates with LONGER duration (B=+6). Religion shows 27% feature importance. Warfare variables added 28% AUC improvement. Classical era shows +0.634 moderation effect.`;
 
 /**
- * Compute Euclidean distance between two feature vectors
+ * Similarity weights - design choice, not raw model output.
+ *
+ * Model-derived weights (traced through PCA): complexity 44%, warfare 29%, religion 27%
+ * Complexity is deliberately de-emphasized here because the research finding is that
+ * complexity alone predicts nothing (AUC 0.505) - it only matters in era/warfare context.
+ * These weights surface polities that differ on what the research says matters.
+ *
+ * Order: hierarchy, government, information, infrastructure, weapons, armor,
+ * cavalry, fortifications, ironWorking, religion
  */
-function euclideanDistance(a, b) {
-  return Math.sqrt(a.reduce((sum, val, i) => sum + Math.pow(val - b[i], 2), 0));
+const FEATURE_WEIGHTS = [
+  0.02,  // hierarchy      - complexity (near-zero predictive value)
+  0.02,  // government     - complexity
+  0.02,  // information    - complexity
+  0.02,  // infrastructure - complexity
+  0.12,  // weapons        - warfare (high)
+  0.12,  // armor          - warfare (high)
+  0.12,  // cavalry        - warfare (high)
+  0.12,  // fortifications - warfare (high)
+  0.08,  // ironWorking    - tech enabler (medium)
+  0.36,  // religion       - highest individual importance
+];
+
+/**
+ * Compute weighted Euclidean distance between two feature vectors
+ * Higher weights = feature differences matter more for similarity
+ */
+function weightedEuclideanDistance(a, b) {
+  return Math.sqrt(
+    a.reduce((sum, val, i) => sum + FEATURE_WEIGHTS[i] * Math.pow(val - b[i], 2), 0)
+  );
 }
 
 /**
@@ -86,14 +113,15 @@ function findMentionedPolities(message, polities) {
 }
 
 /**
- * Find k most similar polities using Euclidean distance on features array
+ * Find k most similar polities using weighted Euclidean distance
+ * Weights emphasize warfare + religion over complexity (based on ML findings)
  */
 function findSimilarPolities(targetPolity, polities, k = 3) {
   const withDistance = polities
     .filter(p => p.id !== targetPolity.id)
     .map(p => ({
       ...p,
-      distance: euclideanDistance(targetPolity.features, p.features)
+      distance: weightedEuclideanDistance(targetPolity.features, p.features)
     }));
 
   withDistance.sort((a, b) => a.distance - b.distance);

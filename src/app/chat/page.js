@@ -65,6 +65,7 @@ export default function ChatPage() {
           <li style={listItemStyle}>- Explain causal mechanisms (only correlations from ML pattern-matching)</li>
           <li style={listItemStyle}>- Account for civilizational influence chains (Rome influenced Byzantium, etc.)</li>
           <li style={listItemStyle}>- Give predictions with high confidence (256 polities is a small sample)</li>
+          <li style={listItemStyle}>- Find &quot;similar&quot; polities the same way the model does (similarity is approximate)</li>
         </ul>
       </div>
 
