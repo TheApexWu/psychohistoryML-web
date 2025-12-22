@@ -2,6 +2,7 @@
 import AnimatedROC from '../../components/visualizations/AnimatedROC'
 import FeatureImportance from '../../components/visualizations/FeatureImportance'
 import EraStratification from '../../components/visualizations/EraStratification'
+import MechanismDiagram from '../../components/visualizations/MechanismDiagram'
 import { ModelJourney } from '../../components/visualizations/AnimatedStats'
 import Link from 'next/link'
 
@@ -100,10 +101,18 @@ export default function ResearchPage() {
         <ModelJourney />
 
         <p>
-          Then something interesting happened. Adding warfare technology variables 
-          jumped performance to 0.648. Adding religion pushed it to 0.744. The model 
+          Then something interesting happened. Adding warfare technology variables
+          jumped performance to 0.648. Adding religion pushed it to 0.744. The model
           was learning something real.
         </p>
+
+        <h3 style={{ marginTop: '2.5rem', marginBottom: '0.5rem' }}>The Three-Mechanism Model</h3>
+        <p style={{ marginBottom: '1.5rem' }}>
+          The final model combines three mechanism categories. Hover over each to see
+          how it contributes to predictions.
+        </p>
+
+        <MechanismDiagram />
 
         <AnimatedROC />
 
