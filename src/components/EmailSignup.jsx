@@ -13,28 +13,28 @@ export default function EmailSignup() {
   // In React, they're passed as props: onClick={handleClick}
   
   const handleSubmit = async (e) => {
-    e.preventDefault()  // Prevent default form submission
+    e.preventDefault()
     setStatus('loading')
-    
     try {
-      // In my real app, submit to your API or Formspree
-      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+        const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
-      })
-      
-      if (response.ok) {
+        })
+        
+        if (response.ok) {
         setStatus('success')
-        setMessage('Thanks! I\'ll notify you when everything is launched.')
-      } else {
-        throw new Error('Submission failed')
-      }
+        setMessage('Thanks! You\'ll hear from me when everything launches.')
+        setEmail('')
+        } else {
+        const data = await response.json()
+        throw new Error(data.error || 'Subscription failed')
+        }
     } catch (error) {
-      setStatus('error')
-      setMessage('Something went wrong. Please try again.')
+        setStatus('error')
+        setMessage(error.message || 'Something went wrong. Please try again.')
     }
-  }
+}
 
   // Conditional Rendering
   // Render different UI based on state

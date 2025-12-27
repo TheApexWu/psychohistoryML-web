@@ -1,82 +1,207 @@
-import { StatsRow } from '../components/visualizations/AnimatedStats'
-import DiscoveriesSection from '../components/visualizations/DiscoveriesSection'
+'use client'
+
 import Link from 'next/link'
 
 export default function Home() {
   return (
-    <>
-      {/* Hero Section */}
-      <section className="hero">
-        <h1>I Am Building Asimov&apos;s <em>Psychohistory</em></h1>
-        <p className="subtitle">
-          What happens when you feed 10,000 years of civilizational data
-          to a machine learning model? It learns why empires fall.
+    <div className="home-minimal">
+      {/* Name/Identity */}
+      <header className="home-header">
+        <h1>Amadeus Woo</h1>
+        <p className="home-tagline">
+          Solo data scientist and ML/AI researcher delving into historical patterns, audio, and composing creative builds.
         </p>
-      </section>
 
-      {/* Animated Stats */}
-      <StatsRow />
+        <nav className="home-links">
+          <a href="https://github.com/TheApexWu" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/in/alex-wu-873b25181/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <Link href="/about">About</Link>
+        </nav>
+      </header>
 
-      {/* Dataset Context */}
-      <section className="dataset-context">
-        <p>
-          The <a href="https://seshatdatabank.info/" target="_blank" rel="noopener noreferrer">Seshat Global History Databank</a> is
-          an international research project that systematically codes historical and archaeological
-          data, everything from administrative hierarchy to military technology to religious practices,
-          across hundreds of societies spanning 10,000 years. I trained a Random Forest classifier on
-          this data to find patterns in civilizational stability.
-        </p>
-      </section>
+      {/* Featured Project */}
+      <section className="home-featured">
+        <h2>Featured</h2>
 
-      {/* Expandable Discovery Cards */}
-      <DiscoveriesSection />
-
-      {/* CTA Section */}
-      <section className="research-cta">
-        <p>Want the full methodology and analysis?</p>
-        <div className="cta-buttons">
-          <Link href="/research" className="research-link">
-            Read the Research
-          </Link>
-          <Link href="/predict" className="research-link secondary">
-            Try the Simulator
-          </Link>
+        <div className="featured-card">
+          <div className="featured-header">
+            <h3>PsychohistoryML</h3>
+            <span className="featured-tag">Research</span>
+          </div>
+          <p className="featured-desc">
+            Exploratory ML analysis of 10,000 years of civilizational data from the Seshat databank.
+            Random Forest (AUC ~0.67) identifying era-dependent patterns in societal duration.
+          </p>
+          <div className="featured-links">
+            <Link href="/discover" className="featured-btn primary">Explore Project</Link>
+            <Link href="/research" className="featured-btn">Research</Link>
+            <Link href="/predict" className="featured-btn">Simulator</Link>
+            <Link href="/chat" className="featured-btn">Chat</Link>
+          </div>
         </div>
       </section>
 
-      {/* Chatbot CTA */}
-      <section className="research-cta" style={{ borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
-        <p>Or ask questions directly</p>
-        <Link
-          href="/chat"
-          className="research-link"
-          style={{
-            background: 'transparent',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}
-        >
-          Try Research Assistant Bot
-          <span style={{
-            fontSize: '0.65rem',
-            padding: '0.2rem 0.4rem',
-            background: 'var(--accent-dim)',
-            color: 'var(--text-primary)',
-            borderRadius: '3px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em'
-          }}>Beta</span>
-        </Link>
+      {/* More Projects placeholder */}
+      <section className="home-projects">
+        <h2>More Projects</h2>
+        <p className="coming-soon">Coming soon...</p>
       </section>
 
-      {/* About CTA */}
-      <section className="about-cta">
-        <p className="about-cta-text">Curious who&apos;s behind this?</p>
-        <Link href="/about" className="about-link">
-          Meet the Builder →
-        </Link>
+      {/* Contact */}
+      <section className="home-contact">
+        <h2>Contact</h2>
+        <p>
+          Best way to reach me: <code>amadeuswoo@proton.me</code>
+        </p>
       </section>
-    </>
+
+      <style jsx>{`
+        .home-minimal {
+          max-width: 700px;
+          margin: 0 auto;
+          padding: 4rem 1.5rem;
+        }
+
+        .home-header {
+          margin-bottom: 3rem;
+        }
+
+        .home-header h1 {
+          font-size: 1.75rem;
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+          color: var(--text-primary);
+        }
+
+        .home-tagline {
+          color: var(--text-muted);
+          font-size: 1rem;
+          line-height: 1.5;
+          margin-bottom: 1rem;
+        }
+
+        .home-links {
+          display: flex;
+          gap: 1.5rem;
+        }
+
+        .home-links a {
+          color: var(--accent);
+          text-decoration: none;
+          font-size: 0.95rem;
+        }
+
+        .home-links a:hover {
+          text-decoration: underline;
+        }
+
+        .home-featured,
+        .home-projects {
+          margin-bottom: 3rem;
+        }
+
+        .home-featured h2,
+        .home-projects h2,
+        .home-contact h2 {
+          font-size: 1rem;
+          font-weight: 600;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          margin-bottom: 1rem;
+        }
+
+        .featured-card {
+          background: var(--bg-secondary);
+          border: 1px solid var(--border);
+          border-radius: 6px;
+          padding: 1.5rem;
+        }
+
+        .featured-header {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          margin-bottom: 0.75rem;
+        }
+
+        .featured-header h3 {
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: var(--text-primary);
+          margin: 0;
+        }
+
+        .featured-tag {
+          font-size: 0.7rem;
+          padding: 0.2rem 0.5rem;
+          background: var(--accent-dim);
+          color: var(--text-primary);
+          border-radius: 3px;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .featured-desc {
+          color: var(--text-muted);
+          font-size: 0.95rem;
+          line-height: 1.6;
+          margin-bottom: 1.25rem;
+        }
+
+        .featured-links {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+        }
+
+        .featured-btn {
+          padding: 0.5rem 1rem;
+          font-size: 0.85rem;
+          border: 1px solid var(--border);
+          border-radius: 4px;
+          color: var(--text-muted);
+          text-decoration: none;
+          transition: all 0.2s ease;
+        }
+
+        .featured-btn:hover {
+          border-color: var(--accent-dim);
+          color: var(--text-primary);
+        }
+
+        .featured-btn.primary {
+          background: var(--accent);
+          border-color: var(--accent);
+          color: var(--bg-primary);
+          font-weight: 500;
+        }
+
+        .featured-btn.primary:hover {
+          background: var(--accent-dim);
+          border-color: var(--accent-dim);
+        }
+
+        .coming-soon {
+          color: var(--text-muted);
+          font-size: 0.9rem;
+          font-style: italic;
+        }
+
+        .home-contact p {
+          color: var(--text-muted);
+          font-size: 0.95rem;
+        }
+
+        .home-contact code {
+          background: var(--bg-secondary);
+          padding: 0.2rem 0.4rem;
+          border-radius: 3px;
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 0.9rem;
+          color: var(--text-primary);
+        }
+      `}</style>
+    </div>
   )
 }

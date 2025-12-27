@@ -22,8 +22,10 @@ Random Forest analysis of historical polities examining whether complexity, warf
 
 ## Performance
 
-- Test AUC: **0.744**
-- CV Mean AUC: **0.675 ± 0.09**
+- CV Mean AUC: **0.66 ± 0.06**
+- Temporal Holdout (LOEO): **0.57** (limited era generalization)
+
+*Note: This is exploratory analysis, not confirmatory prediction.*
 
 ---
 

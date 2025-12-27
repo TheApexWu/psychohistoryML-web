@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-
+import Link from 'next/link'
 import { Cormorant_Garamond, JetBrains_Mono } from 'next/font/google'
 import "./globals.css";
 
@@ -31,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         
         <div className="container">
           <header>
-            <div className="logo">Amadeus Woo</div>
+            <Link href="/" className="logo">Amadeus Woo</Link>
           </header>
           <main>
             {children}

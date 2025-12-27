@@ -159,8 +159,8 @@ export default function AboutPage() {
             <span className="exp-tag">You're looking at it</span>
           </div>
           <p className="exp-description">
-            ML analysis of 10,000 years of civilizational data from the Seshat databank. 
-            Random Forest classifier (AUC 0.744) discovering patterns in societal stability.
+            Exploratory ML analysis of 10,000 years of civilizational data from the Seshat databank.
+            Random Forest classifier (AUC ~0.67 CV mean) identifying era-dependent patterns in societal duration.
           </p>
         </div>
 

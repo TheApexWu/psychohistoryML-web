@@ -59,9 +59,9 @@ export function StatsRow() {
       
       <div className="stat">
         <span className="stat-value">
-          <AnimatedNumber value={0.744} decimals={3} duration={2000} />
+          <AnimatedNumber value={0.66} decimals={2} duration={2000} />
         </span>
-        <span className="stat-label">Model AUC</span>
+        <span className="stat-label">Model AUC (CV mean)</span>
       </div>
       
       <div className="stat">
@@ -130,7 +130,7 @@ export function ModelJourney() {
   const stages = [
     { label: 'Baseline', auc: 0.505, description: 'Complexity alone' },
     { label: '+ Warfare', auc: 0.648, description: 'Added military tech' },
-    { label: '+ Religion', auc: 0.744, description: 'Added ideology scores' },
+    { label: '+ Religion', auc: 0.67, description: 'Added ideology scores (CV mean)' },
   ]
 
   return (

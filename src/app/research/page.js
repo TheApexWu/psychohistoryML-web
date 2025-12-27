@@ -102,8 +102,8 @@ export default function ResearchPage() {
 
         <p>
           Then something interesting happened. Adding warfare technology variables
-          jumped performance to 0.648. Adding religion pushed it to 0.744. The model
-          was learning something real.
+          jumped performance to 0.648. Adding religion pushed it to ~0.67 (CV mean).
+          The model was learning something real.
         </p>
 
         <h3 style={{ marginTop: '2.5rem', marginBottom: '0.5rem' }}>The Three-Mechanism Model</h3>
@@ -117,9 +117,10 @@ export default function ResearchPage() {
         <AnimatedROC />
 
         <p>
-          A 0.744 AUC won&apos;t predict specific civilizational fates. But it&apos;s strong 
-          enough to suggest these features capture genuine patterns in historical 
-          dynamics — patterns that generalize across cultures and millennia.
+          A ~0.67 AUC (CV mean: 0.66 ± 0.06) won&apos;t predict specific civilizational fates.
+          But it&apos;s strong enough to suggest these features capture genuine patterns in
+          historical dynamics. Note: temporal validation (LOEO) drops to 0.57, indicating
+          era-specific patterns rather than universal laws.
         </p>
         
         <p className="caveat">
@@ -264,8 +265,8 @@ export default function ResearchPage() {
             enough to be recorded. The truly unstable ones may be invisible.
           </li>
           <li>
-            <strong>Model variance:</strong> Cross-validation shows high variance 
-            (0.51–0.76 AUC). The 0.744 test result landed on a favorable split.
+            <strong>Model variance:</strong> Cross-validation shows high variance
+            (0.51–0.76 AUC, mean 0.66 ± 0.06). Temporal holdout (LOEO) yields only 0.57 AUC.
           </li>
         </ul>
 

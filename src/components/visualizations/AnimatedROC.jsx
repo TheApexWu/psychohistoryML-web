@@ -134,7 +134,7 @@ export default function AnimatedROC() {
       <div className="roc-legend">
         <div className="legend-item">
           <span className="legend-line accent"></span>
-          <span>Random Forest (AUC = 0.744)</span>
+          <span>Random Forest (AUC ≈ 0.67 CV mean)</span>
         </div>
         <div className="legend-item">
           <span className="legend-line muted"></span>
