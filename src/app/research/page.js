@@ -40,11 +40,10 @@ export default function ResearchPage() {
         </p>
 
         <p className="caveat">
-          <strong>A note on terminology:</strong> &quot;Collapse&quot; is a loaded term among historians. 
-          Throughout this research, I use &quot;instability&quot; to describe polities whose duration 
-          falls below the median (184 years). This isn&apos;t a value judgment: short-lived 
-          polities aren&apos;t &quot;failures.&quot; They&apos;re data points that help us understand 
-          civilizational dynamics.
+          <strong>A note on terminology:</strong> I use &quot;short-duration&quot; to describe polities
+          lasting below the median (184 years). This isn&apos;t a value judgment — short-lived
+          polities aren&apos;t &quot;failures.&quot; They&apos;re data points that help us understand
+          patterns in civilizational dynamics. This is exploratory analysis, not causal inference.
         </p>
       </section>
 
@@ -133,10 +132,10 @@ export default function ResearchPage() {
       {/* Key Finding 1: Religion */}
       <section className="article-section">
         <h2>Finding #1: Religion Shows Complex Effects</h2>
-        
+
         <p>
-          The most interesting result involves religion — but not in the simple way I 
-          expected. <strong>Religious variables collectively account for 27% of model 
+          The most robust result involves religion (survives FDR correction at p &lt; 0.001).
+          <strong> Religious variables collectively account for 27% of model
           decisions</strong>, making them the dominant feature category.
         </p>
 
@@ -149,17 +148,18 @@ export default function ResearchPage() {
 
         <ul className="findings-list">
           <li>
-            <strong>Total religious institutionalization</strong> shows stabilizing 
-            effects — more developed religious infrastructure correlates with longer duration.
+            <strong>Total religious institutionalization</strong> is associated with
+            shorter duration (HR = 1.58, destabilizing) — this is counterintuitive and
+            robust after FDR correction.
           </li>
           <li>
-            <strong>Ideology scores</strong> show context-dependent patterns — high 
-            importance for model decisions, but weak directional effect. The model uses 
-            ideology to make fine-grained distinctions, not broad predictions.
+            <strong>Ideology sub-scores</strong> show context-dependent patterns but
+            don&apos;t survive FDR correction individually (exploratory finding).
           </li>
           <li>
-            <strong>Moralizing religion</strong> shows slight destabilizing effects in 
-            some configurations, possibly reflecting rigidity or schism risk.
+            <strong>Direction is surprising:</strong> More religion correlates with shorter
+            duration, not longer. Possible interpretations: rigidity, schism risk, or
+            confounding with other factors.
           </li>
         </ul>
 
@@ -271,9 +271,41 @@ export default function ResearchPage() {
         </ul>
 
         <p>
-          This isn&apos;t predictive science, it&apos;s pattern recognition in historical data. 
-          The model reveals correlations worth investigating, not laws of civilizational 
+          This isn&apos;t predictive science, it&apos;s pattern recognition in historical data.
+          The model reveals correlations worth investigating, not laws of civilizational
           dynamics.
+        </p>
+      </section>
+
+      {/* What This Isn't */}
+      <section className="article-section">
+        <h2>What This Isn&apos;t</h2>
+
+        <ul className="limitations-list">
+          <li>
+            <strong>Not prediction:</strong> This model cannot forecast which modern
+            nations will &quot;collapse.&quot; Historical patterns don&apos;t transfer to contemporary
+            societies with different institutions, technology, and global connectivity.
+          </li>
+          <li>
+            <strong>Not causal inference:</strong> We found associations, not causes.
+            &quot;Religion correlates with shorter duration&quot; doesn&apos;t mean religion causes
+            instability — it could be confounded, reversed, or spurious.
+          </li>
+          <li>
+            <strong>Not universal laws:</strong> The weak temporal holdout (LOEO AUC = 0.57)
+            suggests era-specific patterns, not timeless rules. What mattered in 500 BCE
+            may not matter in 1500 CE.
+          </li>
+          <li>
+            <strong>Not definitive:</strong> After FDR correction, only 7 of 13 &quot;significant&quot;
+            findings survive. Many results are exploratory and need independent replication.
+          </li>
+        </ul>
+
+        <p>
+          Think of this as hypothesis generation, not hypothesis confirmation. The patterns
+          here suggest directions for future research, not conclusions to act on.
         </p>
       </section>
 

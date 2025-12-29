@@ -17,8 +17,8 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Amadeus Woo - Building Psychohistory",
-  description: "I fed 10,000 years of history to a machine learning model. Here's what it learned about why civilizations collapse.",
+  title: "Amadeus Woo",
+  description: "Solo data scientist and ML/AI researcher. Projects in historical pattern analysis, audio, and creative builds.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

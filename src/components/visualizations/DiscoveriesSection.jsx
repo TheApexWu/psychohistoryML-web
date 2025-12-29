@@ -6,9 +6,9 @@ import { useState, useEffect } from 'react'
 const discoveries = [
   {
     id: 1,
-    title: "Complexity alone predicts nothing",
-    summary: "The Tainter hypothesis failed — until I added context",
-    detail: "I started with Joseph Tainter's classic argument: complex societies should be more fragile. The first model using only complexity features hit 0.505 AUC — literally a coin flip. Complexity matters, but only in combination with other factors.",
+    title: "Complexity alone explains nothing",
+    summary: "The Tainter hypothesis needed context to work",
+    detail: "I started with Joseph Tainter's classic argument: complex societies should be more fragile. The first model using only complexity features hit 0.505 AUC — literally a coin flip. Complexity matters, but only in combination with era and other factors.",
     stat: "0.505",
     statLabel: "AUC (random chance)",
     icon: "◇"
@@ -34,8 +34,8 @@ const discoveries = [
   {
     id: 4,
     title: "Warfare unlocked the signal",
-    summary: "Adding military features jumped prediction accuracy by 28%",
-    detail: "The model went from coin-flip (0.505) to meaningful signal (0.648 AUC) when warfare variables were added. Cavalry, armor, and fortifications don't just correlate — they moderate how complexity affects survival.",
+    summary: "Adding military features improved classification by 28%",
+    detail: "The model went from coin-flip (0.505) to meaningful signal (0.648 AUC) when warfare variables were added. Cavalry, armor, and fortifications moderate how complexity associates with duration.",
     stat: "+28%",
     statLabel: "AUC improvement",
     icon: "◆"

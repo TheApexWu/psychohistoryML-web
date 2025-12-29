@@ -41,10 +41,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* More Projects placeholder */}
+      {/* More Projects */}
       <section className="home-projects">
         <h2>More Projects</h2>
-        <p className="coming-soon">Coming soon...</p>
+
+        <div className="project-card">
+          <div className="project-header">
+            <h3>NietzcheNLP</h3>
+            <span className="project-tag">NLP</span>
+          </div>
+          <p className="project-desc">
+            Computational philology: comparing 5 English translations of Beyond Good and Evil
+            using sentence embeddings. Nietzsche predicted his own untranslatability — the math proves him right.
+          </p>
+          <a href="https://nietzsche-nlp.vercel.app" target="_blank" rel="noopener noreferrer" className="project-link">
+            View Project →
+          </a>
+        </div>
       </section>
 
       {/* Contact */}
@@ -182,10 +195,53 @@ export default function Home() {
           border-color: var(--accent-dim);
         }
 
-        .coming-soon {
+        .project-card {
+          background: var(--bg-secondary);
+          border: 1px solid var(--border);
+          border-radius: 6px;
+          padding: 1.25rem;
+          margin-bottom: 1rem;
+        }
+
+        .project-header {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .project-header h3 {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: var(--text-primary);
+          margin: 0;
+        }
+
+        .project-tag {
+          font-size: 0.65rem;
+          padding: 0.15rem 0.4rem;
+          background: var(--accent-dim);
+          color: var(--text-primary);
+          border-radius: 3px;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .project-desc {
           color: var(--text-muted);
           font-size: 0.9rem;
-          font-style: italic;
+          line-height: 1.5;
+          margin-bottom: 1rem;
+        }
+
+        .project-link {
+          font-size: 0.85rem;
+          color: var(--accent);
+          text-decoration: none;
+        }
+
+        .project-link:hover {
+          text-decoration: underline;
         }
 
         .home-contact p {
