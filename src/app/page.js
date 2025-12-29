@@ -47,14 +47,14 @@ export default function Home() {
 
         <div className="project-card">
           <div className="project-header">
-            <h3>NietzcheNLP</h3>
-            <span className="project-tag">NLP</span>
+            <h3>Beyond Translation</h3>
+            <span className="project-tag">Computational Philology</span>
           </div>
           <p className="project-desc">
-            Computational philology: comparing 5 English translations of Beyond Good and Evil
-            using sentence embeddings. Nietzsche predicted his own untranslatability — the math proves him right.
+            Sentence embeddings reveal translator fingerprints across 5 English versions of Nietzsche's Beyond Good and Evil.
+            The aphorism about untranslatability (§28) shows the second-highest divergence. He was right.
           </p>
-          <a href="https://nietzsche-nlp.vercel.app" target="_blank" rel="noopener noreferrer" className="project-link">
+          <a href="https://nietzsche.amadeuswoo.com" target="_blank" rel="noopener noreferrer" className="project-link">
             View Project →
           </a>
         </div>
