@@ -51,8 +51,8 @@ export default function Home() {
             <span className="project-tag">Computational Philology</span>
           </div>
           <p className="project-desc">
-            Sentence embeddings reveal translator fingerprints across 5 English versions of Nietzsche's Beyond Good and Evil.
-            The aphorism about untranslatability (§28) shows the second-highest divergence. He was right.
+            Sentence embeddings reveal translator fingerprints across 5 English translations of Nietzsche's Beyond Good and Evil.
+            Hollingdale sits at the semantic centroid; Zimmern drifts furthest from the German.
           </p>
           <a href="https://nietzsche.amadeuswoo.com" target="_blank" rel="noopener noreferrer" className="project-link">
             View Project →
