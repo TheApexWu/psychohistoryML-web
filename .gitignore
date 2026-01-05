@@ -30,3 +30,8 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Personal research notes (not for public)
+CLIODYNAMICS_FOUNDATION.md
+RESEARCH_NOTES.md
+*_PRIVATE.md

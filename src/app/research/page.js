@@ -14,15 +14,38 @@ export const metadata = {
 export default function ResearchPage() {
   return (
     <article className="research-article">
-      
+
       {/* Header */}
       <header className="article-header">
         <span className="article-tag">Research</span>
         <h1>Building Psychohistory: A Data Science Journey</h1>
         <p className="article-meta">
-          Amadeus Woo · December 2025 · 5 min read
+          Amadeus Woo · December 2025 (Updated January 2026) · 6 min read
         </p>
       </header>
+
+      {/* Methodological Note */}
+      <section className="article-section" style={{
+        background: 'rgba(245, 158, 11, 0.08)',
+        border: '1px solid rgba(245, 158, 11, 0.25)',
+        borderRadius: '8px',
+        padding: '1.5rem',
+        marginBottom: '2rem'
+      }}>
+        <h3 style={{ marginTop: 0, fontSize: '1.1rem', color: 'rgb(180, 120, 20)' }}>
+          A Note on Methodology
+        </h3>
+        <p style={{ marginBottom: '0.75rem' }}>
+          This project uses <strong>polity duration</strong> as a proxy for stability. After further
+          reading in the cliodynamics literature, I&apos;ve come to understand this is a limited approach—duration
+          is often determined arbitrarily and conflates different mechanisms (conquest, fragmentation,
+          succession crises). More rigorous work uses direct instability measures like ruler transition outcomes.
+        </p>
+        <p style={{ marginBottom: 0, fontSize: '0.9rem', opacity: 0.85 }}>
+          I&apos;m preserving this analysis as an exploratory starting point while working toward
+          more theory-grounded methods. The patterns are real; the interpretation is evolving.
+        </p>
+      </section>
 
       {/* Lead */}
       <section className="article-section">
@@ -118,8 +141,14 @@ export default function ResearchPage() {
         <p>
           A ~0.67 AUC (CV mean: 0.66 ± 0.06) won&apos;t predict specific civilizational fates.
           But it&apos;s strong enough to suggest these features capture genuine patterns in
-          historical dynamics. Note: temporal validation (LOEO) drops to 0.57, indicating
-          era-specific patterns rather than universal laws.
+          historical dynamics.
+        </p>
+
+        <p className="caveat" style={{ background: 'rgba(239, 68, 68, 0.08)', padding: '1rem', borderRadius: '6px', borderLeft: '3px solid rgb(239, 68, 68)' }}>
+          <strong>Critical caveat:</strong> When I tested temporal generalization (leave-one-era-out),
+          performance dropped to <strong>0.57 AUC</strong>—barely above chance. This means the model
+          learns era-specific patterns, not universal laws. A model trained on Ancient/Classical/Medieval
+          data struggles to predict Early Modern outcomes. The &quot;rules&quot; change across historical periods.
         </p>
         
         <p className="caveat">
@@ -131,12 +160,12 @@ export default function ResearchPage() {
 
       {/* Key Finding 1: Religion */}
       <section className="article-section">
-        <h2>Finding #1: Religion Shows Complex Effects</h2>
+        <h2>Finding #1: Religion Shows Surprising Associations</h2>
 
         <p>
-          The most robust result involves religion (survives FDR correction at p &lt; 0.001).
+          The most statistically robust result involves religion (survives FDR correction at p &lt; 0.001).
           <strong> Religious variables collectively account for 27% of model
-          decisions</strong>, making them the dominant feature category.
+          decisions</strong>, making them the dominant feature category. But the direction is unexpected.
         </p>
 
         <FeatureImportance />
@@ -148,18 +177,20 @@ export default function ResearchPage() {
 
         <ul className="findings-list">
           <li>
-            <strong>Total religious institutionalization</strong> is associated with
-            shorter duration (HR = 1.58, destabilizing) — this is counterintuitive and
-            robust after FDR correction.
+            <strong>Total religious institutionalization</strong> correlates with
+            shorter duration (HR = 1.58)—this is counterintuitive and survives FDR correction.
+            But correlation isn&apos;t causation: this could reflect confounding with era, literacy,
+            or other unmeasured variables.
           </li>
           <li>
             <strong>Ideology sub-scores</strong> show context-dependent patterns but
             don&apos;t survive FDR correction individually (exploratory finding).
           </li>
           <li>
-            <strong>Direction is surprising:</strong> More religion correlates with shorter
-            duration, not longer. Possible interpretations: rigidity, schism risk, or
-            confounding with other factors.
+            <strong>The direction needs explanation:</strong> Why would more religion associate
+            with shorter duration? Possible confounds: later eras have more documented religion
+            AND shorter-lived polities. Or reverse causality: societies facing instability may
+            elaborate religious frameworks for legitimacy.
           </li>
         </ul>
 
@@ -194,10 +225,17 @@ export default function ResearchPage() {
         </p>
 
         <p>
-          What changed? Possibly writing, institutional memory, military technology, 
-          trade networks — the infrastructure that lets complex societies maintain 
-          themselves. The &quot;rules&quot; of civilizational survival aren&apos;t fixed; they evolve 
+          What changed? Possibly writing, institutional memory, military technology,
+          trade networks — the infrastructure that lets complex societies maintain
+          themselves. The &quot;rules&quot; of civilizational survival aren&apos;t fixed; they evolve
           with humanity&apos;s toolkit.
+        </p>
+
+        <p>
+          This era-dependence suggests that &quot;complexity&quot; as a single variable is too crude.
+          More sophisticated frameworks distinguish between <em>social scale</em> (population,
+          territory) and <em>institutional capacity</em> (bureaucracy, information systems)—which
+          may have different, even opposing effects on stability depending on historical context.
         </p>
       </section>
 
@@ -312,20 +350,28 @@ export default function ResearchPage() {
       {/* What's Next */}
       <section className="article-section">
         <h2>Try It Yourself</h2>
-        
+
         <p>
-          The <Link href="/predict">Polity Simulator</Link> lets you configure a 
-          hypothetical civilization and find historically similar societies. Pick an era, 
-          adjust complexity, warfare, and religion parameters, and see which polities 
+          The <Link href="/predict">Polity Simulator</Link> lets you configure a
+          hypothetical civilization and find historically similar societies. Pick an era,
+          adjust complexity, warfare, and religion parameters, and see which polities
           from the database most closely match your configuration.
         </p>
 
         <p>
-          Is this true psychohistory? No. Asimov&apos;s fictional science could predict specific 
-          futures. This project can only identify patterns in the past. But maybe that&apos;s 
-          how real psychohistory would start, not with prophecy, but with pattern 
-          recognition. Not with certainty, but with probability. Not with claims of 
-          universal laws, but with honest exploration of conditional relationships.
+          Is this true psychohistory? No. Asimov&apos;s fictional science could predict specific
+          futures. This project can only identify patterns in the past—and as the weak temporal
+          holdout shows, those patterns may not even generalize across eras.
+        </p>
+
+        <h3 style={{ marginTop: '2rem' }}>Where This Goes Next</h3>
+        <p>
+          The limitations above aren&apos;t just caveats—they&apos;re research directions. Better
+          target variables (direct instability measures rather than duration), better
+          feature decomposition (separating scale from institutional capacity), and
+          better validation (testing whether patterns hold outside the training period)
+          would all improve this work. I&apos;m actively learning from the cliodynamics
+          literature to get there.
         </p>
       </section>
 

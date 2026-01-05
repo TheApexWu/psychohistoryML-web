@@ -10,10 +10,10 @@ export default function DiscoverPage() {
       {/* Hero Section */}
       <section className="hero">
         <span className="hero-tag">Exploratory Research</span>
-        <h1>Building Asimov&apos;s <em>Psychohistory</em></h1>
+        <h1>Toward Asimov&apos;s <em>Psychohistory</em></h1>
         <p className="subtitle">
           What happens when you feed 10,000 years of civilizational data
-          to a machine learning model? It learns patterns in why empires fall.
+          to a machine learning model? It finds patterns—but not laws.
         </p>
       </section>
 
@@ -25,14 +25,15 @@ export default function DiscoverPage() {
         <p>
           The <a href="https://seshatdatabank.info/" target="_blank" rel="noopener noreferrer">Seshat Global History Databank</a> is
           an international research project that systematically codes historical and archaeological
-          data, everything from administrative hierarchy to military technology to religious practices,
-          across hundreds of societies spanning 10,000 years. I trained a Random Forest classifier on
-          this data to find patterns in civilizational duration.
+          data—administrative hierarchy, military technology, religious practices—across hundreds
+          of societies spanning 10,000 years. I trained a Random Forest classifier to find patterns
+          in civilizational duration, though duration is an imperfect proxy for stability.
         </p>
         <p className="caveat" style={{ marginTop: '1rem' }}>
           <strong>Important:</strong> This is exploratory analysis, not confirmatory prediction.
           Cross-validation shows AUC ~0.67 with high variance (0.51-0.76). Temporal holdout (LOEO)
-          drops to 0.57, suggesting era-specific patterns rather than universal laws.
+          drops to 0.57—the model learns era-specific patterns, not universal laws. I&apos;m working
+          toward more rigorous methods.
         </p>
       </section>
 
