@@ -7,9 +7,9 @@ export default function Home() {
     <div className="home-minimal">
       {/* Name/Identity */}
       <header className="home-header">
-        <h1>Amadeus Woo</h1>
+        <h1>Amadeus Woo <span className="aka">aka Alex Wu</span></h1>
         <p className="home-tagline">
-          Solo data scientist and ML/AI researcher delving into historical patterns, audio, and composing creative builds.
+          Applied ML data scientist. Historical patterns, computational linguistics, developer tools.
         </p>
 
         <nav className="home-links">
@@ -29,8 +29,8 @@ export default function Home() {
             <span className="featured-tag">Research</span>
           </div>
           <p className="featured-desc">
-            Exploratory ML analysis of 10,000 years of civilizational data from the Seshat databank.
-            Random Forest (AUC ~0.67) identifying era-dependent patterns in societal duration.
+            Exploratory ML analysis of 372 historical polities from the Seshat Global History Databank.
+            Random Forest (CV AUC 0.66) finds that the complexity-duration relationship reverses by era.
           </p>
           <div className="featured-links">
             <Link href="/discover" className="featured-btn primary">Explore Project</Link>
@@ -44,6 +44,20 @@ export default function Home() {
       {/* More Projects */}
       <section className="home-projects">
         <h2>More Projects</h2>
+
+        <div className="project-card">
+          <div className="project-header">
+            <h3>Suzerain</h3>
+            <span className="project-tag">Developer Tools</span>
+          </div>
+          <p className="project-desc">
+            Voice-activated Claude Code. Speak a phrase, your code deploys. Cipher-based commands
+            map literary quotes to developer actions. Published on PyPI.
+          </p>
+          <a href="https://github.com/TheApexWu/suzerain" target="_blank" rel="noopener noreferrer" className="project-link">
+            View Project →
+          </a>
+        </div>
 
         <div className="project-card">
           <div className="project-header">
@@ -84,6 +98,12 @@ export default function Home() {
           font-weight: 600;
           margin-bottom: 0.5rem;
           color: var(--text-primary);
+        }
+
+        .aka {
+          font-size: 0.9rem;
+          font-weight: 400;
+          color: var(--text-muted);
         }
 
         .home-tagline {
