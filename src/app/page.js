@@ -48,11 +48,11 @@ export default function Home() {
         <div className="project-card">
           <div className="project-header">
             <h3>Suzerain</h3>
-            <span className="project-tag">Developer Tools</span>
+            <span className="project-tag">Behavioral Analysis</span>
           </div>
           <p className="project-desc">
-            Voice-activated Claude Code. Speak a phrase, your code deploys. Cipher-based commands
-            map literary quotes to developer actions. Published on PyPI.
+            What kind of AI ruler are you? Behavioral analysis mapping your AI tool usage
+            to historical governance patterns. Roman Emperor, Venetian Republic, or Mongol Horde?
           </p>
           <a href="https://github.com/TheApexWu/suzerain" target="_blank" rel="noopener noreferrer" className="project-link">
             View Project →
