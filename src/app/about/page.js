@@ -7,210 +7,439 @@ export default function AboutPage() {
     <div className="about-page">
       {/* Hero */}
       <section className="about-hero">
-        <span className="hero-tag">The Human Behind the Model</span>
-        <h1>My real name is <em>Alex Wu</em></h1>
-        <p className="subtitle">
-          "Amadeus Woo" just a cooler name.
+        <h1>Alex Wu</h1>
+        <p className="hero-sub">
+          Recent grad. I build ML systems — shipped an NLP pipeline to production, trained an audio classifier that beat pretrained embeddings, built tools I wanted to exist.
         </p>
-        
-        <div className="social-links">
-          <a href="https://github.com/TheApexWu" target="_blank" rel="noopener noreferrer">
-            GitHub
-          </a>
-          <a href="https://www.linkedin.com/in/alex-wu-873b25181/" target="_blank" rel="noopener noreferrer">
-            LinkedIn
-          </a>
+
+        <div className="availability">
+          <span className="dot"></span>
+          Looking for work — will relocate to SF
         </div>
-        
-        <div className="email-contact">
-          <button 
-            className="email-copy-btn"
+
+        <div className="links">
+          <a href="https://github.com/TheApexWu" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/in/alex-wu-873b25181/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <button
             onClick={() => {
               navigator.clipboard.writeText('amadeuswoo@proton.me');
-              const btn = document.querySelector('.email-copy-btn');
+              const btn = document.querySelector('.email-btn');
               btn.textContent = 'Copied!';
-              setTimeout(() => btn.textContent = 'Copy My Preferred Contact', 2000);
+              setTimeout(() => btn.textContent = 'amadeuswoo@proton.me', 2000);
             }}
+            className="email-btn"
           >
-            Copy My Preferred Contact
+            amadeuswoo@proton.me
           </button>
         </div>
       </section>
 
-      {/* Skills - PROMINENT for recruiters */}
-      <section className="skills-section">
-        <h2>Technical Stack</h2>
-        
-        <div className="skill-category">
-          <span className="skill-label">Languages</span>
-          <div className="skill-tags">
-            <span className="skill-tag primary">Python</span>
-            <span className="skill-tag primary">SQL</span>
-            <span className="skill-tag primary">JavaScript</span>
-            <span className="skill-tag">Java</span>
-            <span className="skill-tag">C/C++</span>
-            <span className="skill-tag">R</span>
-            <span className="skill-tag">Go</span>
-          </div>
-        </div>
-
-        <div className="skill-category">
-          <span className="skill-label">ML / Data Science</span>
-          <div className="skill-tags">
-            <span className="skill-tag primary">PyTorch</span>
-            <span className="skill-tag primary">TensorFlow</span>
-            <span className="skill-tag primary">Scikit-Learn</span>
-            <span className="skill-tag primary">Pandas</span>
-            <span className="skill-tag">NLP</span>
-            <span className="skill-tag">Deep Learning</span>
-          </div>
-        </div>
-
-        <div className="skill-category">
-          <span className="skill-label">Web / Infrastructure</span>
-          <div className="skill-tags">
-            <span className="skill-tag primary">React.js</span>
-            <span className="skill-tag primary">Next.js</span>
-            <span className="skill-tag">Git</span>
-            <span className="skill-tag">MongoDB</span>
-            <span className="skill-tag">GCP</span>
-            <span className="skill-tag">Azure</span>
-          </div>
-        </div>
+      {/* What I Do */}
+      <section className="about-section">
+        <p className="looking-for">
+          I learn by building. Most of my projects exist because I wanted to answer a question or solve a problem I had.
+          Looking for a team where I can keep doing that.
+        </p>
       </section>
 
-      {/* Education */}
+      {/* Skills */}
       <section className="about-section">
-        <h2>Education</h2>
-        <div className="experience-card">
-          <div className="exp-header">
-            <div>
-              <h3>New York University</h3>
-              <p className="exp-subtitle">College of Arts and Sciences</p>
-            </div>
-            <span className="exp-date">2020 – 2025</span>
+        <h2>Stack</h2>
+        <div className="skills">
+          <div className="skill-row">
+            <span className="skill-label">Core</span>
+            <span>Python, PyTorch, scikit-learn, Pandas, SQL</span>
           </div>
-          <p className="exp-degree">B.A. Computer and Data Science, Minor in Mathematics</p>
-          <p className="exp-courses">
-            Machine Learning · Deep Learning · Causal Inference · Predictive Analytics · Parallel Computing
-          </p>
+          <div className="skill-row">
+            <span className="skill-label">ML</span>
+            <span>NLP, Audio/Librosa, Time Series, Deep Learning</span>
+          </div>
+          <div className="skill-row">
+            <span className="skill-label">Web</span>
+            <span>React/Next.js, Node.js, FastAPI, GCP, MongoDB</span>
+          </div>
         </div>
       </section>
 
       {/* Experience */}
       <section className="about-section">
         <h2>Experience</h2>
-        
-        <div className="experience-card">
-          <div className="exp-header">
-            <div>
-              <h3>Exiger LLC</h3>
-              <p className="exp-subtitle">Application Support Intern · New York, NY</p>
-            </div>
-            <span className="exp-date">Summer 2025</span>
+
+        <div className="exp">
+          <div className="exp-top">
+            <h3>Exiger LLC</h3>
+            <span>Summer 2025</span>
           </div>
-          <ul className="exp-highlights">
-            <li>Built NLP pipeline classifying support tickets by intent, sentiment, and topic (TF-IDF, logistic regression)</li>
-            <li>Created priority scoring system predicting urgency from historical resolution times</li>
-            <li>Built time series forecasting tool with Prophet for ticket surge prediction</li>
-          </ul>
+          <p className="exp-role">Data Science Intern, NYC</p>
+          <p>Shipped NLP pipeline to production — ticket classification, priority scoring, time series forecasting with Prophet.</p>
         </div>
 
-        <div className="experience-card">
-          <div className="exp-header">
-            <div>
-              <h3>Horizon Blue Cross Blue Shield NJ</h3>
-              <p className="exp-subtitle">Enterprise Applications IT Intern · Newark, NJ</p>
-            </div>
-            <span className="exp-date">Summer 2023</span>
+        <div className="exp">
+          <div className="exp-top">
+            <h3>Horizon BCBS NJ</h3>
+            <span>Summer 2023</span>
           </div>
-          <ul className="exp-highlights">
-            <li>Built front-end UI for insurance package catalogs using Salesforce and SQL</li>
-            <li>Dashboard for microservice availability monitoring and open enrollment automation</li>
-            <li>HIPAA compliance and cybersecurity protocols</li>
-          </ul>
+          <p className="exp-role">IT Intern, Newark</p>
+          <p>Insurance catalog frontend (Salesforce/SQL), microservice monitoring, HIPAA compliance.</p>
+        </div>
+      </section>
+
+      {/* Research */}
+      <section className="about-section">
+        <h2>Research</h2>
+
+        <div className="exp">
+          <div className="exp-top">
+            <h3>Audio-Based Depression Detection</h3>
+            <span>NYU, Summer 2024</span>
+          </div>
+          <p className="exp-role">w/ Pascal Wallasch</p>
+          <p>Built audio/linguistic feature pipeline for clinical depression research on 1,000+ hours of patient audio. Key finding: speech patterns vary too much across individuals for population-level detection — an informative null result that shaped the research direction.</p>
         </div>
 
-        <div className="experience-card muted">
-          <div className="exp-header">
-            <div>
-              <h3>NYU Bobst Library</h3>
-              <p className="exp-subtitle">Help Desk Support Assistant · New York, NY</p>
-            </div>
-            <span className="exp-date">2022 – 2025</span>
+        <div className="exp">
+          <div className="exp-top">
+            <h3>PsychohistoryML</h3>
+            <span>2024–Present</span>
           </div>
-          <ul className="exp-highlights">
-            <li>Front-end web tools for library technology</li>
-            <li>ServiceNow ticketing, hardware/software management</li>
-          </ul>
+          <p>ML analysis of 372 historical polities. Random Forest (AUC 0.67) finding complexity-duration relationship reverses by era.</p>
+          <Link href="/discover" className="exp-link">View Project →</Link>
         </div>
       </section>
 
       {/* Projects */}
       <section className="about-section">
-        <h2>Research Projects</h2>
+        <h2>Projects</h2>
 
-        <div className="experience-card featured">
-          <div className="exp-header">
-            <div>
-              <h3>PsychohistoryML</h3>
-              <p className="exp-subtitle">Independent Research · Fall 2025 – Present</p>
-            </div>
-            <span className="exp-tag">You're looking at it</span>
+        <div className="exp">
+          <div className="exp-top">
+            <h3>Touhou Style Classifier</h3>
+            <span>Audio ML</span>
           </div>
-          <p className="exp-description">
-            Exploratory ML analysis of 10,000 years of civilizational data from the Seshat databank.
-            Random Forest classifier (AUC ~0.67 CV mean) identifying era-dependent patterns in societal duration.
-          </p>
+          <p>89.5% accuracy on 954 tracks. Handcrafted features beat CLAP/MERT by 19-24%.</p>
         </div>
 
-        <div className="experience-card">
-          <div className="exp-header">
-            <div>
-              <h3>Music Transcription System</h3>
-              <p className="exp-subtitle">NYU Deep Learning Final Project</p>
-            </div>
-            <span className="exp-date">Spring 2025</span>
+        <div className="exp">
+          <div className="exp-top">
+            <h3>Suzerain</h3>
+            <span>PyPI Package</span>
           </div>
-          <p className="exp-description">
-            End-to-end deep learning system converting raw piano audio to MIDI. 
-            CRNN model with spectrogram inputs, dual-output heads for onset/duration detection.
-          </p>
+          <p>Behavioral analysis mapping AI assistant usage to historical governance archetypes.</p>
+          <a href="https://github.com/TheApexWu/suzerain" className="exp-link">GitHub →</a>
         </div>
 
-        <div className="experience-card">
-          <div className="exp-header">
-            <div>
-              <h3>Audio-Based Depression Detection</h3>
-              <p className="exp-subtitle">NYU Data Science Research</p>
-            </div>
-            <span className="exp-date">Summer 2024</span>
+        <div className="exp">
+          <div className="exp-top">
+            <h3>Beyond Translation</h3>
+            <span>NLP</span>
           </div>
-          <p className="exp-description">
-            Developed audio/linguistic feature pipeline for clinical depression research. 
-            Analysis showed speech patterns vary too much across individuals for population-level detection — an informative null result.
-          </p>
+          <p>Sentence embeddings reveal translator fingerprints across 5 Nietzsche translations.</p>
+          <a href="https://nietzsche.amadeuswoo.com" className="exp-link">View →</a>
+        </div>
+
+        <div className="exp">
+          <div className="exp-top">
+            <h3>Music Transcription</h3>
+            <span>Deep Learning</span>
+          </div>
+          <p>Piano audio to MIDI. CRNN with dual-output heads for onset/duration detection.</p>
         </div>
       </section>
 
-      {/* The Menial Stuff */}
-      <section className="about-section menial">
-        <h2>The Menial Stuff</h2>
-        <p className="menial-intro">Things that don't fit on a resume but might come up at networking events:</p>
-        <ul className="menial-list">
-          <li>NYC based, open to the Bay Area</li>
-          <li>Intermediate French, active francophile (food, culture, history, architecture)</li>
-          <li>Aficionado of 19th century German philosophers</li>
-          <li>Currently learning more about Peter Turchin's cliodynamics</li>
+      {/* Education */}
+      <section className="about-section">
+        <h2>Education</h2>
+        <div className="exp">
+          <div className="exp-top">
+            <h3>NYU</h3>
+            <span>2020–2025</span>
+          </div>
+          <p>B.A. Computer Science + Data Science, Minor in Mathematics</p>
+        </div>
+      </section>
+
+      {/* Human */}
+      <section className="about-section human">
+        <h2>Beyond Code</h2>
+        <ul>
+          <li><strong>History:</strong> Peter Turchin's cliodynamics — built an ML project around it</li>
+          <li><strong>Music:</strong> Doujin scene for years — why I got into audio ML</li>
+          <li><strong>Philosophy:</strong> Nietzsche, Schopenhauer — built an NLP project around that too</li>
+          <li><strong>Location:</strong> NYC/NJ → SF for the right opportunity</li>
         </ul>
       </section>
 
       {/* CTA */}
-      <section className="about-cta-bottom">
-        <Link href="/" className="return-link">
-          ← Return to the Cool Stuff
-        </Link>
+      <section className="about-cta">
+        <p>If you ship, let's talk.</p>
+        <button
+          onClick={() => {
+            navigator.clipboard.writeText('amadeuswoo@proton.me');
+            const btn = document.querySelector('.cta-btn');
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = 'amadeuswoo@proton.me', 2000);
+          }}
+          className="cta-btn"
+        >
+          amadeuswoo@proton.me
+        </button>
       </section>
+
+      <Link href="/" className="back-link">← Back</Link>
+
+      <style jsx>{`
+        .about-page {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 4rem 2rem;
+        }
+
+        /* Hero - LEFT ALIGNED */
+        .about-hero {
+          margin-bottom: 3rem;
+        }
+
+        .about-hero h1 {
+          font-size: 3rem;
+          font-weight: 700;
+          margin-bottom: 0.75rem;
+          color: var(--text-primary);
+        }
+
+        .hero-sub {
+          font-size: 1.25rem;
+          color: var(--text-muted);
+          line-height: 1.5;
+          margin-bottom: 1.5rem;
+          max-width: 600px;
+        }
+
+        .availability {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.5rem 1rem;
+          background: rgba(34, 197, 94, 0.1);
+          border: 1px solid rgba(34, 197, 94, 0.3);
+          border-radius: 6px;
+          font-size: 1rem;
+          color: #22c55e;
+          margin-bottom: 1.5rem;
+        }
+
+        .dot {
+          width: 8px;
+          height: 8px;
+          background: #22c55e;
+          border-radius: 50%;
+          animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+
+        .links {
+          display: flex;
+          gap: 1.5rem;
+          flex-wrap: wrap;
+        }
+
+        .links a, .email-btn {
+          color: var(--accent);
+          text-decoration: none;
+          font-size: 1.1rem;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          font-family: inherit;
+        }
+
+        .links a:hover, .email-btn:hover {
+          text-decoration: underline;
+        }
+
+        /* Sections */
+        .about-section {
+          margin-bottom: 3rem;
+        }
+
+        .about-section h2 {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          margin-bottom: 1.5rem;
+          padding-bottom: 0.5rem;
+          border-bottom: 1px solid var(--border);
+        }
+
+        .looking-for {
+          font-size: 1.2rem;
+          color: var(--text-muted);
+          line-height: 1.6;
+        }
+
+        .looking-for strong {
+          color: var(--text-primary);
+        }
+
+        /* Skills */
+        .skills {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .skill-row {
+          display: flex;
+          gap: 1.5rem;
+          font-size: 1.1rem;
+          color: var(--text-muted);
+        }
+
+        .skill-label {
+          width: 60px;
+          color: var(--text-primary);
+          font-weight: 500;
+          flex-shrink: 0;
+        }
+
+        /* Experience */
+        .exp {
+          margin-bottom: 2rem;
+        }
+
+        .exp:last-child {
+          margin-bottom: 0;
+        }
+
+        .exp-top {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          margin-bottom: 0.25rem;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+
+        .exp-top h3 {
+          font-size: 1.3rem;
+          font-weight: 600;
+          color: var(--text-primary);
+          margin: 0;
+        }
+
+        .exp-top span {
+          font-size: 0.95rem;
+          color: var(--text-muted);
+        }
+
+        .exp-role {
+          font-size: 1rem;
+          color: var(--text-muted);
+          margin-bottom: 0.5rem;
+          font-style: italic;
+        }
+
+        .exp p {
+          font-size: 1.1rem;
+          color: var(--text-muted);
+          line-height: 1.6;
+          margin: 0;
+        }
+
+        .exp-link {
+          display: inline-block;
+          margin-top: 0.5rem;
+          font-size: 1rem;
+          color: var(--accent);
+          text-decoration: none;
+        }
+
+        .exp-link:hover {
+          text-decoration: underline;
+        }
+
+        /* Human */
+        .human ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .human li {
+          font-size: 1.1rem;
+          color: var(--text-muted);
+          margin-bottom: 0.75rem;
+          line-height: 1.5;
+        }
+
+        .human li strong {
+          color: var(--text-primary);
+        }
+
+        /* CTA */
+        .about-cta {
+          margin: 4rem 0 2rem;
+          padding: 2rem;
+          background: var(--bg-secondary);
+          border-radius: 8px;
+        }
+
+        .about-cta p {
+          font-size: 1.25rem;
+          color: var(--text-primary);
+          margin-bottom: 1rem;
+        }
+
+        .cta-btn {
+          padding: 0.75rem 1.5rem;
+          background: var(--accent);
+          color: var(--bg-primary);
+          border: none;
+          border-radius: 6px;
+          font-size: 1.1rem;
+          font-weight: 500;
+          cursor: pointer;
+        }
+
+        .cta-btn:hover {
+          opacity: 0.9;
+        }
+
+        .back-link {
+          color: var(--accent);
+          text-decoration: none;
+          font-size: 1rem;
+        }
+
+        .back-link:hover {
+          text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+          .about-hero h1 {
+            font-size: 2.25rem;
+          }
+
+          .hero-sub {
+            font-size: 1.1rem;
+          }
+
+          .skill-row {
+            flex-direction: column;
+            gap: 0.25rem;
+          }
+
+          .skill-label {
+            width: auto;
+          }
+        }
+      `}</style>
     </div>
   )
 }

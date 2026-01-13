@@ -7,9 +7,9 @@ export default function Home() {
     <div className="home-minimal">
       {/* Name/Identity */}
       <header className="home-header">
-        <h1>Amadeus Woo <span className="aka">aka Alex Wu</span></h1>
+        <h1>Alex Wu</h1>
         <p className="home-tagline">
-          Applied ML data scientist. Historical patterns, computational linguistics, developer tools.
+          I build ML systems that solve problems I have. Recent NYU CS + Data Science grad.
         </p>
 
         <nav className="home-links">
@@ -72,6 +72,55 @@ export default function Home() {
             View Project →
           </a>
         </div>
+      </section>
+
+      {/* Quick Ships */}
+      <section className="home-vibes">
+        <h2>Quick Ships</h2>
+        <p className="vibes-intro">
+          Stuff I built fast because I wanted it to exist.
+        </p>
+
+        <div className="vibes-grid">
+          <div className="vibe-card">
+            <div className="vibe-header">
+              <span className="vibe-emoji">🌉</span>
+              <h3>East2West</h3>
+            </div>
+            <p className="vibe-desc">
+              NYC→SF trip planner. Scrapes Google Flights and Skiplagged for cheap flights,
+              scouts ML/AI hackathons and tech events. Zero API keys.
+            </p>
+            <div className="vibe-meta">
+              <span className="vibe-tag">travel</span>
+              <span className="vibe-tag">scraping</span>
+              <span className="vibe-tag">job hunt</span>
+            </div>
+            <a href="https://github.com/TheApexWu/East2West" target="_blank" rel="noopener noreferrer" className="vibe-link">
+              View on GitHub →
+            </a>
+          </div>
+
+          <div className="vibe-card">
+            <div className="vibe-header">
+              <span className="vibe-emoji">🚇</span>
+              <h3>NYC MTA Live Map</h3>
+            </div>
+            <p className="vibe-desc">
+              Real-time subway positions on an interactive map. Decodes MTA's GTFS-RT
+              protobuf feeds. Got tired of wondering where the L train was, so I built this.
+            </p>
+            <div className="vibe-meta">
+              <span className="vibe-tag">transit</span>
+              <span className="vibe-tag">real-time</span>
+              <span className="vibe-tag">node.js</span>
+            </div>
+            <a href="https://github.com/TheApexWu/experimental-nyc-mta-live" target="_blank" rel="noopener noreferrer" className="vibe-link">
+              View on GitHub →
+            </a>
+          </div>
+        </div>
+
       </section>
 
       {/* Contact */}
@@ -275,6 +324,103 @@ export default function Home() {
           border-radius: 3px;
           font-family: var(--font-jetbrains), monospace;
           font-size: 0.9rem;
+          color: var(--text-primary);
+        }
+
+        /* Pure Vibes Section */
+        .home-vibes {
+          margin-bottom: 3rem;
+        }
+
+        .home-vibes h2 {
+          font-size: 1rem;
+          font-weight: 600;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          margin-bottom: 0.75rem;
+        }
+
+        .vibes-intro {
+          color: var(--text-muted);
+          font-size: 0.9rem;
+          line-height: 1.5;
+          margin-bottom: 1.25rem;
+        }
+
+        .vibes-grid {
+          display: grid;
+          gap: 1rem;
+        }
+
+        .vibe-card {
+          background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(139, 92, 246, 0.05) 100%);
+          border: 1px solid var(--border);
+          border-left: 3px solid #8b5cf6;
+          border-radius: 6px;
+          padding: 1.25rem;
+        }
+
+        .vibe-header {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .vibe-emoji {
+          font-size: 1.25rem;
+        }
+
+        .vibe-header h3 {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: var(--text-primary);
+          margin: 0;
+        }
+
+        .vibe-desc {
+          color: var(--text-muted);
+          font-size: 0.9rem;
+          line-height: 1.5;
+          margin-bottom: 0.75rem;
+        }
+
+        .vibe-meta {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+          margin-bottom: 0.75rem;
+        }
+
+        .vibe-tag {
+          font-size: 0.65rem;
+          padding: 0.15rem 0.5rem;
+          background: rgba(139, 92, 246, 0.15);
+          color: #a78bfa;
+          border-radius: 3px;
+          text-transform: lowercase;
+        }
+
+        .vibe-link {
+          font-size: 0.85rem;
+          color: #8b5cf6;
+          text-decoration: none;
+        }
+
+        .vibe-link:hover {
+          text-decoration: underline;
+        }
+
+        .vibes-philosophy {
+          margin-top: 1rem;
+          color: var(--text-muted);
+          font-size: 0.85rem;
+          line-height: 1.6;
+          opacity: 0.8;
+        }
+
+        .vibes-philosophy em {
           color: var(--text-primary);
         }
       `}</style>
