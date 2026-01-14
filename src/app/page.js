@@ -9,7 +9,7 @@ export default function Home() {
       <header className="home-header">
         <h1>Alex Wu</h1>
         <p className="home-tagline">
-          I build ML systems that solve problems I have. Recent NYU CS + Data Science grad.
+          I creatively build ML systems to solve unorthodox problems. Recent NYU CS + Data Science grad.
         </p>
 
         <nav className="home-links">

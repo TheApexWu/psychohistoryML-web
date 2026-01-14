@@ -19,6 +19,9 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Amadeus Woo",
   description: "Solo data scientist and ML/AI researcher. Projects in historical pattern analysis, audio, and creative builds.",
+  icons: {
+    icon: '/icon.svg',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

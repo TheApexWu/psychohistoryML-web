@@ -9,7 +9,7 @@ export default function AboutPage() {
       <section className="about-hero">
         <h1>Alex Wu</h1>
         <p className="hero-sub">
-          Recent grad. I build ML systems — shipped an NLP pipeline to production, trained an audio classifier that beat pretrained embeddings, built tools I wanted to exist.
+          I creatively build ML systems to solve unorthodox problems. Recent NYU CS + Data Science grad.
         </p>
 
         <div className="availability">
