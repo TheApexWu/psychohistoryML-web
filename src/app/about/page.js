@@ -122,10 +122,10 @@ export default function AboutPage() {
         <div className="exp">
           <div className="exp-top">
             <h3>Suzerain</h3>
-            <span>PyPI Package</span>
+            <span>CLI Tool</span>
           </div>
-          <p>Behavioral analysis mapping AI assistant usage to historical governance archetypes.</p>
-          <a href="https://github.com/TheApexWu/suzerain" className="exp-link">GitHub →</a>
+          <p>Parses Claude Code logs to classify your AI governance style into 6 archetypes. Bash acceptance is the discriminator.</p>
+          <a href="https://suzerain.dev" className="exp-link">View →</a>
         </div>
 
         <div className="exp">

@@ -48,13 +48,14 @@ export default function Home() {
         <div className="project-card">
           <div className="project-header">
             <h3>Suzerain</h3>
-            <span className="project-tag">Behavioral Analysis</span>
+            <span className="project-tag">AI Governance Analysis</span>
           </div>
           <p className="project-desc">
-            What kind of AI ruler are you? Behavioral analysis mapping your AI tool usage
-            to historical governance patterns. Roman Emperor, Venetian Republic, or Mongol Horde?
+            Analyzes your Claude Code logs to reveal how you govern AI assistants.
+            Bash acceptance rate is the key signal—everything else is rubber-stamped.
+            Classifies you into one of 6 archetypes based on sophistication × caution.
           </p>
-          <a href="https://github.com/TheApexWu/suzerain" target="_blank" rel="noopener noreferrer" className="project-link">
+          <a href="https://suzerain.dev" target="_blank" rel="noopener noreferrer" className="project-link">
             View Project →
           </a>
         </div>
