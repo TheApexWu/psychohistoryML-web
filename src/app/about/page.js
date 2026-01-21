@@ -124,7 +124,7 @@ export default function AboutPage() {
             <h3>Suzerain</h3>
             <span>CLI Tool</span>
           </div>
-          <p>Parses Claude Code logs to classify your AI governance style into 6 archetypes. Bash acceptance is the discriminator.</p>
+          <p>Analyze your Claude Code logs locally. See where you trust AI, where you don't. Bash acceptance is the signal.</p>
           <a href="https://suzerain.dev" className="exp-link">View →</a>
         </div>
 

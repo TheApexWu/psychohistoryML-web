@@ -35,8 +35,13 @@ export default function Home() {
           <div className="featured-links">
             <Link href="/discover" className="featured-btn primary">Explore Project</Link>
             <Link href="/research" className="featured-btn">Research</Link>
-            <Link href="/predict" className="featured-btn">Simulator</Link>
-            <Link href="/chat" className="featured-btn">Chat</Link>
+          </div>
+
+          <div className="featured-update">
+            <span className="update-badge">New</span>
+            <span className="update-text">
+              <Link href="/crisisdb">CrisisDB Explorer</Link> — Testing elite overproduction with 3,447 power transitions (r=0.36, p&lt;0.001)
+            </span>
           </div>
         </div>
       </section>
@@ -225,6 +230,21 @@ export default function Home() {
           letter-spacing: 0.05em;
         }
 
+        .featured-tag.beta {
+          background: rgba(245, 158, 11, 0.15);
+          color: rgb(245, 158, 11);
+        }
+
+        .featured-card.secondary {
+          margin-top: 1rem;
+          opacity: 0.85;
+          border-style: dashed;
+        }
+
+        .featured-card.secondary:hover {
+          opacity: 1;
+        }
+
         .featured-desc {
           color: var(--text-muted);
           font-size: 0.95rem;
@@ -263,6 +283,41 @@ export default function Home() {
         .featured-btn.primary:hover {
           background: var(--accent-dim);
           border-color: var(--accent-dim);
+        }
+
+        .featured-update {
+          margin-top: 1.25rem;
+          padding-top: 1rem;
+          border-top: 1px dashed var(--border);
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          font-size: 0.85rem;
+        }
+
+        .update-badge {
+          padding: 0.2rem 0.5rem;
+          background: rgba(34, 197, 94, 0.15);
+          color: rgb(34, 197, 94);
+          font-size: 0.7rem;
+          font-weight: 600;
+          border-radius: 3px;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .update-text {
+          color: var(--text-muted);
+        }
+
+        .update-text a {
+          color: var(--accent);
+          text-decoration: none;
+          font-weight: 500;
+        }
+
+        .update-text a:hover {
+          text-decoration: underline;
         }
 
         .project-card {
