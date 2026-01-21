@@ -1,7 +1,7 @@
 'use client'
 
-import { StatsRow } from '../../components/visualizations/AnimatedStats'
-import DiscoveriesSection from '../../components/visualizations/DiscoveriesSection'
+import { StatsRow } from '../../../components/visualizations/AnimatedStats'
+import DiscoveriesSection from '../../../components/visualizations/DiscoveriesSection'
 import Link from 'next/link'
 
 export default function DiscoverPage() {

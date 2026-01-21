@@ -61,6 +61,18 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Education */}
+      <section className="about-section">
+        <h2>Education</h2>
+        <div className="exp">
+          <div className="exp-top">
+            <h3>New York University</h3>
+            <span>2020–2025</span>
+          </div>
+          <p>B.A. Computer Science + Data Science, Minor in Mathematics</p>
+        </div>
+      </section>
+
       {/* Experience */}
       <section className="about-section">
         <h2>Experience</h2>
@@ -113,7 +125,7 @@ export default function AboutPage() {
 
         <div className="exp">
           <div className="exp-top">
-            <h3>Touhou Style Classifier</h3>
+            <h3>Audio Style Classifier</h3>
             <span>Audio ML</span>
           </div>
           <p>89.5% accuracy on 954 tracks. Handcrafted features beat CLAP/MERT by 19-24%.</p>
@@ -146,24 +158,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Education */}
-      <section className="about-section">
-        <h2>Education</h2>
-        <div className="exp">
-          <div className="exp-top">
-            <h3>NYU</h3>
-            <span>2020–2025</span>
-          </div>
-          <p>B.A. Computer Science + Data Science, Minor in Mathematics</p>
-        </div>
-      </section>
-
       {/* Human */}
       <section className="about-section human">
         <h2>Beyond Code</h2>
         <ul>
           <li><strong>History:</strong> Peter Turchin's cliodynamics — built an ML project around it</li>
-          <li><strong>Music:</strong> Doujin scene for years — why I got into audio ML</li>
+          <li><strong>Music:</strong> Japanese indie music — why I got into audio ML</li>
           <li><strong>Philosophy:</strong> Nietzsche, Schopenhauer — built an NLP project around that too</li>
           <li><strong>Location:</strong> NYC/NJ → SF for the right opportunity</li>
         </ul>

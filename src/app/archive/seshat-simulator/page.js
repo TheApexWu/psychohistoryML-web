@@ -1,18 +1,18 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { 
-  PARAMETERS, 
-  ERAS, 
+import {
+  PARAMETERS,
+  ERAS,
   ERA_DESCRIPTIONS,
-  PRESETS, 
-  DEFAULT_CONFIG 
-} from '../../components/constants';
-import { 
-  findSimilarPolities, 
+  PRESETS,
+  DEFAULT_CONFIG
+} from '../../../components/constants';
+import {
+  findSimilarPolities,
   getRiskAssessment,
-  formatYear 
-} from '../../components/similarity';
+  formatYear
+} from '../../../components/similarity';
 import Link from 'next/link';
 
 // Era colors
