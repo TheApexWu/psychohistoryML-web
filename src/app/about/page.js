@@ -162,9 +162,10 @@ export default function AboutPage() {
       <section className="about-section human">
         <h2>Beyond Code</h2>
         <ul>
-          <li><strong>History:</strong> Peter Turchin's cliodynamics — built an ML project around it</li>
-          <li><strong>Music:</strong> Japanese indie music — why I got into audio ML</li>
-          <li><strong>Philosophy:</strong> Nietzsche, Schopenhauer — built an NLP project around that too</li>
+          <li><strong>History:</strong> Peter Turchin's cliodynamics — building ML pipelines around public datasets</li>
+          <li><strong>Music:</strong> Japanese indie + DnB — why I got into audio ML</li>
+          <li><strong>Reading:</strong> Nietzsche, Dostoevsky, Cormac McCarthy, Wittgenstein</li>
+          <li><strong>Linguistics:</strong> How language shapes thought — feeds into my NLP work</li>
           <li><strong>Location:</strong> NYC/NJ → SF for the right opportunity</li>
         </ul>
       </section>
