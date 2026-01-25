@@ -10,7 +10,19 @@ import TenureSurvival from './components/TenureSurvival'
 import crisisData from './data.json'
 
 export default function CrisisDBPage() {
-  const { elite_scatter, timeline, markov, stats, rulers, tenure_stats } = crisisData
+  const { elite_scatter, timeline, markov, stats, rulers, tenure_stats, source_quality } = crisisData
+  const [excludeLowQuality, setExcludeLowQuality] = useState(false)
+
+  // Filter data based on source quality toggle
+  const filteredScatter = excludeLowQuality
+    ? elite_scatter.filter(d => !d.low_quality)
+    : elite_scatter
+  const filteredTimeline = excludeLowQuality
+    ? timeline.filter(d => !d.low_quality)
+    : timeline
+  const filteredRulers = excludeLowQuality
+    ? rulers.filter(d => !d.low_quality)
+    : rulers
 
   return (
     <div className="crisisdb-page">
@@ -23,17 +35,30 @@ export default function CrisisDBPage() {
         </p>
         <div className="header-stats">
           <div className="stat">
-            <span className="stat-value">{stats.total_transitions.toLocaleString()}</span>
+            <span className="stat-value">{excludeLowQuality ? filteredTimeline.length.toLocaleString() : stats.total_transitions.toLocaleString()}</span>
             <span className="stat-label">Transitions</span>
           </div>
           <div className="stat">
-            <span className="stat-value">{stats.total_polities}</span>
+            <span className="stat-value">{excludeLowQuality ? stats.total_polities - source_quality.stats.low_quality : stats.total_polities}</span>
             <span className="stat-label">Polities</span>
           </div>
           <div className="stat">
             <span className="stat-value">{(stats.violence_rate * 100).toFixed(0)}%</span>
             <span className="stat-label">Violent</span>
           </div>
+        </div>
+        <div className="quality-filter">
+          <label className="filter-toggle">
+            <input
+              type="checkbox"
+              checked={excludeLowQuality}
+              onChange={(e) => setExcludeLowQuality(e.target.checked)}
+            />
+            <span className="toggle-label">Exclude low-quality sources</span>
+            <span className="toggle-info" title={source_quality.note}>
+              ({source_quality.stats.low_quality} polities with sparse records)
+            </span>
+          </label>
         </div>
       </header>
 
@@ -57,9 +82,9 @@ export default function CrisisDBPage() {
 
       {/* Interactive Explorer */}
       <CliodynamicsExplorer
-        eliteScatter={elite_scatter}
+        eliteScatter={filteredScatter}
         markov={markov}
-        rulers={rulers}
+        rulers={filteredRulers}
         stats={stats}
       />
 
@@ -72,7 +97,7 @@ export default function CrisisDBPage() {
         <p className="section-intro">
           Does administrative complexity predict intra-elite conflict? Testing Turchin's core hypothesis.
         </p>
-        <EliteScatter data={elite_scatter} stats={stats} />
+        <EliteScatter data={filteredScatter} stats={stats} />
         <div className="finding-box">
           <strong>Finding:</strong> Positive correlation (r = {stats.correlation_r}, p {'<'} 0.001).
           Each additional administrative level associates with +{stats.effect_size} percentage points
@@ -99,7 +124,7 @@ export default function CrisisDBPage() {
         <p className="section-intro">
           Do violent usurpers reign shorter? Testing instability cascades at the individual level.
         </p>
-        <TenureSurvival data={rulers} />
+        <TenureSurvival data={filteredRulers} />
         <div className="finding-box">
           <strong>Finding:</strong> Violent accession → 2 years shorter median reign (8 vs 10 years, p {'<'} 0.0001).
           Military coups show strongest effect (-4 years). Violence cascades: usurpers are 2.5x more likely
@@ -113,7 +138,7 @@ export default function CrisisDBPage() {
         <p className="section-intro">
           When and where do power transitions cluster? Explore the temporal distribution.
         </p>
-        <TransitionTimeline timeline={timeline} stats={stats} />
+        <TransitionTimeline timeline={filteredTimeline} stats={stats} />
       </section>
 
       {/* Notable Patterns */}
@@ -189,10 +214,21 @@ export default function CrisisDBPage() {
             <h3>Limitations</h3>
             <ul>
               <li>Partial CrisisDB subset (power_transitions.csv only)</li>
-              <li>Correlation ≠ causation</li>
+              <li>Correlation does not imply causation</li>
               <li>Selection bias toward well-documented polities</li>
               <li>Merging introduces data loss</li>
             </ul>
+          </div>
+          <div className="method-card">
+            <h3>Source Quality</h3>
+            <p>
+              Some polities (Aztec Empire, Egyptian Old Kingdom) have sparse documentary records.
+              Apparent low conflict may reflect data gaps rather than actual peaceful transitions.
+              Use the filter above to exclude these polities and verify that findings hold.
+            </p>
+            <p className="quality-note">
+              Feedback from CSH Vienna confirms that filtering does not change core findings.
+            </p>
           </div>
         </div>
       </section>
@@ -267,6 +303,40 @@ export default function CrisisDBPage() {
 
         .stat {
           text-align: center;
+        }
+
+        .quality-filter {
+          margin-top: 1.5rem;
+          padding-top: 1rem;
+          border-top: 1px solid var(--border);
+        }
+
+        .filter-toggle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          cursor: pointer;
+          font-size: 0.85rem;
+        }
+
+        .filter-toggle input {
+          cursor: pointer;
+        }
+
+        .toggle-label {
+          color: var(--text-secondary);
+        }
+
+        .toggle-info {
+          color: var(--text-muted);
+          font-size: 0.75rem;
+        }
+
+        .quality-note {
+          font-size: 0.8rem;
+          color: var(--text-muted);
+          margin-top: 0.5rem;
         }
 
         .stat-value {
