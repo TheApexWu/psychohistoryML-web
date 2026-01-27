@@ -78,6 +78,20 @@ export default function Home() {
             View Project →
           </a>
         </div>
+
+        <div className="project-card">
+          <div className="project-header">
+            <h3>McCarthyGPT</h3>
+            <span className="project-tag beta">Beta</span>
+          </div>
+          <p className="project-desc">
+            Reverse-engineered Cormac McCarthy's prose style — 81% monosyllables create the "drumbeat" rhythm.
+            Trained a 4.8M parameter character-level GPT on Blood Meridian to write like him.
+          </p>
+          <a href="https://github.com/TheApexWu/BloodMeridianNLP" target="_blank" rel="noopener noreferrer" className="project-link">
+            View Project →
+          </a>
+        </div>
       </section>
 
       {/* Quick Ships */}
