@@ -40,7 +40,7 @@ export default function Home() {
           <div className="featured-update">
             <span className="update-badge">New</span>
             <span className="update-text">
-              <Link href="/crisisdb">CrisisDB Explorer</Link> — Testing elite overproduction with 3,447 power transitions (r=0.36, p&lt;0.001)
+              <Link href="/crisisdb">CrisisDB Explorer</Link>: Testing elite overproduction with 3,447 power transitions (r=0.36, p&lt;0.001)
             </span>
           </div>
         </div>
@@ -57,7 +57,7 @@ export default function Home() {
           </div>
           <p className="project-desc">
             Analyzes your Claude Code logs to reveal how you govern AI assistants.
-            Bash acceptance rate is the key signal—everything else is rubber-stamped.
+            Bash acceptance rate is the key signal. Everything else is rubber-stamped.
             Classifies you into one of 6 archetypes based on sophistication × caution.
           </p>
           <a href="https://suzerain.dev" target="_blank" rel="noopener noreferrer" className="project-link">
@@ -85,7 +85,7 @@ export default function Home() {
             <span className="project-tag beta">Beta</span>
           </div>
           <p className="project-desc">
-            Reverse-engineered Cormac McCarthy's prose style — 81% monosyllables create the "drumbeat" rhythm.
+            Reverse-engineered Cormac McCarthy's prose style. 81% monosyllables create the "drumbeat" rhythm.
             Trained a 4.8M parameter character-level GPT on Blood Meridian to write like him.
           </p>
           <a href="https://github.com/TheApexWu/BloodMeridianNLP" target="_blank" rel="noopener noreferrer" className="project-link">

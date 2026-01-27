@@ -14,7 +14,7 @@ export default function AboutPage() {
 
         <div className="availability">
           <span className="dot"></span>
-          Looking for work — will relocate to SF
+          Looking for work, will relocate to SF
         </div>
 
         <div className="links">
@@ -37,8 +37,7 @@ export default function AboutPage() {
       {/* What I Do */}
       <section className="about-section">
         <p className="looking-for">
-          I learn by building. Most of my projects exist because I wanted to answer a question or solve a problem I had.
-          Looking for a team where I can keep doing that.
+          Simply put, I learn by building, parallelizing my projects to answer questions like a GPU. Looking for a bona fide team where I can apply my momentum.
         </p>
       </section>
 
@@ -83,7 +82,7 @@ export default function AboutPage() {
             <span>Summer 2025</span>
           </div>
           <p className="exp-role">Data Science Intern, NYC</p>
-          <p>Shipped NLP pipeline to production — ticket classification, priority scoring, time series forecasting with Prophet.</p>
+          <p>Shipped NLP pipeline to production: ticket classification, priority scoring, time series forecasting with Prophet.</p>
         </div>
 
         <div className="exp">
@@ -106,7 +105,7 @@ export default function AboutPage() {
             <span>NYU, Summer 2024</span>
           </div>
           <p className="exp-role">w/ Pascal Wallasch</p>
-          <p>Built audio/linguistic feature pipeline for clinical depression research on 1,000+ hours of patient audio. Key finding: speech patterns vary too much across individuals for population-level detection — an informative null result that shaped the research direction.</p>
+          <p>Built audio/linguistic feature pipeline for clinical depression research on 1,000+ hours of patient audio. Key finding: speech patterns vary too much across individuals for population-level detection. An informative null result that shaped the research direction.</p>
         </div>
 
         <div className="exp">
@@ -162,17 +161,17 @@ export default function AboutPage() {
       <section className="about-section human">
         <h2>Beyond Code</h2>
         <ul>
-          <li><strong>History:</strong> Peter Turchin's cliodynamics — building ML pipelines around public datasets</li>
-          <li><strong>Music:</strong> Japanese indie + DnB — why I got into audio ML</li>
-          <li><strong>Reading:</strong> Nietzsche, Dostoevsky, Cormac McCarthy, Wittgenstein</li>
-          <li><strong>Linguistics:</strong> How language shapes thought — feeds into my NLP work</li>
+          <li><strong>History:</strong> Peter Turchin's cliodynamics. Building ML pipelines around public datasets.</li>
+          <li><strong>Music:</strong> Japanese indie + DnB. Why I got into audio ML.</li>
+          <li><strong>Reading:</strong> Mentally somewhere in the 19th century.</li>
+          <li><strong>Linguistics:</strong> How language shapes thought. Feeds into my NLP work.</li>
           <li><strong>Location:</strong> NYC/NJ → SF for the right opportunity</li>
         </ul>
       </section>
 
       {/* CTA */}
       <section className="about-cta">
-        <p>If you ship, let's talk.</p>
+        <p>If you're building something interesting, I'd like to hear about it.</p>
         <button
           onClick={() => {
             navigator.clipboard.writeText('amadeuswoo@proton.me');
