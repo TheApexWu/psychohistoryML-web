@@ -7,19 +7,22 @@ export default function AboutPage() {
     <div className="about-page">
       {/* Hero */}
       <section className="about-hero">
-        <h1>Alex Wu</h1>
-        <p className="hero-sub">
+        <h1>
+          <span className="hero-name">Alex Wu</span>
+        </h1>
+        <div className="hero-gold-line" />
+        <p className="hero-tagline hero-sub">
           I creatively build ML systems to solve unorthodox problems. Recent NYU CS + Data Science grad.
         </p>
 
-        <div className="availability">
+        <div className="availability scroll-fade-in">
           <span className="dot"></span>
           Looking for work, will relocate to SF
         </div>
 
-        <div className="links">
-          <a href="https://github.com/TheApexWu" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="https://www.linkedin.com/in/alex-wu-873b25181/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <div className="links scroll-fade-in">
+          <a href="https://github.com/TheApexWu" target="_blank" rel="noopener noreferrer" className="link-draw">GitHub</a>
+          <a href="https://www.linkedin.com/in/alex-wu-873b25181/" target="_blank" rel="noopener noreferrer" className="link-draw">LinkedIn</a>
           <button
             onClick={() => {
               navigator.clipboard.writeText('amadeuswoo@proton.me');
@@ -27,7 +30,7 @@ export default function AboutPage() {
               btn.textContent = 'Copied!';
               setTimeout(() => btn.textContent = 'amadeuswoo@proton.me', 2000);
             }}
-            className="email-btn"
+            className="email-btn link-draw"
           >
             amadeuswoo@proton.me
           </button>
@@ -35,132 +38,125 @@ export default function AboutPage() {
       </section>
 
       {/* What I Do */}
-      <section className="about-section">
+      <section className="about-section scroll-fade-in">
         <p className="looking-for">
           Simply put, I learn by building, parallelizing my projects to answer questions like a GPU. Looking for a bona fide team where I can apply my momentum.
         </p>
       </section>
 
       {/* Skills */}
-      <section className="about-section">
-        <h2>Stack</h2>
-        <div className="skills">
-          <div className="skill-row">
-            <span className="skill-label">Core</span>
-            <span>Python, PyTorch, scikit-learn, Pandas, SQL</span>
+      <section className="about-section scroll-fade-in">
+        <div className="minimal-header">Stack</div>
+        <div>
+          <span className="pill-category">Core</span>
+          <div className="pill-row">
+            <span className="pill">Python</span>
+            <span className="pill">PyTorch</span>
+            <span className="pill">scikit-learn</span>
+            <span className="pill">Pandas</span>
+            <span className="pill">SQL</span>
           </div>
-          <div className="skill-row">
-            <span className="skill-label">ML</span>
-            <span>NLP, Audio/Librosa, Time Series, Deep Learning</span>
+          <span className="pill-category">ML</span>
+          <div className="pill-row">
+            <span className="pill">NLP</span>
+            <span className="pill">Audio / Librosa</span>
+            <span className="pill">Time Series</span>
+            <span className="pill">Deep Learning</span>
           </div>
-          <div className="skill-row">
-            <span className="skill-label">Web</span>
-            <span>React/Next.js, Node.js, FastAPI, GCP, MongoDB</span>
+          <span className="pill-category">Web</span>
+          <div className="pill-row">
+            <span className="pill">React / Next.js</span>
+            <span className="pill">Node.js</span>
+            <span className="pill">FastAPI</span>
+            <span className="pill">GCP</span>
+            <span className="pill">MongoDB</span>
           </div>
         </div>
       </section>
 
       {/* Education */}
-      <section className="about-section">
-        <h2>Education</h2>
-        <div className="exp">
-          <div className="exp-top">
-            <h3>New York University</h3>
-            <span>2020–2025</span>
+      <section className="about-section scroll-fade-in">
+        <div className="minimal-header">Education</div>
+        <div className="timeline">
+          <div className="timeline-item">
+            <div className="timeline-date">2020 – 2025</div>
+            <h4>New York University</h4>
+            <p>B.A. Computer Science + Data Science, Minor in Mathematics</p>
           </div>
-          <p>B.A. Computer Science + Data Science, Minor in Mathematics</p>
         </div>
       </section>
 
       {/* Experience */}
-      <section className="about-section">
-        <h2>Experience</h2>
-
-        <div className="exp">
-          <div className="exp-top">
-            <h3>Exiger LLC</h3>
-            <span>Summer 2025</span>
+      <section className="about-section scroll-fade-in">
+        <div className="minimal-header">Experience</div>
+        <div className="timeline">
+          <div className="timeline-item">
+            <div className="timeline-date">Summer 2025</div>
+            <h4>Exiger LLC</h4>
+            <div className="timeline-role">Data Science Intern, NYC</div>
+            <p>Shipped NLP pipeline to production: ticket classification, priority scoring, time series forecasting with Prophet.</p>
           </div>
-          <p className="exp-role">Data Science Intern, NYC</p>
-          <p>Shipped NLP pipeline to production: ticket classification, priority scoring, time series forecasting with Prophet.</p>
-        </div>
-
-        <div className="exp">
-          <div className="exp-top">
-            <h3>Horizon BCBS NJ</h3>
-            <span>Summer 2023</span>
+          <div className="timeline-item">
+            <div className="timeline-date">Summer 2023</div>
+            <h4>Horizon BCBS NJ</h4>
+            <div className="timeline-role">IT Intern, Newark</div>
+            <p>Insurance catalog frontend (Salesforce/SQL), microservice monitoring, HIPAA compliance.</p>
           </div>
-          <p className="exp-role">IT Intern, Newark</p>
-          <p>Insurance catalog frontend (Salesforce/SQL), microservice monitoring, HIPAA compliance.</p>
         </div>
       </section>
 
       {/* Research */}
-      <section className="about-section">
-        <h2>Research</h2>
-
-        <div className="exp">
-          <div className="exp-top">
-            <h3>Audio-Based Depression Detection</h3>
-            <span>NYU, Summer 2024</span>
+      <section className="about-section scroll-fade-in">
+        <div className="minimal-header">Research</div>
+        <div className="timeline">
+          <div className="timeline-item">
+            <div className="timeline-date">NYU, Summer 2024</div>
+            <h4>Audio-Based Depression Detection</h4>
+            <div className="timeline-role">w/ Pascal Wallasch</div>
+            <p>Built audio/linguistic feature pipeline for clinical depression research on 1,000+ hours of patient audio. Key finding: speech patterns vary too much across individuals for population-level detection.</p>
           </div>
-          <p className="exp-role">w/ Pascal Wallasch</p>
-          <p>Built audio/linguistic feature pipeline for clinical depression research on 1,000+ hours of patient audio. Key finding: speech patterns vary too much across individuals for population-level detection. An informative null result that shaped the research direction.</p>
-        </div>
-
-        <div className="exp">
-          <div className="exp-top">
-            <h3>PsychohistoryML</h3>
-            <span>2024–Present</span>
+          <div className="timeline-item">
+            <div className="timeline-date">2024 – Present</div>
+            <h4>PsychohistoryML</h4>
+            <p>ML analysis of 372 historical polities. Random Forest (AUC 0.67) finding complexity-duration relationship reverses by era.</p>
+            <Link href="/discover" className="link-draw" style={{display:'inline-block',marginTop:'0.35rem',fontSize:'0.8rem'}}>View Project →</Link>
           </div>
-          <p>ML analysis of 372 historical polities. Random Forest (AUC 0.67) finding complexity-duration relationship reverses by era.</p>
-          <Link href="/discover" className="exp-link">View Project →</Link>
         </div>
       </section>
 
       {/* Projects */}
-      <section className="about-section">
-        <h2>Projects</h2>
-
-        <div className="exp">
-          <div className="exp-top">
-            <h3>Audio Style Classifier</h3>
-            <span>Audio ML</span>
+      <section className="about-section scroll-fade-in">
+        <div className="minimal-header">Projects</div>
+        <div className="timeline">
+          <div className="timeline-item">
+            <div className="timeline-date">Audio ML</div>
+            <h4>Audio Style Classifier</h4>
+            <p>89.5% accuracy on 954 tracks. Handcrafted features beat CLAP/MERT by 19-24%.</p>
           </div>
-          <p>89.5% accuracy on 954 tracks. Handcrafted features beat CLAP/MERT by 19-24%.</p>
-        </div>
-
-        <div className="exp">
-          <div className="exp-top">
-            <h3>Suzerain</h3>
-            <span>CLI Tool</span>
+          <div className="timeline-item">
+            <div className="timeline-date">CLI Tool</div>
+            <h4>Suzerain</h4>
+            <p>Analyze your Claude Code logs locally. See where you trust AI, where you don't.</p>
+            <a href="https://suzerain.dev" className="link-draw" style={{display:'inline-block',marginTop:'0.35rem',fontSize:'0.8rem'}}>View →</a>
           </div>
-          <p>Analyze your Claude Code logs locally. See where you trust AI, where you don't. Bash acceptance is the signal.</p>
-          <a href="https://suzerain.dev" className="exp-link">View →</a>
-        </div>
-
-        <div className="exp">
-          <div className="exp-top">
-            <h3>Beyond Translation</h3>
-            <span>NLP</span>
+          <div className="timeline-item">
+            <div className="timeline-date">NLP</div>
+            <h4>Beyond Translation</h4>
+            <p>Sentence embeddings reveal translator fingerprints across 5 Nietzsche translations.</p>
+            <a href="https://nietzsche.amadeuswoo.com" className="link-draw" style={{display:'inline-block',marginTop:'0.35rem',fontSize:'0.8rem'}}>View →</a>
           </div>
-          <p>Sentence embeddings reveal translator fingerprints across 5 Nietzsche translations.</p>
-          <a href="https://nietzsche.amadeuswoo.com" className="exp-link">View →</a>
-        </div>
-
-        <div className="exp">
-          <div className="exp-top">
-            <h3>Music Transcription</h3>
-            <span>Deep Learning</span>
+          <div className="timeline-item">
+            <div className="timeline-date">Deep Learning</div>
+            <h4>Music Transcription</h4>
+            <p>Piano audio to MIDI. CRNN with dual-output heads for onset/duration detection.</p>
           </div>
-          <p>Piano audio to MIDI. CRNN with dual-output heads for onset/duration detection.</p>
         </div>
       </section>
 
       {/* Human */}
-      <section className="about-section human">
-        <h2>Beyond Code</h2>
-        <ul>
+      <section className="about-section scroll-fade-in">
+        <div className="minimal-header">Beyond Code</div>
+        <ul className="beyond-list">
           <li><strong>History:</strong> Peter Turchin's cliodynamics. Building ML pipelines around public datasets.</li>
           <li><strong>Music:</strong> Japanese indie + DnB. Why I got into audio ML.</li>
           <li><strong>Reading:</strong> Mentally somewhere in the 19th century.</li>
@@ -170,7 +166,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="about-cta">
+      <section className="about-cta scroll-fade-in">
         <p>If you're building something interesting, I'd like to hear about it.</p>
         <button
           onClick={() => {
@@ -179,13 +175,13 @@ export default function AboutPage() {
             btn.textContent = 'Copied!';
             setTimeout(() => btn.textContent = 'amadeuswoo@proton.me', 2000);
           }}
-          className="cta-btn"
+          className="cta-btn btn-fill"
         >
           amadeuswoo@proton.me
         </button>
       </section>
 
-      <Link href="/" className="back-link">← Back</Link>
+      <Link href="/" className="back-link link-draw">← Back</Link>
 
       <style jsx>{`
         .about-page {
@@ -194,7 +190,6 @@ export default function AboutPage() {
           padding: 4rem 2rem;
         }
 
-        /* Hero - LEFT ALIGNED */
         .about-hero {
           margin-bottom: 3rem;
         }
@@ -202,12 +197,12 @@ export default function AboutPage() {
         .about-hero h1 {
           font-size: 3rem;
           font-weight: 700;
-          margin-bottom: 0.75rem;
+          margin-bottom: 0;
           color: var(--text-primary);
         }
 
         .hero-sub {
-          font-size: 1.25rem;
+          font-size: 1.1rem;
           color: var(--text-muted);
           line-height: 1.5;
           margin-bottom: 1.5rem;
@@ -222,7 +217,7 @@ export default function AboutPage() {
           background: rgba(34, 197, 94, 0.1);
           border: 1px solid rgba(34, 197, 94, 0.3);
           border-radius: 6px;
-          font-size: 1rem;
+          font-size: 0.95rem;
           color: #22c55e;
           margin-bottom: 1.5rem;
         }
@@ -244,12 +239,11 @@ export default function AboutPage() {
           display: flex;
           gap: 1.5rem;
           flex-wrap: wrap;
+          align-items: center;
         }
 
         .links a, .email-btn {
-          color: var(--accent);
-          text-decoration: none;
-          font-size: 1.1rem;
+          font-size: 1rem;
           background: none;
           border: none;
           cursor: pointer;
@@ -257,28 +251,12 @@ export default function AboutPage() {
           font-family: inherit;
         }
 
-        .links a:hover, .email-btn:hover {
-          text-decoration: underline;
-        }
-
-        /* Sections */
         .about-section {
           margin-bottom: 3rem;
         }
 
-        .about-section h2 {
-          font-size: 1.1rem;
-          font-weight: 600;
-          color: var(--text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          margin-bottom: 1.5rem;
-          padding-bottom: 0.5rem;
-          border-bottom: 1px solid var(--border);
-        }
-
         .looking-for {
-          font-size: 1.2rem;
+          font-size: 1.1rem;
           color: var(--text-muted);
           line-height: 1.6;
         }
@@ -287,102 +265,23 @@ export default function AboutPage() {
           color: var(--text-primary);
         }
 
-        /* Skills */
-        .skills {
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-
-        .skill-row {
-          display: flex;
-          gap: 1.5rem;
-          font-size: 1.1rem;
-          color: var(--text-muted);
-        }
-
-        .skill-label {
-          width: 60px;
-          color: var(--text-primary);
-          font-weight: 500;
-          flex-shrink: 0;
-        }
-
-        /* Experience */
-        .exp {
-          margin-bottom: 2rem;
-        }
-
-        .exp:last-child {
-          margin-bottom: 0;
-        }
-
-        .exp-top {
-          display: flex;
-          justify-content: space-between;
-          align-items: baseline;
-          margin-bottom: 0.25rem;
-          flex-wrap: wrap;
-          gap: 0.5rem;
-        }
-
-        .exp-top h3 {
-          font-size: 1.3rem;
-          font-weight: 600;
-          color: var(--text-primary);
-          margin: 0;
-        }
-
-        .exp-top span {
-          font-size: 0.95rem;
-          color: var(--text-muted);
-        }
-
-        .exp-role {
-          font-size: 1rem;
-          color: var(--text-muted);
-          margin-bottom: 0.5rem;
-          font-style: italic;
-        }
-
-        .exp p {
-          font-size: 1.1rem;
-          color: var(--text-muted);
-          line-height: 1.6;
-          margin: 0;
-        }
-
-        .exp-link {
-          display: inline-block;
-          margin-top: 0.5rem;
-          font-size: 1rem;
-          color: var(--accent);
-          text-decoration: none;
-        }
-
-        .exp-link:hover {
-          text-decoration: underline;
-        }
-
-        /* Human */
-        .human ul {
+        .beyond-list {
           list-style: none;
           padding: 0;
           margin: 0;
         }
 
-        .human li {
-          font-size: 1.1rem;
+        .beyond-list li {
+          font-size: 0.95rem;
           color: var(--text-muted);
           margin-bottom: 0.75rem;
           line-height: 1.5;
         }
 
-        .human li strong {
+        .beyond-list li strong {
           color: var(--text-primary);
         }
 
-        /* CTA */
         .about-cta {
           margin: 4rem 0 2rem;
           padding: 2rem;
@@ -391,52 +290,65 @@ export default function AboutPage() {
         }
 
         .about-cta p {
-          font-size: 1.25rem;
+          font-size: 1.1rem;
           color: var(--text-primary);
           margin-bottom: 1rem;
         }
 
         .cta-btn {
-          padding: 0.75rem 1.5rem;
-          background: var(--accent);
-          color: var(--bg-primary);
-          border: none;
-          border-radius: 6px;
-          font-size: 1.1rem;
-          font-weight: 500;
-          cursor: pointer;
-        }
-
-        .cta-btn:hover {
-          opacity: 0.9;
+          font-size: 0.95rem;
         }
 
         .back-link {
-          color: var(--accent);
-          text-decoration: none;
-          font-size: 1rem;
+          font-size: 0.95rem;
         }
 
-        .back-link:hover {
-          text-decoration: underline;
-        }
+        @media (max-width: 768px) {
+          .about-page {
+            padding: 2rem 1.25rem;
+          }
 
-        @media (max-width: 600px) {
           .about-hero h1 {
             font-size: 2.25rem;
           }
 
           .hero-sub {
-            font-size: 1.1rem;
+            font-size: 1rem;
           }
 
-          .skill-row {
-            flex-direction: column;
-            gap: 0.25rem;
+          .about-section {
+            margin-bottom: 2rem;
           }
 
-          .skill-label {
-            width: auto;
+          .about-cta {
+            margin: 2rem 0 1.5rem;
+            padding: 1.5rem;
+          }
+
+          .availability {
+            font-size: 0.85rem;
+          }
+
+          .links {
+            gap: 1rem;
+          }
+
+          .links a, .email-btn {
+            font-size: 0.9rem;
+          }
+
+          .looking-for {
+            font-size: 1rem;
+          }
+        }
+
+        @media (max-width: 400px) {
+          .about-hero h1 {
+            font-size: 1.75rem;
+          }
+
+          .about-page {
+            padding: 1.5rem 1rem;
           }
         }
       `}</style>

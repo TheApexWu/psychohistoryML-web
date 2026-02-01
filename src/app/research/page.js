@@ -20,7 +20,7 @@ export default function ResearchPage() {
         <span className="article-tag">Research</span>
         <h1>Building Psychohistory: A Data Science Journey</h1>
         <p className="article-meta">
-          Amadeus Woo · December 2025 (Updated January 2026) · 6 min read
+          Amadeus Woo · December 2025 · 6 min read
         </p>
       </header>
 

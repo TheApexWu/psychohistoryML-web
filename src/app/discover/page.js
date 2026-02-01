@@ -8,7 +8,7 @@ export default function DiscoverPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="hero">
+      <section className="hero scroll-fade-in">
         <span className="hero-tag">Exploratory Research</span>
         <h1>Toward Asimov&apos;s <em>Psychohistory</em></h1>
         <p className="subtitle">
@@ -18,10 +18,12 @@ export default function DiscoverPage() {
       </section>
 
       {/* Animated Stats */}
-      <StatsRow />
+      <div className="scroll-fade-in">
+        <StatsRow />
+      </div>
 
       {/* Dataset Context */}
-      <section className="dataset-context">
+      <section className="dataset-context scroll-fade-in">
         <p>
           The <a href="https://seshatdatabank.info/" target="_blank" rel="noopener noreferrer">Seshat Global History Databank</a> is
           an international research project that systematically codes historical and archaeological
@@ -38,44 +40,28 @@ export default function DiscoverPage() {
       </section>
 
       {/* Expandable Discovery Cards */}
-      <DiscoveriesSection />
+      <div className="scroll-fade-in">
+        <DiscoveriesSection />
+      </div>
 
       {/* CTA Section */}
-      <section className="research-cta">
+      <section className="research-cta scroll-fade-in">
         <p>Want the full methodology and analysis?</p>
         <div className="cta-buttons">
-          <Link href="/research" className="research-link">
+          <Link href="/research" className="btn-fill">
             Read the Research
           </Link>
-          <Link href="/predict" className="research-link secondary">
+          <Link href="/predict" className="btn-fill secondary">
             Try the Simulator
           </Link>
         </div>
       </section>
 
       {/* Chatbot CTA */}
-      <section className="research-cta" style={{ borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
+      <section className="research-cta scroll-fade-in" style={{ borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
         <p>Or ask questions directly</p>
-        <Link
-          href="/chat"
-          className="research-link"
-          style={{
-            background: 'transparent',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem'
-          }}
-        >
+        <Link href="/chat" className="btn-fill">
           Try Research Assistant Bot
-          <span style={{
-            fontSize: '0.65rem',
-            padding: '0.2rem 0.4rem',
-            background: 'var(--accent-dim)',
-            color: 'var(--text-primary)',
-            borderRadius: '3px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em'
-          }}>Beta</span>
         </Link>
       </section>
     </>

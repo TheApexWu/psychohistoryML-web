@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from 'next/link'
 import { Cormorant_Garamond, JetBrains_Mono } from 'next/font/google'
+import Animations from '../components/Animations'
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -28,10 +29,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${cormorant.variable} ${jetbrains.variable}`}>
       <body>
-        {/* Background elements - persist across all pages */}
-        <div className="grid-bg" />
-        <div className="float-decor" />
-        
+        <Animations />
+
         <div className="container">
           <header>
             <Link href="/" className="logo">Amadeus Woo</Link>
@@ -39,7 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main>
             {children}
           </main>
-          
+
           <footer>
             <div className="footer-links">
               <a href="https://github.com/TheApexWu" target="_blank" rel="noopener noreferrer">
@@ -52,7 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 Substack
               </a>
             </div>
-            <span className="copyright">© 2025 Amadeus Woo</span>
+            <span className="copyright">&copy; 2026 Amadeus Woo</span>
           </footer>
         </div>
       </body>
