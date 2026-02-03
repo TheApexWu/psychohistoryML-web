@@ -41,7 +41,7 @@ export default function CrisisDBPage() {
             <span className="stat-label">Transitions</span>
           </div>
           <div className="stat">
-            <span className="stat-value">{excludeLowQuality ? stats.total_polities - source_quality.stats.low_quality : stats.total_polities}</span>
+            <span className="stat-value">{excludeLowQuality ? source_quality.stats.sufficient : stats.total_polities}</span>
             <span className="stat-label">Polities</span>
           </div>
           <div className="stat">
@@ -56,9 +56,9 @@ export default function CrisisDBPage() {
               checked={excludeLowQuality}
               onChange={(e) => setExcludeLowQuality(e.target.checked)}
             />
-            <span className="toggle-label">Exclude low-quality sources</span>
+            <span className="toggle-label">Exclude sparse polities</span>
             <span className="toggle-info" title={source_quality.note}>
-              ({source_quality.stats.low_quality} polities with sparse records)
+              ({source_quality.stats.sparse} polities with {'<'}{source_quality.threshold} transitions)
             </span>
           </label>
         </div>
@@ -302,7 +302,7 @@ export default function CrisisDBPage() {
         <section className="robustness-section">
           <h2>9. Robustness Check</h2>
           <p className="section-intro">
-            Do findings hold when excluding polities with sparse documentary records?
+            Do findings hold when excluding polities with fewer than {source_quality.threshold} transitions?
           </p>
           <div className="robustness-grid">
             <div className="robustness-card">
@@ -314,18 +314,18 @@ export default function CrisisDBPage() {
             </div>
             <div className="robustness-arrow">→</div>
             <div className="robustness-card">
-              <h4>Excluding Low-Quality Sources</h4>
+              <h4>Excluding Sparse Polities (n {'<'} {source_quality.threshold})</h4>
               <div className="rob-stat">r = {filtered_stats.correlation_r}</div>
-              <div className="rob-detail">{filtered_stats.total_transitions_filtered?.toLocaleString()} transitions · {stats.total_polities - filtered_stats.excluded_polities} polities</div>
+              <div className="rob-detail">{filtered_stats.total_transitions_filtered?.toLocaleString()} transitions · {source_quality.stats.sufficient} polities</div>
               <div className="rob-detail">P(V|V) = {(filtered_stats.markov_filtered?.p_violent_to_violent * 100).toFixed(0)}%</div>
               <div className="rob-detail">Violence rate: {(filtered_stats.violence_rate_filtered * 100).toFixed(1)}%</div>
             </div>
           </div>
           <div className="finding-box" style={{ marginTop: '1rem' }}>
-            <strong>Result:</strong> Excluding {filtered_stats.excluded_polities} poorly-documented polities
-            <em> increases</em> the violence rate ({(stats.violence_rate * 100).toFixed(1)}% → {(filtered_stats.violence_rate_filtered * 100).toFixed(1)}%)
+            <strong>Result:</strong> Excluding {filtered_stats.excluded_polities} sparse polities
+            slightly increases the violence rate ({(stats.violence_rate * 100).toFixed(1)}% → {(filtered_stats.violence_rate_filtered * 100).toFixed(1)}%)
             and persistence (P(V|V): {(markov.p_violent_to_violent * 100).toFixed(0)}% → {(filtered_stats.markov_filtered?.p_violent_to_violent * 100).toFixed(0)}%).
-            The sparse-record polities were diluting the signal, not inflating it.
+            Core findings are robust to this exclusion.
             {filtered_stats.correlation_note && (
               <span className="rob-note"> {filtered_stats.correlation_note}</span>
             )}
@@ -357,12 +357,9 @@ export default function CrisisDBPage() {
           <div className="method-card">
             <h3>Source Quality</h3>
             <p>
-              Some polities (Aztec Empire, Egyptian Old Kingdom) have sparse documentary records.
-              Apparent low conflict may reflect data gaps rather than actual peaceful transitions.
-              Use the filter above to exclude these polities and verify that findings hold.
-            </p>
-            <p className="quality-note">
-              Feedback from CSH Vienna confirms that filtering does not change core findings.
+              Polities with fewer than {source_quality.threshold} recorded transitions are flagged as sparse —
+              too few data points for reliable violence rate estimates.
+              Use the filter above to exclude these {source_quality.stats.sparse} polities and verify that findings hold.
             </p>
           </div>
         </div>
