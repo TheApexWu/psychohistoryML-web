@@ -72,9 +72,9 @@ export default function CrisisDBPage() {
           testing predictions from Peter Turchin's <strong>Structural Demographic Theory</strong> (SDT).
         </p>
         <p>
-          SDT predicts that institutional complexity (measured by administrative levels) leads to
-          <strong> elite overproduction</strong>—more elite positions mean more competition,
-          which manifests as intra-elite conflict during power transitions.
+          SDT predicts that institutional complexity leads to <strong>elite overproduction</strong> — more
+          administrative levels mean more elite positions, more competition, and more intra-elite
+          conflict during power transitions.
         </p>
         <p className="data-note">
           Data: {stats.total_transitions.toLocaleString()} power transitions from {stats.total_polities} polities,
@@ -97,13 +97,13 @@ export default function CrisisDBPage() {
       <section className="viz-section">
         <h2>1. Elite Overproduction</h2>
         <p className="section-intro">
-          Does administrative complexity predict intra-elite conflict? Testing Turchin's core hypothesis.
+          Does administrative complexity predict intra-elite conflict?
         </p>
         <EliteScatter data={filteredScatter} stats={stats} />
         <div className="finding-box">
           <strong>Finding:</strong> Positive correlation (r = {stats.correlation_r}, p {'<'} 0.001).
           Each additional administrative level associates with +{stats.effect_size} percentage points
-          higher intra-elite conflict rate. Consistent with elite overproduction theory.
+          higher intra-elite conflict rate.
         </div>
       </section>
 
@@ -111,12 +111,12 @@ export default function CrisisDBPage() {
       <section className="viz-section">
         <h2>2. Violence Contagion</h2>
         <p className="section-intro">
-          Is violence "sticky"? Does a violent transition increase the probability of subsequent violence?
+          Does a violent transition increase the probability of subsequent violence?
         </p>
         <ContagionHeatmap markov={markov} />
         <div className="finding-box">
-          <strong>Finding:</strong> Violence is self-reinforcing. P(violent | previous violent) = 60%
-          vs P(violent | previous peaceful) = 22%. The system converges to 36% violent at equilibrium.
+          <strong>Finding:</strong> P(violent | previous violent) = 60%
+          vs P(violent | previous peaceful) = 22%. Stationary distribution: 36% violent.
         </div>
       </section>
 
@@ -124,15 +124,14 @@ export default function CrisisDBPage() {
       <section className="viz-section">
         <h2>3. Temporal Dynamics</h2>
         <p className="section-intro">
-          Are these patterns stationary, or do violence mechanisms shift over time?
-          If the system were in equilibrium, we'd expect constant rates. It isn't.
+          If the system were stationary, we'd expect constant rates across centuries. It isn't.
         </p>
         <ViolenceMechanisms data={century_mechanisms} />
         <div className="finding-box">
-          <strong>Finding:</strong> Violence mechanisms are non-stationary. Assassination dominates
-          in antiquity (peaking at 45% in the 3rd century crisis), while intra-elite conflict
-          shows distinct waves. The overall rate of political violence has declined since ~500 CE,
-          but the <em>composition</em> shifts — suggesting different generative processes across eras.
+          <strong>Finding:</strong> Assassination dominates in antiquity (peaking at 45% in the
+          3rd century crisis), while intra-elite conflict shows distinct waves. The overall rate
+          of political violence has declined since ~500 CE, but the <em>composition</em> shifts —
+          different mechanisms dominate in different eras.
         </div>
       </section>
 
@@ -141,13 +140,13 @@ export default function CrisisDBPage() {
         <h2>4. Polity Trajectories</h2>
         <p className="section-intro">
           Aggregate statistics mask divergent paths. Some polities maintain stability for centuries;
-          others spiral into violence. Explore individual trajectories to see the dynamics at work.
+          others spiral into violence.
         </p>
         <PolityDeepDive trajectories={polity_trajectories} eliteScatter={elite_scatter} />
         <div className="finding-box" style={{ marginTop: '1rem' }}>
           <strong>Compare:</strong> Venice maintains near-zero violence across 41 transitions (800–1797 CE),
-          while Byzantine III shows 100% conflict in its final phase. These aren't random — they suggest
-          distinct <em>regimes</em> that polities can inhabit, with transitions between them.
+          while Byzantine III shows 100% conflict in its final phase — distinct <em>regimes</em>
+          that polities can inhabit, with transitions between them.
         </div>
       </section>
 
@@ -155,12 +154,12 @@ export default function CrisisDBPage() {
       <section className="viz-section">
         <h2>5. Ruler Tenure</h2>
         <p className="section-intro">
-          Do violent usurpers reign shorter? Testing instability cascades at the individual level.
+          Do violent usurpers reign shorter?
         </p>
         <TenureSurvival data={filteredRulers} />
         <div className="finding-box">
           <strong>Finding:</strong> Violent accession → 2 years shorter median reign (8 vs 10 years, p {'<'} 0.0001).
-          Military coups show strongest effect (-4 years). Violence cascades: usurpers are 2.5x more likely
+          Military coups show the strongest effect (-4 years). Usurpers are 2.5x more likely
           to be removed violently themselves.
         </div>
       </section>
@@ -178,7 +177,7 @@ export default function CrisisDBPage() {
       <section className="patterns-section">
         <h2>7. Notable Patterns</h2>
         <p className="section-intro">
-          Outliers and trajectories that complicate—or illuminate—the complexity-conflict relationship.
+          Outliers and trajectories that complicate the complexity-conflict relationship.
         </p>
 
         <div className="pattern-grid">
@@ -187,7 +186,7 @@ export default function CrisisDBPage() {
             <p>
               <strong>Venice</strong> (admin=6, conflict=0-5%), <strong>Egypt Old Kingdom</strong> (admin=6, conflict=0%),
               and <strong>Northern Song</strong> (admin=7, conflict=11%) maintained complex bureaucracies with
-              remarkably low intra-elite violence during transitions.
+              low intra-elite violence during transitions.
             </p>
             <p className="pattern-note">
               Suggests strong succession institutions can buffer elite competition.
@@ -201,8 +200,8 @@ export default function CrisisDBPage() {
               their reputation for ritualized violence and warfare.
             </p>
             <p className="pattern-note">
-              Key distinction: "intra-elite conflict" here measures violence during <em>power transitions</em>,
-              not general societal violence. Aztec succession was highly ritualized—external violence (sacrifice, warfare)
+              "Intra-elite conflict" here measures violence during <em>power transitions</em>,
+              not general societal violence. Aztec succession was highly ritualized — external violence
               didn't translate to contested successions.
             </p>
           </div>
@@ -235,13 +234,11 @@ export default function CrisisDBPage() {
       <section className="prediction-section">
         <h2>8. Toward Prediction: Violence as a Dynamical System</h2>
         <p className="section-intro">
-          The patterns above suggest political violence isn't random noise — it has structure.
-          Can we move from description to prediction?
+          Political violence has structure. Can we move from description to prediction?
         </p>
 
         <div className="prediction-grid">
           <div className="prediction-card">
-            <div className="prediction-icon">⚖️</div>
             <h3>Equilibrium or Illusion?</h3>
             <p>
               The Markov chain converges to 36% violent at stationarity. But the temporal dynamics
@@ -252,24 +249,22 @@ export default function CrisisDBPage() {
           </div>
 
           <div className="prediction-card">
-            <div className="prediction-icon">📉</div>
             <h3>Critical Transitions</h3>
             <p>
               Byzantine Empire: 56% → 50% → 100% violence. Mamluk: 68% → 73% → 80%.
-              These don't look like gradual drift — they look like <strong>tipping points</strong>.
+              These trajectories resemble <strong>tipping points</strong> more than gradual drift.
               Complex systems theory predicts early warning signals before critical transitions
-              (rising autocorrelation, critical slowing down). Can we detect them here?
+              (rising autocorrelation, critical slowing down). Can we detect them in the historical record?
             </p>
           </div>
 
           <div className="prediction-card">
-            <div className="prediction-icon">🔮</div>
             <h3>Hidden States</h3>
             <p>
-              A <strong>Hidden Markov Model</strong> could capture what we see: a latent state
-              (stable vs. crisis) that generates observed transitions with different probabilities.
-              The polity trajectories in Section 4 strongly suggest at least two distinct regimes.
-              What triggers the switch?
+              A <strong>Hidden Markov Model</strong> could formalize this: a latent state
+              (stable vs. crisis) generating observed transitions with different probabilities.
+              The polity trajectories in Section 4 suggest at least two distinct regimes.
+              What triggers the switch between them?
             </p>
           </div>
         </div>
@@ -277,7 +272,7 @@ export default function CrisisDBPage() {
         <div className="open-questions">
           <h3>Open Questions</h3>
           <p className="oq-intro">
-            Answering these would require additional variables beyond power transitions alone:
+            These require additional variables beyond power transitions:
           </p>
           <ul>
             <li>
@@ -328,9 +323,9 @@ export default function CrisisDBPage() {
           </div>
           <div className="finding-box" style={{ marginTop: '1rem' }}>
             <strong>Result:</strong> Excluding {filtered_stats.excluded_polities} poorly-documented polities
-            <em> strengthens</em> the findings. Violence rate increases from {(stats.violence_rate * 100).toFixed(1)}% to {(filtered_stats.violence_rate_filtered * 100).toFixed(1)}%,
-            and violence becomes stickier (P(V|V) rises from {(markov.p_violent_to_violent * 100).toFixed(0)}% to {(filtered_stats.markov_filtered?.p_violent_to_violent * 100).toFixed(0)}%).
-            The low-quality polities were <em>masking</em> violence, not inflating it.
+            <em> increases</em> the violence rate ({(stats.violence_rate * 100).toFixed(1)}% → {(filtered_stats.violence_rate_filtered * 100).toFixed(1)}%)
+            and persistence (P(V|V): {(markov.p_violent_to_violent * 100).toFixed(0)}% → {(filtered_stats.markov_filtered?.p_violent_to_violent * 100).toFixed(0)}%).
+            The sparse-record polities were diluting the signal, not inflating it.
             {filtered_stats.correlation_note && (
               <span className="rob-note"> {filtered_stats.correlation_note}</span>
             )}
@@ -662,11 +657,6 @@ export default function CrisisDBPage() {
           border: 1px solid var(--border);
           border-radius: 6px;
           padding: 1.25rem;
-        }
-
-        .prediction-icon {
-          font-size: 1.5rem;
-          margin-bottom: 0.5rem;
         }
 
         .prediction-card h3 {
