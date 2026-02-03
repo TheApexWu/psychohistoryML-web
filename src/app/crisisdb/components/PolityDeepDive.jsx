@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 
 const MECHANISM_COLORS = {
   assassination: '#3b82f6',
@@ -8,23 +8,101 @@ const MECHANISM_COLORS = {
   intra_elite: '#22c55e',
 }
 
+// Region tags for fuzzy search
+const REGION_KEYWORDS = {
+  'East Asia': ['Song', 'Tang', 'Ming', 'Qing', 'Han', 'Jin', 'Wei', 'Kansai', 'Ashikaga', 'Kamakura', 'Tokugawa', 'Japan', 'Majapahit', 'Mataram', 'Medang', 'Angkor', 'Ayutthaya', 'Rattanakosin'],
+  'Middle East': ['Abbasid', 'Umayyad', 'Fatimid', 'Safavid', 'Timurid', 'Ottoman', 'Sasanid', 'Achaemenid', 'Seleucid', 'Parthian', 'Durrani', 'Bukhara', 'Ak Koyunlu', 'Zungharian', 'Mongol', 'Rouran', 'Saadi'],
+  'Europe': ['Byzantine', 'Roman', 'Venice', 'Carolingian', 'Merovingian', 'French', 'Papal', 'Ostrogothic', 'Ravenna', 'Peter'],
+  'North Africa': ['Egypt', 'Mamluk', 'Fatimid', 'Ptolemaic'],
+  'Sub-Saharan Africa': ['Akan', 'Ashanti', 'Bamana'],
+  'Americas': ['Aztec', 'Inca', 'Hawaii', 'Tikal'],
+  'South Asia': ['Mughal', 'Delhi', 'Kushan', 'Rashtrakuta', 'Satavahana', 'Sind'],
+  'Mesopotamia': ['Akkadian', 'Neo-Assyrian', 'Neo-Babylonian', 'Hatti'],
+}
+
+function getRegions(name) {
+  const regions = []
+  for (const [region, keywords] of Object.entries(REGION_KEYWORDS)) {
+    for (const kw of keywords) {
+      if (name.toLowerCase().includes(kw.toLowerCase())) {
+        regions.push(region)
+        break
+      }
+    }
+  }
+  return regions
+}
+
+// Simple fuzzy match: check if all query tokens appear in the search string
+function fuzzyMatch(query, text) {
+  const tokens = query.toLowerCase().split(/\s+/).filter(Boolean)
+  const haystack = text.toLowerCase()
+  return tokens.every(t => haystack.includes(t))
+}
+
 export default function PolityDeepDive({ trajectories, eliteScatter }) {
   const [selectedPolity, setSelectedPolity] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [highlightIndex, setHighlightIndex] = useState(-1)
+  const searchRef = useRef(null)
+  const dropdownRef = useRef(null)
 
-  // Sort polities by interest (n_transitions * intra_rate for "most dramatic")
-  const sortedPolities = useMemo(() => {
+  // Build searchable polity list with region tags
+  const polityList = useMemo(() => {
     return Object.entries(trajectories)
-      .map(([name, data]) => ({ name, ...data }))
+      .map(([name, data]) => {
+        const regions = getRegions(name)
+        return {
+          name,
+          ...data,
+          regions,
+          searchText: [name, ...regions].join(' '),
+        }
+      })
       .sort((a, b) => b.n_transitions - a.n_transitions)
   }, [trajectories])
 
+  // Filtered results based on search query
   const filtered = useMemo(() => {
-    if (!searchQuery) return sortedPolities.slice(0, 20)
-    return sortedPolities.filter(p =>
-      p.name.toLowerCase().includes(searchQuery.toLowerCase())
-    ).slice(0, 20)
-  }, [sortedPolities, searchQuery])
+    if (!searchQuery.trim()) return polityList
+    return polityList.filter(p => fuzzyMatch(searchQuery, p.searchText))
+  }, [polityList, searchQuery])
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
+
+  // Keyboard navigation
+  const handleKeyDown = (e) => {
+    if (!dropdownOpen) return
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setHighlightIndex(i => Math.min(i + 1, filtered.length - 1))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setHighlightIndex(i => Math.max(i - 1, 0))
+    } else if (e.key === 'Enter' && highlightIndex >= 0 && highlightIndex < filtered.length) {
+      e.preventDefault()
+      selectPolity(filtered[highlightIndex].name)
+    } else if (e.key === 'Escape') {
+      setDropdownOpen(false)
+    }
+  }
+
+  const selectPolity = (name) => {
+    setSelectedPolity(name)
+    setSearchQuery('')
+    setDropdownOpen(false)
+    setHighlightIndex(-1)
+  }
 
   // Notable presets
   const presets = [
@@ -45,7 +123,7 @@ export default function PolityDeepDive({ trajectories, eliteScatter }) {
 
     const transitions = selected.transitions
     const width = 800
-    const height = 240
+    const height = 260
     const margin = { top: 20, right: 20, bottom: 40, left: 50 }
     const plotW = width - margin.left - margin.right
     const plotH = height - margin.top - margin.bottom
@@ -63,16 +141,21 @@ export default function PolityDeepDive({ trajectories, eliteScatter }) {
       .map((t, i) => `${i === 0 ? 'M' : 'L'}${x(t.year).toFixed(1)},${y(t.rolling_violence).toFixed(1)}`)
       .join(' ')
 
+    const totalViolent = transitions.filter(t => t.violent).length
+    const totalPeaceful = transitions.filter(t => !t.violent).length
+    const totalAssassination = transitions.filter(t => t.assassination).length
+    const totalMilitary = transitions.filter(t => t.military).length
+
     return (
       <div className="trajectory-chart">
         <div className="trajectory-header">
           <h4>{selectedPolity}</h4>
           <div className="trajectory-meta">
-            <span>{selected.first_year < 0 ? `${Math.abs(selected.first_year)} BCE` : selected.first_year} – {selected.last_year} CE</span>
-            <span>·</span>
+            <span>{selected.first_year < 0 ? `${Math.abs(selected.first_year)} BCE` : selected.first_year} – {selected.last_year < 0 ? `${Math.abs(selected.last_year)} BCE` : `${selected.last_year} CE`}</span>
+            <span className="meta-sep">/</span>
             <span>{selected.n_transitions} transitions</span>
-            {selected.admin_levels && <><span>·</span><span>Admin: {selected.admin_levels}</span></>}
-            <span>·</span>
+            {selected.admin_levels && <><span className="meta-sep">/</span><span>Admin: {selected.admin_levels}</span></>}
+            <span className="meta-sep">/</span>
             <span>Conflict: {(selected.intra_rate * 100).toFixed(0)}%</span>
           </div>
         </div>
@@ -133,22 +216,22 @@ export default function PolityDeepDive({ trajectories, eliteScatter }) {
             fill="var(--text-muted)" fontSize="10">Violence</text>
         </svg>
 
-        {/* Summary stats */}
+        {/* Summary stats - spread out */}
         <div className="trajectory-stats">
           <div className="traj-stat">
-            <span className="traj-stat-val">{transitions.filter(t => t.violent).length}</span>
+            <span className="traj-stat-val" style={{ color: '#ef4444' }}>{totalViolent}</span>
             <span className="traj-stat-label">violent</span>
           </div>
           <div className="traj-stat">
-            <span className="traj-stat-val">{transitions.filter(t => !t.violent).length}</span>
+            <span className="traj-stat-val">{totalPeaceful}</span>
             <span className="traj-stat-label">peaceful</span>
           </div>
           <div className="traj-stat">
-            <span className="traj-stat-val">{transitions.filter(t => t.assassination).length}</span>
+            <span className="traj-stat-val" style={{ color: MECHANISM_COLORS.assassination }}>{totalAssassination}</span>
             <span className="traj-stat-label">assassinations</span>
           </div>
           <div className="traj-stat">
-            <span className="traj-stat-val">{transitions.filter(t => t.military).length}</span>
+            <span className="traj-stat-val" style={{ color: MECHANISM_COLORS.military }}>{totalMilitary}</span>
             <span className="traj-stat-label">military revolts</span>
           </div>
         </div>
@@ -163,33 +246,50 @@ export default function PolityDeepDive({ trajectories, eliteScatter }) {
         {presets.map(p => (
           <button key={p.name}
             className={`preset-btn ${selectedPolity === p.name ? 'active' : ''}`}
-            onClick={() => setSelectedPolity(selectedPolity === p.name ? null : p.name)}>
+            onClick={() => selectPolity(selectedPolity === p.name ? null : p.name)}>
             {p.label}
           </button>
         ))}
       </div>
 
-      {/* Search */}
-      <div className="polity-search">
+      {/* Fuzzy search dropdown */}
+      <div className="polity-search" ref={dropdownRef}>
         <input
+          ref={searchRef}
           type="text"
-          placeholder="Search polities..."
+          placeholder="Search polities by name or region (e.g. &quot;China&quot;, &quot;Europe&quot;, &quot;Egypt&quot;)..."
           value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
+          onChange={e => {
+            setSearchQuery(e.target.value)
+            setDropdownOpen(true)
+            setHighlightIndex(0)
+          }}
+          onFocus={() => setDropdownOpen(true)}
+          onKeyDown={handleKeyDown}
           className="polity-search-input"
         />
-        {searchQuery && (
-          <div className="polity-results">
-            {filtered.map(p => (
-              <button key={p.name}
-                className={`polity-result ${selectedPolity === p.name ? 'active' : ''}`}
-                onClick={() => { setSelectedPolity(p.name); setSearchQuery('') }}>
-                <span className="polity-name">{p.name}</span>
-                <span className="polity-meta">
-                  {p.n_transitions}t · {(p.intra_rate * 100).toFixed(0)}% conflict
-                </span>
-              </button>
-            ))}
+        {dropdownOpen && (
+          <div className="polity-dropdown">
+            {filtered.length === 0 ? (
+              <div className="dropdown-empty">No polities found</div>
+            ) : (
+              filtered.map((p, i) => (
+                <button key={p.name}
+                  className={`dropdown-item ${selectedPolity === p.name ? 'selected' : ''} ${i === highlightIndex ? 'highlighted' : ''}`}
+                  onClick={() => selectPolity(p.name)}
+                  onMouseEnter={() => setHighlightIndex(i)}>
+                  <div className="dropdown-item-main">
+                    <span className="dropdown-name">{p.name}</span>
+                    {p.regions.length > 0 && (
+                      <span className="dropdown-region">{p.regions[0]}</span>
+                    )}
+                  </div>
+                  <span className="dropdown-meta">
+                    {p.n_transitions}t · {(p.overall_rate * 100).toFixed(0)}% violent
+                  </span>
+                </button>
+              ))
+            )}
           </div>
         )}
       </div>
@@ -220,6 +320,7 @@ export default function PolityDeepDive({ trajectories, eliteScatter }) {
           font-size: 0.8rem;
           cursor: pointer;
           transition: all 0.15s;
+          font-family: inherit;
         }
         .preset-btn:hover {
           border-color: var(--accent);
@@ -236,53 +337,86 @@ export default function PolityDeepDive({ trajectories, eliteScatter }) {
         }
         .polity-search-input {
           width: 100%;
-          padding: 0.5rem 0.75rem;
+          padding: 0.6rem 0.85rem;
           background: var(--bg-secondary);
           border: 1px solid var(--border);
-          border-radius: 4px;
+          border-radius: 6px;
           color: var(--text-primary);
           font-size: 0.85rem;
+          font-family: inherit;
+        }
+        .polity-search-input:focus {
+          outline: none;
+          border-color: var(--accent-dim);
         }
         .polity-search-input::placeholder {
           color: var(--text-muted);
+          opacity: 0.6;
         }
-        .polity-results {
+        .polity-dropdown {
           position: absolute;
           top: 100%;
           left: 0;
           right: 0;
           background: var(--bg-secondary);
           border: 1px solid var(--border);
-          border-radius: 0 0 4px 4px;
-          max-height: 200px;
+          border-top: none;
+          border-radius: 0 0 6px 6px;
+          max-height: 280px;
           overflow-y: auto;
           z-index: 10;
         }
-        .polity-result {
+        .dropdown-empty {
+          padding: 0.75rem;
+          text-align: center;
+          color: var(--text-muted);
+          font-size: 0.8rem;
+        }
+        .dropdown-item {
           display: flex;
           justify-content: space-between;
+          align-items: center;
           width: 100%;
-          padding: 0.5rem 0.75rem;
+          padding: 0.5rem 0.85rem;
           background: none;
           border: none;
-          border-bottom: 1px solid var(--border);
+          border-bottom: 1px solid rgba(255,255,255,0.04);
           color: var(--text-muted);
           font-size: 0.8rem;
           cursor: pointer;
           text-align: left;
+          font-family: inherit;
+          transition: background 0.1s;
         }
-        .polity-result:hover {
+        .dropdown-item:last-child {
+          border-bottom: none;
+        }
+        .dropdown-item:hover,
+        .dropdown-item.highlighted {
           background: rgba(99, 102, 241, 0.08);
         }
-        .polity-result.active {
+        .dropdown-item.selected {
           color: var(--accent);
         }
-        .polity-name {
+        .dropdown-item-main {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+        .dropdown-name {
           color: var(--text-primary);
         }
-        .polity-meta {
-          font-size: 0.75rem;
-          opacity: 0.7;
+        .dropdown-region {
+          font-size: 0.7rem;
+          padding: 0.1rem 0.4rem;
+          background: rgba(99, 102, 241, 0.1);
+          border-radius: 3px;
+          color: var(--text-muted);
+        }
+        .dropdown-meta {
+          font-size: 0.7rem;
+          opacity: 0.6;
+          white-space: nowrap;
         }
         .polity-placeholder {
           text-align: center;
@@ -301,20 +435,25 @@ export default function PolityDeepDive({ trajectories, eliteScatter }) {
         }
         .trajectory-meta {
           display: flex;
-          gap: 0.5rem;
+          flex-wrap: wrap;
+          gap: 0.4rem;
           font-size: 0.8rem;
           color: var(--text-muted);
           margin-bottom: 0.75rem;
+        }
+        .meta-sep {
+          opacity: 0.3;
         }
         .trajectory-svg {
           width: 100%;
           max-width: 800px;
         }
         .trajectory-stats {
-          display: flex;
-          gap: 2rem;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 1rem;
           margin-top: 0.75rem;
-          padding-top: 0.75rem;
+          padding: 0.75rem 0;
           border-top: 1px solid var(--border);
         }
         .traj-stat {
@@ -322,16 +461,21 @@ export default function PolityDeepDive({ trajectories, eliteScatter }) {
         }
         .traj-stat-val {
           display: block;
-          font-size: 1.25rem;
+          font-size: 1.5rem;
           font-weight: 600;
           color: var(--text-primary);
-          font-family: var(--font-mono);
+          font-family: var(--font-jetbrains), monospace;
         }
         .traj-stat-label {
           font-size: 0.7rem;
           color: var(--text-muted);
           text-transform: uppercase;
           letter-spacing: 0.05em;
+        }
+        @media (max-width: 640px) {
+          .trajectory-stats {
+            grid-template-columns: repeat(2, 1fr);
+          }
         }
       `}</style>
     </div>

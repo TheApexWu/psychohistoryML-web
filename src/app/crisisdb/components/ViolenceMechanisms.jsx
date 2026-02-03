@@ -21,8 +21,8 @@ export default function ViolenceMechanisms({ data }) {
 
   // Chart dimensions
   const width = 800
-  const height = 320
-  const margin = { top: 20, right: 20, bottom: 50, left: 55 }
+  const height = 350
+  const margin = { top: 30, right: 20, bottom: 50, left: 55 }
   const plotW = width - margin.left - margin.right
   const plotH = height - margin.top - margin.bottom
 
@@ -85,10 +85,13 @@ export default function ViolenceMechanisms({ data }) {
           </text>
         ))}
 
-        {/* Crisis of 3rd century */}
+        {/* Crisis of 3rd century annotation */}
         <line x1={crisisX} y1={margin.top} x2={crisisX} y2={height - margin.bottom}
-          stroke="rgba(239,68,68,0.25)" strokeDasharray="6,4" />
-        <text x={crisisX + 5} y={margin.top + 14} fill="rgba(239,68,68,0.5)" fontSize="10">
+          stroke="rgba(239,68,68,0.3)" strokeDasharray="6,4" />
+        <rect x={crisisX + 4} y={margin.top + 2} width={110} height={18} rx={3}
+          fill="var(--bg-primary)" opacity="0.85" />
+        <text x={crisisX + 8} y={margin.top + 15}
+          fill="rgba(239,68,68,0.8)" fontSize="12" fontWeight="500">
           Crisis of 3rd c.
         </text>
 

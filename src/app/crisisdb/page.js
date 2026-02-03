@@ -184,47 +184,37 @@ export default function CrisisDBPage() {
           <div className="pattern-card">
             <h3>Complexity Without Conflict</h3>
             <p>
-              <strong>Venice</strong> (admin=6, conflict=0-5%), <strong>Egypt Old Kingdom</strong> (admin=6, conflict=0%),
-              and <strong>Northern Song</strong> (admin=7, conflict=11%) maintained complex bureaucracies with
+              <strong>Venice III</strong> (admin=5, conflict=5%, n=41),
+              <strong> Egypt Classic Old Kingdom</strong> (admin=7, conflict=0%, n=20),
+              and <strong>Northern Song</strong> (admin=7, conflict=11%, n=9) maintained complex bureaucracies with
               low intra-elite violence during transitions.
             </p>
             <p className="pattern-note">
-              Suggests strong succession institutions can buffer elite competition.
-            </p>
-          </div>
-
-          <div className="pattern-card">
-            <h3>The Aztec Paradox</h3>
-            <p>
-              <strong>Aztec Empire</strong> (admin=6, conflict=0%, n=7) shows zero intra-elite conflict despite
-              their reputation for ritualized violence and warfare.
-            </p>
-            <p className="pattern-note">
-              "Intra-elite conflict" here measures violence during <em>power transitions</em>,
-              not general societal violence. Aztec succession was highly ritualized — external violence
-              didn't translate to contested successions.
+              Succession institutions may buffer elite competition even at high administrative complexity.
             </p>
           </div>
 
           <div className="pattern-card">
             <h3>Byzantine Degradation</h3>
             <p>
-              Conflict rates escalate across Byzantine phases: <strong>I</strong> (56%) → <strong>II</strong> (50%) → <strong>III</strong> (100%).
-              The late Byzantine Empire saw every single power transition turn violent.
+              Intra-elite conflict rates escalate across Byzantine phases:
+              <strong> I</strong> (56%, n=25) → <strong>II</strong> (50%, n=22) → <strong>III</strong> (100%, n=10).
+              Every power transition in the late Byzantine period involved intra-elite violence.
             </p>
             <p className="pattern-note">
-              Consistent with SDT: declining resources + persistent elite expectations = intensified competition.
+              Declining territorial base with persistent elite expectations — consistent with SDT predictions.
             </p>
           </div>
 
           <div className="pattern-card">
             <h3>Mamluk Escalation</h3>
             <p>
-              Similar pattern in Mamluk Egypt: <strong>I</strong> (68%) → <strong>II</strong> (73%) → <strong>III</strong> (80%).
-              Military slave systems may have structural instability in succession.
+              Similar trajectory in Mamluk Egypt:
+              <strong> I</strong> (68%, n=19) → <strong>II</strong> (73%, n=11) → <strong>III</strong> (80%, n=10).
             </p>
             <p className="pattern-note">
-              Highest sustained conflict rates in the dataset.
+              Highest sustained conflict rates in the dataset. Military slave systems may carry
+              structural instability in succession.
             </p>
           </div>
         </div>
