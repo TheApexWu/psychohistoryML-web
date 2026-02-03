@@ -451,32 +451,6 @@ footer {
   color: var(--text-primary);
 }
 
-/* Page transition */
-
-.transition-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--bg-primary);
-  z-index: 3000;
-  pointer-events: none;
-  transform: scaleY(0);
-  transform-origin: bottom;
-}
-
-.transition-overlay.active {
-  animation: pageWipe 0.8s cubic-bezier(0.77, 0, 0.175, 1);
-}
-
-@keyframes pageWipe {
-  0% { transform: scaleY(0); transform-origin: bottom; }
-  45% { transform: scaleY(1); transform-origin: bottom; }
-  55% { transform: scaleY(1); transform-origin: top; }
-  100% { transform: scaleY(0); transform-origin: top; }
-}
-
 /* Hero */
 
 .hero {

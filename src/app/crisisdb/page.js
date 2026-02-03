@@ -7,10 +7,12 @@ import EliteScatter from './components/EliteScatter'
 import ContagionHeatmap from './components/ContagionHeatmap'
 import TransitionTimeline from './components/TransitionTimeline'
 import TenureSurvival from './components/TenureSurvival'
+import ViolenceMechanisms from './components/ViolenceMechanisms'
+import PolityDeepDive from './components/PolityDeepDive'
 import crisisData from './data.json'
 
 export default function CrisisDBPage() {
-  const { elite_scatter, timeline, markov, stats, rulers, tenure_stats, source_quality } = crisisData
+  const { elite_scatter, timeline, markov, stats, rulers, tenure_stats, source_quality, century_mechanisms, polity_trajectories, filtered_stats } = crisisData
   const [excludeLowQuality, setExcludeLowQuality] = useState(false)
 
   // Filter data based on source quality toggle
@@ -118,9 +120,40 @@ export default function CrisisDBPage() {
         </div>
       </section>
 
+      {/* Violence Mechanisms Over Time */}
+      <section className="viz-section">
+        <h2>3. Temporal Dynamics</h2>
+        <p className="section-intro">
+          Are these patterns stationary, or do violence mechanisms shift over time?
+          If the system were in equilibrium, we'd expect constant rates. It isn't.
+        </p>
+        <ViolenceMechanisms data={century_mechanisms} />
+        <div className="finding-box">
+          <strong>Finding:</strong> Violence mechanisms are non-stationary. Assassination dominates
+          in antiquity (peaking at 45% in the 3rd century crisis), while intra-elite conflict
+          shows distinct waves. The overall rate of political violence has declined since ~500 CE,
+          but the <em>composition</em> shifts — suggesting different generative processes across eras.
+        </div>
+      </section>
+
+      {/* Polity Trajectories */}
+      <section className="viz-section">
+        <h2>4. Polity Trajectories</h2>
+        <p className="section-intro">
+          Aggregate statistics mask divergent paths. Some polities maintain stability for centuries;
+          others spiral into violence. Explore individual trajectories to see the dynamics at work.
+        </p>
+        <PolityDeepDive trajectories={polity_trajectories} eliteScatter={elite_scatter} />
+        <div className="finding-box" style={{ marginTop: '1rem' }}>
+          <strong>Compare:</strong> Venice maintains near-zero violence across 41 transitions (800–1797 CE),
+          while Byzantine III shows 100% conflict in its final phase. These aren't random — they suggest
+          distinct <em>regimes</em> that polities can inhabit, with transitions between them.
+        </div>
+      </section>
+
       {/* Ruler Tenure */}
       <section className="viz-section">
-        <h2>3. Ruler Tenure</h2>
+        <h2>5. Ruler Tenure</h2>
         <p className="section-intro">
           Do violent usurpers reign shorter? Testing instability cascades at the individual level.
         </p>
@@ -134,7 +167,7 @@ export default function CrisisDBPage() {
 
       {/* Timeline */}
       <section className="viz-section">
-        <h2>4. Transitions Over Time</h2>
+        <h2>6. Transitions Over Time</h2>
         <p className="section-intro">
           When and where do power transitions cluster? Explore the temporal distribution.
         </p>
@@ -143,7 +176,7 @@ export default function CrisisDBPage() {
 
       {/* Notable Patterns */}
       <section className="patterns-section">
-        <h2>5. Notable Patterns</h2>
+        <h2>7. Notable Patterns</h2>
         <p className="section-intro">
           Outliers and trajectories that complicate—or illuminate—the complexity-conflict relationship.
         </p>
@@ -198,6 +231,113 @@ export default function CrisisDBPage() {
         </div>
       </section>
 
+      {/* Toward Prediction */}
+      <section className="prediction-section">
+        <h2>8. Toward Prediction: Violence as a Dynamical System</h2>
+        <p className="section-intro">
+          The patterns above suggest political violence isn't random noise — it has structure.
+          Can we move from description to prediction?
+        </p>
+
+        <div className="prediction-grid">
+          <div className="prediction-card">
+            <div className="prediction-icon">⚖️</div>
+            <h3>Equilibrium or Illusion?</h3>
+            <p>
+              The Markov chain converges to 36% violent at stationarity. But the temporal dynamics
+              (Section 3) show the system is <em>not</em> stationary — rates shift across centuries.
+              Are polities oscillating between <strong>basins of attraction</strong> (stable vs. crisis regimes),
+              or is the drift driven by external factors?
+            </p>
+          </div>
+
+          <div className="prediction-card">
+            <div className="prediction-icon">📉</div>
+            <h3>Critical Transitions</h3>
+            <p>
+              Byzantine Empire: 56% → 50% → 100% violence. Mamluk: 68% → 73% → 80%.
+              These don't look like gradual drift — they look like <strong>tipping points</strong>.
+              Complex systems theory predicts early warning signals before critical transitions
+              (rising autocorrelation, critical slowing down). Can we detect them here?
+            </p>
+          </div>
+
+          <div className="prediction-card">
+            <div className="prediction-icon">🔮</div>
+            <h3>Hidden States</h3>
+            <p>
+              A <strong>Hidden Markov Model</strong> could capture what we see: a latent state
+              (stable vs. crisis) that generates observed transitions with different probabilities.
+              The polity trajectories in Section 4 strongly suggest at least two distinct regimes.
+              What triggers the switch?
+            </p>
+          </div>
+        </div>
+
+        <div className="open-questions">
+          <h3>Open Questions</h3>
+          <p className="oq-intro">
+            Answering these would require additional variables beyond power transitions alone:
+          </p>
+          <ul>
+            <li>
+              <strong>Economic stress as a trigger:</strong> Does fiscal crisis or resource scarcity
+              predict the transition from stable to crisis regimes? (Requires CrisisDB economic variables)
+            </li>
+            <li>
+              <strong>Population dynamics:</strong> Turchin's SDT predicts that population pressure
+              drives elite overproduction. Can we measure this interaction directly?
+              (Requires Seshat demographic data)
+            </li>
+            <li>
+              <strong>Institutional resilience:</strong> Venice maintained stability for a millennium.
+              What institutional features predict <em>resistance</em> to violence contagion?
+              (Requires Seshat institutional complexity variables)
+            </li>
+            <li>
+              <strong>Regional contagion:</strong> Does violence in one polity increase the probability
+              of violence in neighboring polities? (Requires spatial analysis across the full CrisisDB)
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Filtered vs Unfiltered */}
+      {filtered_stats && (
+        <section className="robustness-section">
+          <h2>9. Robustness Check</h2>
+          <p className="section-intro">
+            Do findings hold when excluding polities with sparse documentary records?
+          </p>
+          <div className="robustness-grid">
+            <div className="robustness-card">
+              <h4>All Polities</h4>
+              <div className="rob-stat">r = {stats.correlation_r}</div>
+              <div className="rob-detail">{stats.total_transitions.toLocaleString()} transitions · {stats.total_polities} polities</div>
+              <div className="rob-detail">P(V|V) = {(markov.p_violent_to_violent * 100).toFixed(0)}%</div>
+              <div className="rob-detail">Violence rate: {(stats.violence_rate * 100).toFixed(1)}%</div>
+            </div>
+            <div className="robustness-arrow">→</div>
+            <div className="robustness-card">
+              <h4>Excluding Low-Quality Sources</h4>
+              <div className="rob-stat">r = {filtered_stats.correlation_r}</div>
+              <div className="rob-detail">{filtered_stats.total_transitions_filtered?.toLocaleString()} transitions · {stats.total_polities - filtered_stats.excluded_polities} polities</div>
+              <div className="rob-detail">P(V|V) = {(filtered_stats.markov_filtered?.p_violent_to_violent * 100).toFixed(0)}%</div>
+              <div className="rob-detail">Violence rate: {(filtered_stats.violence_rate_filtered * 100).toFixed(1)}%</div>
+            </div>
+          </div>
+          <div className="finding-box" style={{ marginTop: '1rem' }}>
+            <strong>Result:</strong> Excluding {filtered_stats.excluded_polities} poorly-documented polities
+            <em> strengthens</em> the findings. Violence rate increases from {(stats.violence_rate * 100).toFixed(1)}% to {(filtered_stats.violence_rate_filtered * 100).toFixed(1)}%,
+            and violence becomes stickier (P(V|V) rises from {(markov.p_violent_to_violent * 100).toFixed(0)}% to {(filtered_stats.markov_filtered?.p_violent_to_violent * 100).toFixed(0)}%).
+            The low-quality polities were <em>masking</em> violence, not inflating it.
+            {filtered_stats.correlation_note && (
+              <span className="rob-note"> {filtered_stats.correlation_note}</span>
+            )}
+          </div>
+        </section>
+      )}
+
       {/* Methodology */}
       <section className="method-section">
         <h2>Methodology & Limitations</h2>
@@ -242,7 +382,8 @@ export default function CrisisDBPage() {
           CrisisDB and Seshat are maintained by the <a href="https://seshatdatabank.info/" target="_blank" rel="noopener noreferrer">Seshat: Global History Databank</a> team.
         </p>
         <p className="credits-note">
-          Special thanks to the Seshat team for making historical data accessible for quantitative analysis.
+          Special thanks to Jenny Reddish, Jakob Zsambok, and Peter Turchin for feedback on source quality
+          and methodology, and to Daniel Kondor for ongoing work on the power transitions data.
         </p>
       </section>
 
@@ -497,6 +638,154 @@ export default function CrisisDBPage() {
           padding-top: 0.5rem;
           border-top: 1px solid var(--border);
           margin-top: 0.75rem !important;
+        }
+
+        .prediction-section {
+          margin-bottom: 3rem;
+        }
+
+        .prediction-section h2 {
+          font-size: 1.25rem;
+          margin-bottom: 0.5rem;
+          color: var(--text-primary);
+        }
+
+        .prediction-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 1rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .prediction-card {
+          background: var(--bg-secondary);
+          border: 1px solid var(--border);
+          border-radius: 6px;
+          padding: 1.25rem;
+        }
+
+        .prediction-icon {
+          font-size: 1.5rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .prediction-card h3 {
+          font-size: 0.95rem;
+          color: var(--text-primary);
+          margin: 0 0 0.75rem 0;
+        }
+
+        .prediction-card p {
+          font-size: 0.85rem;
+          color: var(--text-muted);
+          line-height: 1.6;
+          margin: 0;
+        }
+
+        .open-questions {
+          background: rgba(99, 102, 241, 0.06);
+          border: 1px solid rgba(99, 102, 241, 0.2);
+          border-radius: 6px;
+          padding: 1.5rem;
+        }
+
+        .open-questions h3 {
+          font-size: 1rem;
+          color: var(--accent);
+          margin: 0 0 0.5rem 0;
+        }
+
+        .oq-intro {
+          font-size: 0.85rem;
+          color: var(--text-muted);
+          margin: 0 0 1rem 0;
+        }
+
+        .open-questions ul {
+          margin: 0;
+          padding-left: 1.25rem;
+          font-size: 0.85rem;
+          color: var(--text-muted);
+          line-height: 1.7;
+        }
+
+        .open-questions li {
+          margin-bottom: 0.75rem;
+        }
+
+        .open-questions li:last-child {
+          margin-bottom: 0;
+        }
+
+        .robustness-section {
+          margin-bottom: 3rem;
+        }
+
+        .robustness-section h2 {
+          font-size: 1.25rem;
+          margin-bottom: 0.5rem;
+          color: var(--text-primary);
+        }
+
+        .robustness-grid {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          justify-content: center;
+        }
+
+        .robustness-card {
+          background: var(--bg-secondary);
+          border: 1px solid var(--border);
+          border-radius: 6px;
+          padding: 1.25rem;
+          text-align: center;
+          flex: 1;
+          max-width: 320px;
+        }
+
+        .robustness-card h4 {
+          font-size: 0.85rem;
+          color: var(--text-muted);
+          margin: 0 0 0.75rem 0;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .rob-stat {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: var(--accent);
+          font-family: var(--font-mono);
+          margin-bottom: 0.5rem;
+        }
+
+        .rob-detail {
+          font-size: 0.8rem;
+          color: var(--text-muted);
+          line-height: 1.6;
+        }
+
+        .rob-note {
+          display: block;
+          margin-top: 0.5rem;
+          font-size: 0.8rem;
+          opacity: 0.8;
+        }
+
+        .robustness-arrow {
+          font-size: 1.5rem;
+          color: var(--text-muted);
+          opacity: 0.5;
+        }
+
+        @media (max-width: 640px) {
+          .robustness-grid {
+            flex-direction: column;
+          }
+          .robustness-arrow {
+            transform: rotate(90deg);
+          }
         }
 
         .credits-section {
