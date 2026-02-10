@@ -104,13 +104,15 @@ export default function Home() {
 
           <div className="project-row">
             <div>
-              <h4>NYC MTA Live Map</h4>
+              <h4>Eyes on the Street</h4>
               <p>
-                Real-time subway positions on an interactive map. Decodes MTA's GTFS-RT protobuf feeds.
+                Real-time crowd presence simulation for NYC. Models the flow of human bodies through
+                428 subway stations using MTA ridership data and GTFS-RT train feeds. Density heatmap
+                breathes with the city pulse. Claude generates situation reports every 5 minutes.
               </p>
-              <a href="https://github.com/TheApexWu/experimental-nyc-mta-live" target="_blank" rel="noopener noreferrer" className="row-link link-draw">View Project →</a>
+              <a href="https://github.com/TheApexWu/eyes-on-the-street" target="_blank" rel="noopener noreferrer" className="row-link link-draw">View Project →</a>
             </div>
-            <span className="row-tag">Real-time</span>
+            <span className="row-tag">Crowd Simulation</span>
           </div>
         </div>
       </section>
