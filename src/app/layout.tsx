@@ -18,8 +18,8 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Amadeus Woo",
-  description: "Solo data scientist and ML/AI researcher. Projects in historical pattern analysis, audio, and creative builds.",
+  title: "PsychohistoryML",
+  description: "Exploratory ML analysis of 372 historical polities from the Seshat Global History Databank.",
   icons: {
     icon: '/icon.svg',
   },
@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <div className="container">
           <header>
-            <Link href="/" className="logo">Amadeus Woo</Link>
+            <Link href="/" className="logo">PsychohistoryML</Link>
           </header>
           <main>
             {children}
@@ -41,17 +41,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <footer>
             <div className="footer-links">
-              <a href="https://github.com/TheApexWu" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/TheApexWu/psychohistoryML" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
-              <a href="https://twitter.com/amadeuswoo" target="_blank" rel="noopener noreferrer">
-                Twitter
-              </a>
-              <a href="https://substack.com/@amadeusinsight" target="_blank" rel="noopener noreferrer">
-                Substack
+              <a href="https://amadeuswoo.com" target="_blank" rel="noopener noreferrer">
+                Portfolio
               </a>
             </div>
-            <span className="copyright">&copy; 2026 Amadeus Woo</span>
+            <span className="copyright">&copy; 2026 PsychohistoryML</span>
           </footer>
         </div>
       </body>
